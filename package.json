@@ -1,0 +1,18 @@
+{
+  "name": "printpricepro-site",
+  "version": "1.0.0",
+  "description": "Privacy Policy website for PrintPricePro 3D printing cost calculator",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "dev": "python3 -m http.server 8000",
+    "deploy:netlify": "netlify deploy --prod",
+    "deploy:vercel": "vercel --prod"
+  },
+  "keywords": [
+    "privacy-policy",
+    "printpricepro",
+    "3d-printing"
+  ],
+  "author": "PrintPricePro",
+  "license": "MIT"
+}
