@@ -5,22 +5,33 @@
 }
 
 :root {
-    /* PrintPricePro Brand Colors */
-    --primary-color: #4F41C5;
-    --primary-dark: #3d2f9e;
-    --primary-light: #6d5fd9;
-    --accent-color: #F6B731;
-    --accent-dark: #e5a620;
-    --accent-light: #f8c554;
-    --secondary-color: #64748b;
+    /* PrintPricePro Brand Colors - Updated to exactly match app */
+    --primary-color: #6650A4; /* Exact color from ic_launcher_background.xml */
+    --primary-dark: #4F41C5; /* Material color - Purple40 from Color.kt */
+    --primary-light: #D0BCFF; /* Material color - Purple80 from Color.kt */
+    
+    --accent-color: #F6B731; /* Gold color from ic_launcher_foreground.xml */
+    --accent-dark: #E5A620; /* Darker gold */
+    --accent-light: #F8C554; /* Lighter gold */
+    
+    --secondary-color: #625b71; /* Material color - PurpleGrey40 from Color.kt */
+    --secondary-light: #CCC2DC; /* Material color - PurpleGrey80 from Color.kt */
+    
+    --tertiary-color: #7D5260; /* Material color - Pink40 from Color.kt */
+    --tertiary-light: #EFB8C8; /* Material color - Pink80 from Color.kt */
+    
     --success-color: #10b981;
-    --info-color: #4F41C5;
+    --info-color: #6650A4;
+    
     --text-primary: #1e293b;
-    --text-secondary: #64748b;
-    --bg-primary: #ffffff;
+    --text-secondary: #625b71; /* Material color - PurpleGrey40 */
+    
+    --bg-primary: #ffffff; /* White from Color.kt */
     --bg-secondary: #f8fafc;
     --bg-tertiary: #f1f5f9;
+    
     --border-color: #e2e8f0;
+    
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -94,6 +105,19 @@ body {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     color: white;
     padding: 4rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at bottom right, rgba(246, 183, 49, 0.1) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .hero-content {

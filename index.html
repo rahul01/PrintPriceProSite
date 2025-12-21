@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="PrintPricePro - 3D Printing Cost Calculator">
-    <meta name="theme-color" content="#4F41C5">
+    <meta name="theme-color" content="#6650A4">
     <title>PrintPricePro - 3D Printing Cost Calculator</title>
     
     <!-- Favicons -->
@@ -76,14 +76,15 @@
         .primary-button {
             background-color: var(--primary-color);
             color: white;
-            box-shadow: 0 4px 6px rgba(79, 65, 197, 0.25);
+            box-shadow: 0 4px 6px rgba(102, 80, 164, 0.25);
             border: 2px solid rgba(255, 255, 255, 0.7);
         }
         
         .primary-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 7px 10px rgba(79, 65, 197, 0.3);
+            box-shadow: 0 7px 10px rgba(102, 80, 164, 0.3);
             border: 2px solid rgba(255, 255, 255, 1);
+            background-color: #7661b5; /* Slightly lighter purple */
         }
         
         .secondary-button {
@@ -182,6 +183,11 @@
             border-radius: 2px;
         }
         
+        .section-title span {
+            color: var(--accent-color);
+            position: relative;
+        }
+        
         .info-card {
             background-color: var(--bg-primary);
             border-radius: 12px;
@@ -204,6 +210,21 @@
             font-weight: 600;
             margin: 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+            opacity: 0.3;
+            border-radius: 50%;
+            pointer-events: none;
         }
         
         .info-content {
@@ -226,6 +247,11 @@
         
         .info-content strong {
             color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .info-content strong em {
+            color: var(--accent-color);
         }
         
         @media (max-width: 768px) {
@@ -292,7 +318,7 @@
     <main>
         <div class="container">
             <section id="app-info" class="app-info-section">
-                <h2 class="section-title">PrintPricePro App Guide</h2>
+                <h2 class="section-title">PrintPrice<span>Pro</span> App Guide</h2>
                 
                 <div class="info-card">
                     <h3>Labor Rate Per Hour</h3>
