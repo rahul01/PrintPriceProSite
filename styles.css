@@ -392,6 +392,23 @@ body {
 .footer-description {
     color: rgba(255, 255, 255, 0.7);
     font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+}
+
+.footer-links {
+    margin-top: 0.5rem;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
 }
 
 .footer-right p {

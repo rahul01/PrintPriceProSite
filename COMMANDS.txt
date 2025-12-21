@@ -1,0 +1,127 @@
+================================================================================
+GITHUB PAGES HOSTING - STEP BY STEP COMMANDS
+================================================================================
+
+STEP 1: Create GitHub Repository
+---------------------------------
+1. Go to https://github.com/new
+2. Repository name: printpricepro-site
+3. Make it PUBLIC (required for free GitHub Pages)
+4. DON'T check any boxes (no README, no .gitignore, no license)
+5. Click "Create repository"
+
+
+STEP 2: Copy Your GitHub Username
+----------------------------------
+After creating the repo, you'll see a page with commands.
+Look for a URL that looks like:
+  https://github.com/YOUR_USERNAME/printpricepro-site.git
+
+Copy YOUR_USERNAME (it's your GitHub username)
+
+
+STEP 3: Run These Commands in Terminal
+---------------------------------------
+Open Terminal and run these commands ONE BY ONE:
+
+cd /Users/rahul/AndroidStudioProjects/PrintPriceProSite
+
+# Replace YOUR_USERNAME with your actual GitHub username
+git remote add origin https://github.com/YOUR_USERNAME/printpricepro-site.git
+
+git branch -M main
+
+git push -u origin main
+
+
+EXAMPLE:
+--------
+If your GitHub username is "rahul123", you would run:
+
+git remote add origin https://github.com/rahul123/printpricepro-site.git
+git branch -M main
+git push -u origin main
+
+
+STEP 4: Enable GitHub Pages
+----------------------------
+1. Go to https://github.com/YOUR_USERNAME/printpricepro-site
+2. Click "Settings" tab
+3. Click "Pages" in the left sidebar
+4. Under "Source":
+   - Branch: select "main"
+   - Folder: select "/ (root)"
+5. Click "Save"
+
+
+STEP 5: Get Your Live URL
+--------------------------
+After 1-2 minutes, your site will be live at:
+
+# Main website/homepage:
+https://YOUR_USERNAME.github.io/printpricepro-site/
+
+# Privacy policy (for app and Play Store):
+https://YOUR_USERNAME.github.io/printpricepro-site/privacy.html
+
+Example: If username is "rahul123":
+- Homepage: https://rahul123.github.io/printpricepro-site/
+- Privacy policy: https://rahul123.github.io/printpricepro-site/privacy.html
+
+
+STEP 6: Test Your Site
+-----------------------
+Open both URLs in your browser and verify everything looks good!
+
+
+STEP 7: Use in Your App
+------------------------
+Add the PRIVACY POLICY URL to your Android app and Google Play Store listing.
+
+
+================================================================================
+MAKING UPDATES LATER
+================================================================================
+
+When you want to update the website:
+
+cd /Users/rahul/AndroidStudioProjects/PrintPriceProSite
+
+# Make your changes to files
+
+git add .
+git commit -m "Update website"
+git push
+
+# Wait 1-2 minutes, changes will appear on your live site!
+
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+Problem: "fatal: remote origin already exists"
+Solution: Run this first, then try again:
+  git remote remove origin
+
+Problem: GitHub asks for username/password
+Solution: Use a Personal Access Token instead of password
+  1. Go to https://github.com/settings/tokens
+  2. Generate new token (classic)
+  3. Use token as password when prompted
+
+Problem: Site shows 404
+Solution: 
+  - Wait 2-3 minutes
+  - Check Settings u2192 Pages shows "Your site is live"
+  - Verify repository is PUBLIC
+  - Ensure you're using the correct URL
+
+
+================================================================================
+NEED MORE HELP?
+================================================================================
+
+See DEPLOYMENT.md for detailed instructions with examples.
+
+================================================================================

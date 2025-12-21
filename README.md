@@ -1,7 +1,6 @@
-# PrintPricePro Privacy Policy Website
+# PrintPricePro Website
 
-A modern, responsive website to host the privacy policy for PrintPricePro - a 3D printing cost
-calculator application.
+A modern, responsive website for PrintPricePro - a 3D printing cost calculator application. Includes a homepage and privacy policy page.
 
 ## Features
 
@@ -31,10 +30,19 @@ calculator application.
 
 ```
 PrintPriceProSite/
-├── index.html          # Main HTML file with privacy policy content
+├── index.html          # Homepage with app information
+├── privacy.html        # Privacy policy page
 ├── styles.css          # CSS styling and responsive design
 ├── script.js           # JavaScript for interactions and animations
+├── manifest.json       # PWA manifest file
+├── icon-192.png        # App icon (192x192)
+├── icon-512.png        # App icon (512x512)
+├── favicon.png         # Favicon
 ├── PRIVACY_POLICY.md   # Original privacy policy markdown
+├── DEPLOYMENT.md       # Deployment instructions
+├── COMMANDS.txt        # GitHub Pages deployment commands
+├── BRANDING.md         # Brand guidelines
+├── CHANGES.md          # Changelog
 └── README.md           # This file
 ```
 

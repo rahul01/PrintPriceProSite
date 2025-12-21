@@ -1,7 +1,7 @@
 {
-  "name": "PrintPricePro Privacy Policy",
+  "name": "PrintPricePro",
   "short_name": "PrintPricePro",
-  "description": "Privacy Policy for PrintPricePro - 3D Printing Cost Calculator",
+  "description": "3D Printing Cost Calculator for makers and professionals",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#4F41C5",

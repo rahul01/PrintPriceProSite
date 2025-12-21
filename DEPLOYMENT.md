@@ -47,6 +47,14 @@ vercel
 
 Follow the prompts, and your site will be live!
 
+## Privacy Policy URL
+
+The privacy policy is now at `/privacy.html`. Use this path when linking from your app:
+
+```
+https://YOUR_USERNAME.github.io/printpricepro-site/privacy.html
+```
+
 ## Custom Domain Setup
 
 Once deployed on any platform:
