@@ -147,7 +147,6 @@ The website now provides a seamless brand experience:
 
 For more information, see:
 
-- `README.md` - Full project documentation
 - `BRANDING.md` - Brand colors and icon usage guide
 
 ---
