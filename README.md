@@ -39,8 +39,6 @@ PrintPriceProSite/
 ├── icon-512.png        # App icon (512x512)
 ├── favicon.png         # Favicon
 ├── PRIVACY_POLICY.md   # Original privacy policy markdown
-├── DEPLOYMENT.md       # Deployment instructions
-├── COMMANDS.txt        # GitHub Pages deployment commands
 ├── BRANDING.md         # Brand guidelines
 ├── CHANGES.md          # Changelog
 └── README.md           # This file
