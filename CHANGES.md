@@ -1,6 +1,29 @@
-# Website Updates - Brand Integration
+# Website Updates
 
-## Summary of Changes
+## Latest Changes - Site Restructuring
+
+### 1. **Website Restructuring** 🏗️
+
+- ✅ Created new homepage with app features at `/index.html`
+- ✅ Moved privacy policy to `/privacy.html`
+- ✅ Added navigation between pages
+- ✅ Removed deployment guide files
+- ✅ Updated all documentation to reflect changes
+
+### 2. **Homepage Design** 🎨
+
+- Modern landing page showcasing the app
+- Feature highlights with icons
+- Call-to-action buttons
+- Responsive design for all devices
+
+### 3. **Navigation Links** 🔄
+
+- Added "Home" link on privacy policy page
+- Added "Return to Homepage" link in footer
+- Improved navigation between sections
+
+## Previous Update - Brand Integration
 
 The PrintPricePro privacy policy website has been updated to use the official app branding and icon.
 
@@ -116,10 +139,9 @@ The website now provides a seamless brand experience:
 
 ## Next Steps
 
-1. **Test the website** - Open `index.html` in your browser
-2. **Deploy** - Follow instructions in `DEPLOYMENT.md`
-3. **Update contact info** - Edit email/website in HTML (lines ~228, ~237)
-4. **Share** - Use the deployed URL in your app and app store listing
+1. **Test the website** - Open `index.html` and `privacy.html` in your browser
+2. **Deploy** - Push to GitHub Pages or another hosting service
+3. **Share** - Use the privacy policy URL in your app and Google Play listing
 
 ## Documentation
 
@@ -127,7 +149,6 @@ For more information, see:
 
 - `README.md` - Full project documentation
 - `BRANDING.md` - Brand colors and icon usage guide
-- `DEPLOYMENT.md` - Quick deployment instructions
 
 ---
 
