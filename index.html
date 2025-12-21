@@ -198,7 +198,7 @@
             <p class="home-subtitle">The ultimate 3D printing cost calculator for makers, hobbyists, and professionals</p>
             
             <div class="cta-buttons">
-                <a href="#" class="cta-button primary-button">Download App</a>
+                <a href="#" class="cta-button primary-button" id="downloadBtn">Download App</a>
             </div>
         </div>
     </header>
@@ -273,6 +273,12 @@
                     });
                 }
             });
+        });
+        
+        // Download App button - Show "Coming Soon" alert
+        document.getElementById('downloadBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Coming soon! The app will be available for download shortly.');
         });
     </script>
 </body>
