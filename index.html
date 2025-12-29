@@ -46,11 +46,13 @@
             box-shadow: 0 0 25px rgba(102, 80, 164, 0.5), 0 0 10px rgba(246, 183, 49, 0.3);
         }
         
+        /* Google Play Badge - Following official guidelines */
+        /* Source: https://partnermarketinghub.withgoogle.com/brands/google-play/visual-identity/badge-guidelines/ */
         .google-play-button {
             display: inline-block;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin: 1.5rem 0;
             background-color: transparent;
+            transition: transform 0.3s ease;
         }
         
         .google-play-button:hover {
@@ -59,9 +61,10 @@
         
         .google-play-button img {
             display: block;
-            width: 200px;
+            width: 180px; /* Following Google's badge size guidelines */
             height: auto;
             max-width: 100%;
+            /* Maintaining aspect ratio as per Google guidelines */
         }
         
         .home-title {
