@@ -46,6 +46,23 @@
             box-shadow: 0 0 25px rgba(102, 80, 164, 0.5), 0 0 10px rgba(246, 183, 49, 0.3);
         }
         
+        .google-play-button {
+            display: inline-block;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: var(--shadow-md);
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .google-play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .google-play-button img {
+            display: block;
+        }
+        
         .home-title {
             font-size: 2.5rem;
             margin-bottom: 1rem;
@@ -319,7 +336,9 @@
             <p class="home-subtitle">Guide to our 3D printing cost calculator app for makers, hobbyists, and professionals</p>
             
             <div class="cta-buttons">
-                <a href="#" class="cta-button primary-button" id="downloadBtn">Download App</a>
+                <a href="https://play.google.com/store/apps/details?id=tech.anubias.printpricepro" target="_blank" rel="noopener noreferrer" class="google-play-button">
+                    <img src="google-play-badge.svg" alt="Get it on Google Play" width="180" height="53">
+                </a>
             </div>
         </div>
     </header>
@@ -473,11 +492,8 @@
             });
         });
         
-        // Download App button - Show "Coming Soon" alert
-        document.getElementById('downloadBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('Coming soon! The app will be available for download shortly.');
-        });
+        // Google Play button now links directly to the Play Store
+        // No JavaScript needed for this functionality
     </script>
 </body>
 </html>
