@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        console.log('Calculator data saved to localStorage');
     }
     
     // Function to load calculator data from localStorage
@@ -43,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.overheadPercentage && overheadPercentage) overheadPercentage.value = data.overheadPercentage;
                 if (data.markupPercentage && markupPercentage) markupPercentage.value = data.markupPercentage;
                 
-                console.log('Calculator data loaded from localStorage');
+
                 return true;
             }
         } catch (error) {
@@ -137,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    console.log("Script loaded - Initializing calculator");
+
     
     // Get UI elements
     const toggleFormulasBtn = document.getElementById('toggle-formulas');
@@ -239,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Function to calculate prices
     function calculatePrices() {
-        console.log("Calculating prices...");
+
         
         try {
             // Get values from inputs (with fallbacks to default values)
@@ -261,19 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const selectedCurrency = currency.value || 'INR';
             const symbol = currencySymbols[selectedCurrency] || '₹';
             
-            // Log input values for debugging
-            console.log("Input values:", {
-                materialWeight: matWeight,
-                materialCost: matCost,
-                printTimeTotal: pTime,
-                power,
-                laborRate: lRate,
-                laborTime: lTime,
-                overhead,
-                markup,
-                electricityRate: elecRate,
-                currency: selectedCurrency
-            });
+
+
             
             // Calculate costs
             // Material cost (convert material weight from g to kg)
@@ -300,15 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Final price
             const finalValue = subtotalValue + markupValue;
             
-            console.log("Calculated values:", {
-                materialCost: materialCostValue,
-                electricityCost: electricityCostValue,
-                laborCost: laborCostValue,
-                overhead: overheadValue,
-                subtotal: subtotalValue,
-                markup: markupValue,
-                finalPrice: finalValue
-            });
+
             
             // Update result elements
             resultMaterial.textContent = formatCurrency(materialCostValue, selectedCurrency);
@@ -363,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
             input.addEventListener('input', saveCalculatorData);
             input.addEventListener('change', saveCalculatorData);
             
-            console.log(`Added event listener to ${input.id || 'unknown'} element`);
+
         }
     });
     
@@ -371,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Only run initial calculation if there was no saved data
     if (!loadCalculatorData()) {
         // If no data was loaded, initialize with default settings
-        console.log('No saved data found, using defaults');
+
     } else {
         // If data was loaded, calculate prices immediately
         calculatePrices();
@@ -459,7 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Recalculate with default values
         calculatePrices();
         
-        console.log('Calculator has been reset');
+
     }
     
     // Add event listener for Reset button
