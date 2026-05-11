@@ -62,6 +62,8 @@
                             <li><a href="#overhead">Overhead Percentage</a></li>
                             <li><a href="#markup">Percentage Markup</a></li>
                             <li><a href="#power-consumption">Power Consumption</a></li>
+                            <li><a href="#machine-cost-per-hour">Machine Cost Per Hour</a></li>
+                            <li><a href="#hardware-cost">Hardware Cost</a></li>
                             <li><a href="#in-field-calculator">In-Field Calculator</a></li>
                             <li><a href="#import-export">Import & Export Data</a></li>
                         </ul>
@@ -87,14 +89,16 @@
                         <div class="info-card" id="overhead">
                             <h3>Overhead Percentage</h3>
                             <div class="info-content">
-                                <p>This percentage is applied to the combined cost of <strong>Material and Labor</strong>. It covers non-direct expenses such as: <strong>failed prints/reprints</strong>, machine depreciation, consumables (glue, cleaning agents), and facility costs.</p>
+                                <p>This percentage is applied to <strong>all Direct Costs</strong> (Material + Electricity + Labor + Machine + Hardware). It covers non-direct expenses such as: <strong>failed prints/reprints</strong>, consumables (glue, cleaning agents), and facility costs.</p>
+                                <p><em>Settings &gt; Overhead</em></p>
                             </div>
                         </div>
-                        
+
                         <div class="info-card" id="markup">
-                            <h3>Percentage markup on the total cost</h3>
+                            <h3>Percentage Markup (Profit Margin)</h3>
                             <div class="info-content">
-                                <p>This percentage is the final markup applied to the <strong>Total Cost (Material + Labor + Overhead)</strong> to determine the final selling price. It represents the <strong>net profit</strong> generated per job.</p>
+                                <p>This percentage is the final markup applied to the <strong>Subtotal (Direct Costs + Overhead)</strong> to determine the final selling price. It represents the <strong>net profit</strong> generated per job.</p>
+                                <p><em>Settings &gt; Profit Margin</em></p>
                             </div>
                         </div>
                         
@@ -119,6 +123,34 @@
                             </div>
                         </div>
                         
+                        <div class="info-card" id="machine-cost-per-hour">
+                            <h3>Machine Cost Per Hour</h3>
+                            <div class="info-content">
+                                <p>The amortised depreciation and maintenance cost of the printer, expressed per hour of printing. This is set <strong>per printer</strong> in the Printers screen and is automatically applied when that printer is selected in the Calculator.</p>
+                                <p><strong>How to calculate it:</strong> Divide the total purchase price by the expected lifetime print hours.</p>
+                                <ul>
+                                    <li><em>Example:</em> Printer cost ₹25,000, expected 1,000 hours of use → <strong>₹25/hour</strong></li>
+                                    <li><em>Example:</em> Printer cost $300, expected 1,000 hours → <strong>$0.30/hour</strong></li>
+                                </ul>
+                                <p>Pre-populated printers come with estimated values based on their retail price over a 3-year lifespan at 4 hours/day. These are editable — set them to 0 if you prefer to account for depreciation through the Overhead percentage instead.</p>
+                                <p><em>Settings &gt; Printers &gt; Add/Edit Printer &gt; Machine Cost Per Hour</em></p>
+                            </div>
+                        </div>
+
+                        <div class="info-card" id="hardware-cost">
+                            <h3>Hardware Cost</h3>
+                            <div class="info-content">
+                                <p>The total cost of any physical hardware components consumed in a specific job — for example: <strong>heat-set inserts, screws, magnets, springs, or other embedded parts</strong>.</p>
+                                <p>This is a <strong>per-job value</strong> entered directly in the Calculator, not a reusable preset. Leave it at 0 if no hardware is used.</p>
+                                <p><strong>Tip:</strong> Use the In-Field Calculator to quickly add up item costs without a separate calculation:</p>
+                                <ul>
+                                    <li>4 inserts × ₹2 + 2 screws × ₹1 → type <code>4*2+2*1</code> → ₹10</li>
+                                </ul>
+                                <p>Hardware Cost is treated as a Direct Cost, so Overhead and Profit Margin are correctly applied on top of it.</p>
+                                <p><em>Calculator &gt; Hardware Cost</em></p>
+                            </div>
+                        </div>
+
                         <div class="info-card" id="in-field-calculator">
                             <h3>In-Field Calculator</h3>
                             <div class="info-content">

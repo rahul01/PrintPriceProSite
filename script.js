@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
             electricityRate: electricityRate.value,
             materialCost: materialCost.value,
             laborRate: laborRate.value,
+            machineCostPerHour: machineCostPerHour.value,
+            hardwareCost: hardwareCost.value,
             overheadPercentage: overheadPercentage.value,
             markupPercentage: markupPercentage.value
         };
@@ -39,6 +41,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.electricityRate && electricityRate) electricityRate.value = data.electricityRate;
                 if (data.materialCost && materialCost) materialCost.value = data.materialCost;
                 if (data.laborRate && laborRate) laborRate.value = data.laborRate;
+                if (data.machineCostPerHour !== undefined && machineCostPerHour) {
+                    machineCostPerHour.value = data.machineCostPerHour;
+                } else if (machineCostPerHour && printer) {
+                    machineCostPerHour.value = printerMachineCost[printer.value] ?? 0;
+                }
+                if (data.hardwareCost !== undefined && hardwareCost) hardwareCost.value = data.hardwareCost;
                 if (data.overheadPercentage && overheadPercentage) overheadPercentage.value = data.overheadPercentage;
                 if (data.markupPercentage && markupPercentage) markupPercentage.value = data.markupPercentage;
                 
@@ -69,10 +77,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 </ul>
             `
         },
+        'machine-cost': {
+            title: 'Machine Cost Per Hour',
+            content: `
+                <p>The amortised depreciation and maintenance cost of the printer per hour of use. <strong>This field is pre-filled based on the selected printer</strong> using the same values as the full app (calculated as approx. retail price ÷ 3 years × 365 days × 4 hours).</p>
+                <p>You can override it with your own value. For example, if your printer cost ₹25,000 and you expect 1,000 hours of use, the machine cost is <strong>₹25/hour</strong>. Set to 0 to exclude it and account for depreciation via Overhead instead.</p>
+            `
+        },
+        'hardware-cost': {
+            title: 'Hardware Cost',
+            content: `
+                <p>The total cost of any physical hardware components used in this specific job — for example, <strong>heat-set inserts, screws, magnets, springs</strong>, or other embedded parts.</p>
+                <p>Enter the combined cost for the entire job (e.g., 4 inserts × ₹2 + 2 screws × ₹1 = ₹10). Leave at 0 if no hardware is used.</p>
+            `
+        },
         'overhead': {
             title: 'Overhead Percentage',
             content: `
-                <p>This percentage is applied to the combined cost of <strong>Material and Labor</strong>. It covers non-direct expenses such as: <strong>failed prints/reprints</strong>, machine depreciation, consumables (glue, cleaning agents), and facility costs.</p>
+                <p>This percentage is applied to <strong>all Direct Costs</strong> (Material + Electricity + Labor + Machine + Hardware). It covers non-direct expenses such as: <strong>failed prints/reprints</strong>, consumables (glue, cleaning agents), and facility costs.</p>
             `
         },
         'markup': {
@@ -152,13 +174,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const electricityRate = document.getElementById('electricity-rate');
     const materialCost = document.getElementById('material-cost');
     const laborRate = document.getElementById('labor-rate');
+    const machineCostPerHour = document.getElementById('machine-cost-per-hour');
+    const hardwareCost = document.getElementById('hardware-cost');
     const overheadPercentage = document.getElementById('overhead-percentage');
     const markupPercentage = document.getElementById('markup-percentage');
-    
+
     // Get result elements
     const resultMaterial = document.getElementById('result-material');
     const resultElectricity = document.getElementById('result-electricity');
     const resultLabor = document.getElementById('result-labor');
+    const resultMachine = document.getElementById('result-machine');
+    const resultHardware = document.getElementById('result-hardware');
     const resultOverhead = document.getElementById('result-overhead');
     const resultSubtotal = document.getElementById('result-subtotal');
     const resultMarkup = document.getElementById('result-markup');
@@ -172,40 +198,161 @@ document.addEventListener('DOMContentLoaded', () => {
         // Bambu Lab Printers
         'bambu-a1': 120,
         'bambu-a1-mini': 100,
+        'bambu-a1-combo': 120,
         'bambu-p1s': 140,
+        'bambu-p2s': 200,
         'bambu-x1-carbon': 150,
-        
+        'bambu-x1e': 350,
+        'bambu-h2c': 350,
+        'bambu-h2d': 500,
+
         // Prusa Printers
         'prusa-mk4': 120,
+        'prusa-mk4s': 95,
         'prusa-mini-plus': 80,
         'prusa-xl': 200,
-        
+        'prusa-core-one': 100,
+
         // Creality Printers
         'creality-ender-3-v2': 120,
         'creality-ender-3-s1': 130,
+        'creality-ender-3-v3-se': 150,
+        'creality-ender-3-v3-ke': 180,
         'creality-cr-10': 150,
         'creality-k1': 160,
-        
+        'creality-k1c': 200,
+        'creality-k1-max': 250,
+        'creality-k2-plus': 350,
+
         // Anycubic Printers
         'anycubic-kobra-2': 140,
+        'anycubic-kobra-3': 200,
+        'anycubic-kobra-3-max': 500,
+        'anycubic-kobra-x': 350,
         'anycubic-vyper': 135,
-        
+
         // Elegoo Printers
         'elegoo-neptune-3': 125,
-        
+        'elegoo-neptune-4': 160,
+        'elegoo-neptune-4-pro': 200,
+        'elegoo-neptune-4-plus': 280,
+        'elegoo-neptune-4-max': 400,
+
         // Artillery Printers
         'artillery-sidewinder-x2': 155,
-        
+
+        // Qidi Printers
+        'qidi-q1-pro': 350,
+        'qidi-x-plus-3': 400,
+        'qidi-x-max-3': 400,
+
         // Voron Printers
         'voron-2.4': 180,
-        
+
         // Sovol Printers
         'sovol-sv06': 130,
-        
+
         // Flashforge Printers
-        'flashforge-adventurer-4': 110
+        'flashforge-adventurer-4': 110,
+        'flashforge-adventurer-5m': 200,
+        'flashforge-adventurer-5m-pro': 320,
+
+        // Ultimaker Printers
+        'ultimaker-s3': 350,
+        'ultimaker-s5': 500,
+
+        // Kingroon Printers
+        'kingroon-kp3s-pro-v2': 150,
+
+        // Snapmaker Printers
+        'snapmaker-artisan': 150,
+        'snapmaker-2-a350t': 120,
+        'snapmaker-2-a250t': 100,
+        'snapmaker-j1s': 200,
+        'snapmaker-u1': 220
     };
-    
+
+    // Machine cost per hour (INR) — amortised depreciation from the app's pre-populated values
+    const printerMachineCost = {
+        'other': 0,
+
+        // Bambu Lab
+        'bambu-a1': 6.8,
+        'bambu-a1-mini': 5.7,
+        'bambu-a1-combo': 10.7,
+        'bambu-p1s': 12.5,
+        'bambu-p2s': 16.4,
+        'bambu-x1-carbon': 16.0,
+        'bambu-x1e': 70.5,
+        'bambu-h2c': 46.6,
+        'bambu-h2d': 51.4,
+
+        // Prusa
+        'prusa-mk4': 11.4,
+        'prusa-mk4s': 24.9,
+        'prusa-mini-plus': 5.7,
+        'prusa-xl': 22.8,
+        'prusa-core-one': 47.9,
+
+        // Creality
+        'creality-ender-3-v2': 3.4,
+        'creality-ender-3-s1': 4.6,
+        'creality-ender-3-v3-se': 4.3,
+        'creality-ender-3-v3-ke': 6.3,
+        'creality-cr-10': 5.7,
+        'creality-k1': 6.8,
+        'creality-k1c': 12.8,
+        'creality-k1-max': 19.6,
+        'creality-k2-plus': 36.5,
+
+        // Anycubic
+        'anycubic-kobra-2': 5.0,
+        'anycubic-kobra-3': 6.7,
+        'anycubic-kobra-3-max': 19.2,
+        'anycubic-kobra-x': 5.8,
+        'anycubic-vyper': 4.6,
+
+        // Elegoo
+        'elegoo-neptune-3': 4.1,
+        'elegoo-neptune-4': 4.8,
+        'elegoo-neptune-4-pro': 7.3,
+        'elegoo-neptune-4-plus': 8.7,
+        'elegoo-neptune-4-max': 9.1,
+
+        // Artillery
+        'artillery-sidewinder-x2': 5.0,
+
+        // Qidi
+        'qidi-q1-pro': 10.5,
+        'qidi-x-plus-3': 15.9,
+        'qidi-x-max-3': 19.2,
+
+        // Voron
+        'voron-2.4': 13.7,
+
+        // Sovol
+        'sovol-sv06': 3.9,
+
+        // Flashforge
+        'flashforge-adventurer-4': 8.0,
+        'flashforge-adventurer-5m': 7.7,
+        'flashforge-adventurer-5m-pro': 18.3,
+
+        // Ultimaker
+        'ultimaker-s3': 51.4,
+        'ultimaker-s5': 59.6,
+
+        // Kingroon
+        'kingroon-kp3s-pro-v2': 5.3,
+
+        // Snapmaker
+        'snapmaker-artisan': 27.4,
+        'snapmaker-2-a350t': 16.0,
+        'snapmaker-2-a250t': 12.1,
+        'snapmaker-j1s': 18.0,
+        'snapmaker-u1': 19.5
+    };
+
     // Currency symbols
     const currencySymbols = {
         'INR': '₹',
@@ -253,72 +400,95 @@ document.addEventListener('DOMContentLoaded', () => {
             const power = printerPower[selectedPrinter] || 120; // Default to 120W if not found
             const lRate = parseFloat(laborRate.value) || 0;
             const lTime = parseFloat(laborTime.value) || 0;
+            const machineRate = parseFloat(machineCostPerHour.value) || 0;
+            const hwCost = parseFloat(hardwareCost.value) || 0;
             const overhead = parseFloat(overheadPercentage.value) || 0;
             const markup = parseFloat(markupPercentage.value) || 0;
             // When electricity rate field is empty, use 0 instead of a default value
             const elecRate = electricityRate.value.trim() === '' ? 0 : parseFloat(electricityRate.value) || 0;
             const selectedCurrency = currency.value || 'INR';
             const symbol = currencySymbols[selectedCurrency] || '₹';
-            
 
-
-            
             // Calculate costs
             // Material cost (convert material weight from g to kg)
             const materialCostValue = (matWeight / 1000) * matCost;
-            
-            // Electricity cost (power in W, time in hours, rate in $/kWh)
+
+            // Electricity cost (power in W, time in hours, rate in currency/kWh)
             const electricityCostValue = (power / 1000) * pTime * elecRate;
-            
+
             // Labor cost (time in minutes converted to hours)
             const laborCostValue = (lTime / 60) * lRate;
-            
-            // Subtotal before overhead
-            const subtotalBeforeOverhead = materialCostValue + electricityCostValue + laborCostValue;
-            
-            // Overhead amount
-            const overheadValue = subtotalBeforeOverhead * (overhead / 100);
-            
+
+            // Machine cost (printer depreciation/maintenance per hour × print time)
+            const machineCostValue = machineRate * pTime;
+
+            // Hardware cost (per-job physical components)
+            const hardwareCostValue = hwCost;
+
+            // Direct costs (all job costs before overhead)
+            const directCosts = materialCostValue + electricityCostValue + laborCostValue + machineCostValue + hardwareCostValue;
+
+            // Overhead applied to all direct costs
+            const overheadValue = directCosts * (overhead / 100);
+
             // Subtotal including overhead
-            const subtotalValue = subtotalBeforeOverhead + overheadValue;
-            
-            // Markup amount
+            const subtotalValue = directCosts + overheadValue;
+
+            // Markup / profit margin
             const markupValue = subtotalValue * (markup / 100);
-            
+
             // Final price
             const finalValue = subtotalValue + markupValue;
-            
 
-            
+            // Show/hide machine and hardware rows (only when non-zero)
+            document.getElementById('result-machine-row').style.display = machineCostValue > 0 ? '' : 'none';
+            document.getElementById('result-hardware-row').style.display = hardwareCostValue > 0 ? '' : 'none';
+
             // Update result elements
             resultMaterial.textContent = formatCurrency(materialCostValue, selectedCurrency);
             resultElectricity.textContent = formatCurrency(electricityCostValue, selectedCurrency);
             resultLabor.textContent = formatCurrency(laborCostValue, selectedCurrency);
+            resultMachine.textContent = formatCurrency(machineCostValue, selectedCurrency);
+            resultHardware.textContent = formatCurrency(hardwareCostValue, selectedCurrency);
             resultOverhead.textContent = formatCurrency(overheadValue, selectedCurrency);
             resultSubtotal.textContent = formatCurrency(subtotalValue, selectedCurrency);
             resultMarkup.textContent = formatCurrency(markupValue, selectedCurrency);
             resultFinal.textContent = formatCurrency(finalValue, selectedCurrency);
-            
+
             // Update calculation details
-            document.getElementById('calc-material').textContent = 
+            document.getElementById('calc-material').textContent =
                 `(${matWeight} g / 1000) × ${symbol}${matCost} = ${symbol}${materialCostValue.toFixed(2)}`;
-            
-            document.getElementById('calc-electricity').textContent = 
+
+            document.getElementById('calc-electricity').textContent =
                 `(${power} W / 1000) × ${pTime.toFixed(2)} hours × ${symbol}${elecRate} = ${symbol}${electricityCostValue.toFixed(2)}`;
-            
-            document.getElementById('calc-labor').textContent = 
+
+            document.getElementById('calc-labor').textContent =
                 `(${lTime} min / 60) × ${symbol}${lRate} = ${symbol}${laborCostValue.toFixed(2)}`;
-            
-            document.getElementById('calc-overhead').textContent = 
-                `(${symbol}${subtotalBeforeOverhead.toFixed(2)}) × (${overhead}% / 100) = ${symbol}${overheadValue.toFixed(2)}`;
-            
-            document.getElementById('calc-subtotal').textContent = 
-                `${symbol}${materialCostValue.toFixed(2)} + ${symbol}${electricityCostValue.toFixed(2)} + ${symbol}${laborCostValue.toFixed(2)} + ${symbol}${overheadValue.toFixed(2)} = ${symbol}${subtotalValue.toFixed(2)}`;
-            
-            document.getElementById('calc-markup').textContent = 
+
+            document.getElementById('calc-machine').textContent =
+                `${symbol}${machineRate}/hr × ${pTime.toFixed(2)} hours = ${symbol}${machineCostValue.toFixed(2)}`;
+
+            document.getElementById('calc-hardware').textContent =
+                `${symbol}${hardwareCostValue.toFixed(2)}`;
+
+            document.getElementById('calc-overhead').textContent =
+                `${symbol}${directCosts.toFixed(2)} (direct costs) × (${overhead}% / 100) = ${symbol}${overheadValue.toFixed(2)}`;
+
+            const subtotalParts = [
+                `${symbol}${materialCostValue.toFixed(2)}`,
+                `${symbol}${electricityCostValue.toFixed(2)}`,
+                `${symbol}${laborCostValue.toFixed(2)}`
+            ];
+            if (machineCostValue > 0) subtotalParts.push(`${symbol}${machineCostValue.toFixed(2)}`);
+            if (hardwareCostValue > 0) subtotalParts.push(`${symbol}${hardwareCostValue.toFixed(2)}`);
+            subtotalParts.push(`${symbol}${overheadValue.toFixed(2)}`);
+            document.getElementById('calc-subtotal').textContent =
+                `${subtotalParts.join(' + ')} = ${symbol}${subtotalValue.toFixed(2)}`;
+
+            document.getElementById('calc-markup').textContent =
                 `${symbol}${subtotalValue.toFixed(2)} × (${markup}% / 100) = ${symbol}${markupValue.toFixed(2)}`;
-            
-            document.getElementById('calc-final').textContent = 
+
+            document.getElementById('calc-final').textContent =
                 `${symbol}${subtotalValue.toFixed(2)} + ${symbol}${markupValue.toFixed(2)} = ${symbol}${finalValue.toFixed(2)}`;
             
         } catch (error) {
@@ -330,15 +500,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const allInputs = [
         printer, materialWeight, printTimeHours, printTimeMinutes,
         laborTime, currency, electricityRate, materialCost,
-        laborRate, overheadPercentage, markupPercentage
+        laborRate, machineCostPerHour, hardwareCost, overheadPercentage, markupPercentage
     ];
     
+    // When printer changes, pre-fill machine cost from lookup (fires before the general listeners below)
+    if (printer) {
+        printer.addEventListener('change', function() {
+            if (machineCostPerHour) {
+                machineCostPerHour.value = printerMachineCost[this.value] ?? 0;
+            }
+        });
+    }
+
     allInputs.forEach(input => {
         if (input) {
             // Add event listener for calculation
             input.addEventListener('input', calculatePrices);
             input.addEventListener('change', calculatePrices);
-            
+
             // Add event listener for data persistence
             input.addEventListener('input', saveCalculatorData);
             input.addEventListener('change', saveCalculatorData);
@@ -350,8 +529,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load saved data from localStorage when page loads
     // Only run initial calculation if there was no saved data
     if (!loadCalculatorData()) {
-        // If no data was loaded, initialize with default settings
-
+        // No saved data — pre-fill machine cost from the default printer
+        if (machineCostPerHour && printer) {
+            machineCostPerHour.value = printerMachineCost[printer.value] ?? 0;
+        }
     } else {
         // If data was loaded, calculate prices immediately
         calculatePrices();
@@ -365,14 +546,26 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Update labels
             document.querySelector('label[for="electricity-rate"]').textContent = `Electricity Rate (${symbol}/kWh)`;
-            
+
             // Preserve the info icon when updating the labor rate label
             const laborRateLabel = document.querySelector('label[for="labor-rate"]');
             const laborInfoIcon = laborRateLabel.querySelector('.info-icon');
             laborRateLabel.innerHTML = `Labor Rate (${symbol}/hour) `;
             if (laborInfoIcon) laborRateLabel.appendChild(laborInfoIcon);
-            
+
             document.querySelector('label[for="material-cost"]').textContent = `Material Cost per kg (${symbol})`;
+
+            // Preserve the info icon when updating the machine cost label
+            const machineCostLabel = document.querySelector('label[for="machine-cost-per-hour"]');
+            const machineInfoIcon = machineCostLabel.querySelector('.info-icon');
+            machineCostLabel.innerHTML = `Machine Cost (${symbol}/hour) `;
+            if (machineInfoIcon) machineCostLabel.appendChild(machineInfoIcon);
+
+            // Preserve the info icon when updating the hardware cost label
+            const hardwareCostLabel = document.querySelector('label[for="hardware-cost"]');
+            const hardwareInfoIcon = hardwareCostLabel.querySelector('.info-icon');
+            hardwareCostLabel.innerHTML = `Hardware Cost (${symbol}) `;
+            if (hardwareInfoIcon) hardwareCostLabel.appendChild(hardwareInfoIcon);
             
             // Update default values based on currency
             if (selectedCurrency === 'INR') {
@@ -424,17 +617,32 @@ document.addEventListener('DOMContentLoaded', () => {
         if (electricityRate) electricityRate.value = '8';
         if (materialCost) materialCost.value = '1200';
         if (laborRate) laborRate.value = '100';
+        if (machineCostPerHour) machineCostPerHour.value = printerMachineCost['bambu-a1'];
+        if (hardwareCost) hardwareCost.value = '0';
         if (overheadPercentage) overheadPercentage.value = '15';
         if (markupPercentage) markupPercentage.value = '30';
         
         // Update labels for currency
         document.querySelector('label[for="electricity-rate"]').textContent = `Electricity Rate (₹/kWh)`;
-        
+
         // Preserve the info icon when updating the labor rate label
         const laborRateLabel = document.querySelector('label[for="labor-rate"]');
         const infoIcon = laborRateLabel.querySelector('.info-icon');
         laborRateLabel.innerHTML = `Labor Rate (₹/hour) `;
         if (infoIcon) laborRateLabel.appendChild(infoIcon);
+
+        document.querySelector('label[for="material-cost"]').textContent = `Material Cost per kg (₹)`;
+
+        // Preserve info icons for machine/hardware labels
+        const machineCostLabel = document.querySelector('label[for="machine-cost-per-hour"]');
+        const machineInfoIcon = machineCostLabel.querySelector('.info-icon');
+        machineCostLabel.innerHTML = `Machine Cost (₹/hour) `;
+        if (machineInfoIcon) machineCostLabel.appendChild(machineInfoIcon);
+
+        const hardwareCostLabel = document.querySelector('label[for="hardware-cost"]');
+        const hardwareInfoIcon = hardwareCostLabel.querySelector('.info-icon');
+        hardwareCostLabel.innerHTML = `Hardware Cost (₹) `;
+        if (hardwareInfoIcon) hardwareCostLabel.appendChild(hardwareInfoIcon);
         
         // Recalculate with default values
         calculatePrices();
