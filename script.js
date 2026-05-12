@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'hardware-cost': {
             title: 'Hardware Cost',
             content: `
-                <p>The total cost of any physical hardware components used in this specific job — for example, <strong>heat-set inserts, screws, magnets, springs</strong>, or other embedded parts.</p>
+                <p>The total cost of any physical hardware components used in this specific job. For example: <strong>heat-set inserts, screws, magnets, springs</strong>, or other embedded parts.</p>
                 <p>Enter the combined cost for the entire job (e.g., 4 inserts × ₹2 + 2 screws × ₹1 = ₹10). Leave at 0 if no hardware is used.</p>
             `
         },
@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'snapmaker-u1': 220
     };
 
-    // Machine cost per hour (INR) — amortised depreciation from the app's pre-populated values
+    // Machine cost per hour (INR), amortised depreciation from the app's pre-populated values
     const printerMachineCost = {
         'other': 0,
 
@@ -529,7 +529,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load saved data from localStorage when page loads
     // Only run initial calculation if there was no saved data
     if (!loadCalculatorData()) {
-        // No saved data — pre-fill machine cost from the default printer
+        // No saved data, pre-fill machine cost from the default printer
         if (machineCostPerHour && printer) {
             machineCostPerHour.value = printerMachineCost[printer.value] ?? 0;
         }

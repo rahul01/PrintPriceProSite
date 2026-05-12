@@ -1,6 +1,6 @@
 # Privacy Policy for PrintPricePro
 
-**Last Updated:** December 18, 2025
+**Last Updated:** May 12, 2026
 
 ## Introduction
 
@@ -9,8 +9,31 @@ Policy explains how our 3D printing cost calculator application handles your inf
 
 ## Information We Collect
 
-PrintPricePro is designed with privacy in mind. The app operates entirely on your device and does *
-*not** collect, transmit, or share any personal information.
+PrintPricePro is designed with privacy in mind. Your 3D printing data stays entirely on your device. However, the app uses Firebase Analytics (provided by Google) to collect anonymous usage data to help us improve the app.
+
+### Analytics Data (Firebase Analytics)
+
+We use Firebase Analytics to collect the following information automatically:
+
+- **App usage events**: Screens viewed, features used, and general interaction patterns
+- **Device information**: Device model, operating system version, and language settings
+- **App version**: The version of PrintPricePro you are using
+- **Approximate location**: Country or region (not precise GPS location)
+- **Session data**: How long sessions last and how frequently the app is used
+- **Firebase Installation ID**: A unique identifier for your app installation
+
+This data is aggregated and anonymous. It cannot be used to identify you personally. It is transmitted to and processed by Google. For more information on how Google handles this data, see [Google's Privacy Policy](https://policies.google.com/privacy).
+
+### Future Analytics (Planned)
+
+We plan to expand our analytics to include aggregated, anonymous app-usage insights such as:
+
+- **Most popular printer models** used for calculations
+- **Average print time** across calculations
+- **Average filament/product weight** entered by users
+- **Average number of calculations** performed per session
+
+This data will be collected in aggregate form only and will never be linked to your identity or any personally identifiable information. The goal is to improve the app experience, such as pre-populating sensible defaults and prioritising the most useful features. This policy will be updated when this capability is introduced.
 
 ### Data Stored Locally
 
@@ -36,24 +59,32 @@ Your data is used solely to:
 
 ## Data Storage and Security
 
-- **Local Storage Only**: All data is stored exclusively on your device using Android's secure
-  SQLite database
-- **No Cloud Sync**: We do not sync your data to any cloud services
-- **No Analytics**: We do not collect usage analytics or statistics
-- **No Third-Party Services**: The app does not integrate with any third-party services that collect
-  data
+- **Local Storage Only**: Your 3D printing data (materials, printers, calculations, settings) is stored exclusively on your device using Android's secure SQLite database
+- **No Cloud Sync**: We do not sync your personal data to any cloud services
+- **Analytics Data**: Anonymous usage analytics are collected via Firebase Analytics and stored on Google's servers in accordance with Google's data retention policies
+- **No Advertising**: We do not use advertising technologies or sell your data
 
 ## Data Sharing
 
-We **do not**:
+Your personal 3D printing data (materials, printers, calculations) is **never** shared with anyone. It stays on your device.
 
-- Collect personal information
-- Share data with third parties
+Anonymous analytics data collected by Firebase Analytics is shared with **Google** solely for app analytics purposes. We do not:
+
 - Sell or rent your information
-- Use tracking or advertising technologies
-- Transmit data over the internet
+- Share data with advertisers
+- Use data for targeted advertising
+- Share personally identifiable information with any third party
 
-Your data remains entirely on your device under your control.
+For details on Google's data practices, see [Google's Privacy Policy](https://policies.google.com/privacy).
+
+## Third-Party Services
+
+PrintPricePro uses **Firebase Analytics** (Google LLC) to collect anonymous usage statistics. Firebase Analytics may collect device identifiers and usage data as described in the "Information We Collect" section above.
+
+- **Provider**: Google LLC
+- **Purpose**: App analytics and improvement
+- **Data**: Anonymous usage events, device info, app version, approximate location
+- **Opt-out**: You can opt out of Firebase Analytics data collection by enabling "Opt out of Ads Personalization" in your Android device settings, or by using the device's advertising ID reset option.
 
 ## Your Rights and Control
 
@@ -91,7 +122,7 @@ data, please contact us at:
 
 ## Consent
 
-By using PrintPricePro, you consent to this Privacy Policy and agree to its terms.
+By using PrintPricePro, you consent to this Privacy Policy and agree to its terms. This policy may be updated from time to time. Continued use of the app after any changes constitutes your acceptance of the revised policy. We encourage you to review this policy periodically to stay informed of any updates.
 
 ---
 
@@ -99,10 +130,10 @@ By using PrintPricePro, you consent to this Privacy Policy and agree to its term
 
 **PrintPricePro is a privacy-first application:**
 
-- ✅ No data collection
-- ✅ No internet connection required
-- ✅ No third-party tracking
-- ✅ All data stays on your device
-- ✅ Complete user control
+- ✅ Your 3D printing data never leaves your device
+- ✅ No personal information collected
+- ✅ No advertising or ad tracking
+- ✅ Anonymous analytics only (Firebase), used solely to improve the app
+- ✅ Complete user control over your data
 
 Your privacy is our priority.
