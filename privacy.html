@@ -104,18 +104,19 @@
                     <h2>Introduction</h2>
                     <p>PrintPricePro ("we", "our", or "the app") is committed to protecting your
                         privacy. This Privacy Policy explains how our 3D printing cost calculator
-                        application handles your information.</p>
+                        — both the Android app and the website at printpricepro.com — handles
+                        your information.</p>
                 </section>
 
                 <section id="data-collection" class="section">
                     <h2>Information We Collect</h2>
                     <p>PrintPricePro is designed with privacy in mind. Your 3D printing data stays
-                        entirely on your device. However, the app uses <strong>Firebase
-                        Analytics</strong> (provided by Google) to collect anonymous usage data to
-                        help us improve the app.</p>
+                        entirely on your device. However, both the Android app and the website use
+                        <strong>Firebase Analytics</strong> (provided by Google) to collect
+                        anonymous usage data to help us improve the experience.</p>
 
-                    <h3>Analytics Data (Firebase Analytics)</h3>
-                    <p>We use Firebase Analytics to collect the following information automatically:</p>
+                    <h3>Analytics Data — Android App (Firebase Analytics)</h3>
+                    <p>When you use the Android app, Firebase Analytics automatically collects:</p>
                     <ul>
                         <li><strong>App usage events:</strong> Screens viewed, features used, and
                             general interaction patterns
@@ -134,14 +135,37 @@
                             app installation
                         </li>
                     </ul>
+
+                    <h3>Analytics Data — Website (Firebase Analytics)</h3>
+                    <p>When you use the calculator on printpricepro.com, Firebase Analytics
+                        automatically collects:</p>
+                    <ul>
+                        <li><strong>Page views and navigation:</strong> Pages visited and how you
+                            move through the site
+                        </li>
+                        <li><strong>Calculator events:</strong> Which printer you selected, currency
+                            used, print time entered, material weight entered, and whether you reset
+                            the calculator
+                        </li>
+                        <li><strong>Browser and OS information:</strong> Browser type and version,
+                            operating system
+                        </li>
+                        <li><strong>Approximate location:</strong> Country or region only (not
+                            precise GPS location)
+                        </li>
+                        <li><strong>Session data:</strong> Session duration and visit frequency
+                        </li>
+                    </ul>
+
                     <div class="info-box">
                         <svg class="info-icon" viewBox="0 0 24 24" fill="none"
                              stroke="currentColor">
                             <circle cx="12" cy="12" r="10"/>
                             <path d="M12 16v-4M12 8h.01"/>
                         </svg>
-                        <p>This analytics data is aggregated and anonymous. It cannot be used to
-                            identify you personally. It is processed by Google in accordance with
+                        <p>This analytics data is aggregated and anonymous across both the app and
+                            the website. It cannot be used to identify you personally. It is
+                            processed by Google in accordance with
                             <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google's Privacy Policy</a>.</p>
                     </div>
 
@@ -255,18 +279,23 @@
                 <section id="third-party" class="section">
                     <h2>Third-Party Services</h2>
                     <p>PrintPricePro uses <strong>Firebase Analytics</strong> (Google LLC) to
-                        collect anonymous usage statistics.</p>
+                        collect anonymous usage statistics across both the Android app and the
+                        website.</p>
                     <ul>
                         <li><strong>Provider:</strong> Google LLC</li>
-                        <li><strong>Purpose:</strong> App analytics and improvement</li>
-                        <li><strong>Data:</strong> Anonymous usage events, device info, app version,
-                            approximate location (country/region)
+                        <li><strong>Purpose:</strong> Analytics and improvement of the app and
+                            website
                         </li>
-                        <li><strong>Opt-out:</strong> You can opt out by enabling "Opt out of Ads
-                            Personalization" in your Android device settings, or by resetting your
-                            device's advertising ID
+                        <li><strong>Data:</strong> Anonymous usage events, device/browser info,
+                            approximate location — see "Information We Collect" for full details
                         </li>
                     </ul>
+                    <p><strong>Opt-out on Android:</strong> Enable "Opt out of Ads Personalization"
+                        in your device settings, or reset your advertising ID.</p>
+                    <p><strong>Opt-out on the website:</strong> Use a browser extension that blocks
+                        Google Analytics (such as the
+                        <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google Analytics Opt-out Add-on</a>),
+                        or enable your browser's "Do Not Track" setting.</p>
                     <p>For more information, see <a href="https://policies.google.com/privacy"
                         target="_blank" rel="noopener noreferrer">Google's Privacy Policy</a>.</p>
                 </section>
@@ -310,11 +339,11 @@
 
                 <section id="consent" class="section">
                     <h2>Consent</h2>
-                    <p>By using PrintPricePro, you consent to this Privacy Policy and agree to its
-                        terms. This policy may be updated from time to time. Continued use of the
-                        app after any changes constitutes your acceptance of the revised policy. We
-                        encourage you to review this policy periodically to stay informed of any
-                        updates.</p>
+                    <p>By using PrintPricePro (the app or the website), you consent to this Privacy
+                        Policy and agree to its terms. This policy may be updated from time to
+                        time. Continued use of the app or website after any changes constitutes
+                        your acceptance of the revised policy. We encourage you to review this
+                        policy periodically to stay informed of any updates.</p>
                 </section>
 
                 <section class="section summary-section">
@@ -389,6 +418,7 @@
     </div>
 </footer>
 
+<script type="module" src="analytics.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 // 3D Printing Price Calculator
 document.addEventListener('DOMContentLoaded', () => {
+    let calcDebounceTimer;
     // Initialize localStorage for data persistence
     const STORAGE_KEY = 'printPriceProData';
     
@@ -131,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalTitle.textContent = info.title;
                 modalContent.innerHTML = info.content;
                 infoModal.classList.add('active');
+                if (window.trackEvent) window.trackEvent('info_viewed', { info_type: infoType });
             }
         });
     });
@@ -490,7 +492,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.getElementById('calc-final').textContent =
                 `${symbol}${subtotalValue.toFixed(2)} + ${symbol}${markupValue.toFixed(2)} = ${symbol}${finalValue.toFixed(2)}`;
-            
+
+            if (window.trackEvent && (matWeight > 0 || pTime > 0)) {
+                clearTimeout(calcDebounceTimer);
+                calcDebounceTimer = setTimeout(() => {
+                    window.trackEvent('calculator_used', {
+                        printer: selectedPrinter,
+                        currency: selectedCurrency,
+                        print_time_min: Math.round(pTime * 60),
+                        material_weight_g: Math.round(matWeight)
+                    });
+                }, 2000);
+            }
+
         } catch (error) {
             console.error("Error calculating prices:", error);
         }
@@ -509,6 +523,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (machineCostPerHour) {
                 machineCostPerHour.value = printerMachineCost[this.value] ?? 0;
             }
+            if (window.trackEvent) window.trackEvent('printer_selected', { printer: this.value });
         });
     }
 
@@ -592,9 +607,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             
+            if (window.trackEvent) window.trackEvent('currency_changed', { currency: this.value });
+
             // Save changes to localStorage
             saveCalculatorData();
-            
+
             // Recalculate with new currency
             calculatePrices();
         });
@@ -604,6 +621,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Reset calculator function
     function resetCalculator() {
+        if (window.trackEvent) window.trackEvent('calculator_reset');
+
         // Clear localStorage
         localStorage.removeItem(STORAGE_KEY);
         
