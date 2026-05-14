@@ -44,9 +44,9 @@ We plan to expand our analytics to include aggregated, anonymous app-usage insig
 
 This data will be collected in aggregate form only and will never be linked to your identity or any personally identifiable information. The goal is to improve the app experience, such as pre-populating sensible defaults and prioritising the most useful features. This policy will be updated when this capability is introduced.
 
-### AI Screenshot Import — Optional Feature (Android App Only)
+### Bambu Handy Import — Optional Feature (Android App Only)
 
-When you choose to use the **Bambu Screenshot Import** feature, the following data is transmitted externally:
+When you use the **Bambu Handy Import** feature (via the share sheet or the in-app photo icon), the following data is transmitted externally:
 
 - **Screenshot image**: The image you select from your gallery is encoded and sent to **Google's Gemini API** for AI processing
 - **Extracted data**: The AI returns only structured print data (print time, filament weight, job name, printer name) — no other image analysis is performed by PrintPricePro
@@ -88,7 +88,7 @@ Your personal 3D printing data (materials, printers, calculations) is **never** 
 
 Anonymous analytics data collected by Firebase Analytics is shared with **Google** solely for app analytics purposes.
 
-When you use the optional **Bambu Screenshot Import** feature, the screenshot you select is transmitted to **Google's Gemini API** for AI processing. This is the only instance where user-supplied content leaves your device, and it is strictly opt-in. We do not:
+When you use the optional **Bambu Handy Import** feature, the screenshot you select is transmitted to **Google's Gemini API** for AI processing. This is the only instance where user-supplied content leaves your device, and it is strictly opt-in. We do not:
 
 - Sell or rent your information
 - Share data with advertisers
@@ -113,7 +113,7 @@ Used to collect anonymous usage statistics across both the Android app and the w
 
 ### Google Gemini API (Google LLC) — Android App Only
 
-Used by the optional **Bambu Screenshot Import** feature to extract print data from screenshots via AI.
+Used by the optional **Bambu Handy Import** feature to extract print data from screenshots via AI.
 
 - **Provider**: Google LLC
 - **Purpose**: AI-powered extraction of print time, filament weight, job name, and printer name from Bambu Handy screenshots
@@ -170,7 +170,7 @@ By using PrintPricePro (the app or the website), you consent to this Privacy Pol
 - ✅ No personal information collected
 - ✅ No advertising or ad tracking
 - ✅ Anonymous analytics only (Firebase), used solely to improve the app
-- ✅ Bambu screenshot import is opt-in only; image is processed by Google Gemini and not retained by us
+- ✅ Bambu Handy Import is opt-in only; image is processed by Google Gemini and not retained by us
 - ✅ Complete user control over your data
 
 Your privacy is our priority.
