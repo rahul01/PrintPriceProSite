@@ -1,6 +1,6 @@
 # Privacy Policy for PrintPricePro
 
-**Last Updated:** May 12, 2026
+**Last Updated:** May 14, 2026
 
 ## Introduction
 
@@ -44,6 +44,15 @@ We plan to expand our analytics to include aggregated, anonymous app-usage insig
 
 This data will be collected in aggregate form only and will never be linked to your identity or any personally identifiable information. The goal is to improve the app experience, such as pre-populating sensible defaults and prioritising the most useful features. This policy will be updated when this capability is introduced.
 
+### AI Screenshot Import — Optional Feature (Android App Only)
+
+When you choose to use the **Bambu Screenshot Import** feature, the following data is transmitted externally:
+
+- **Screenshot image**: The image you select from your gallery is encoded and sent to **Google's Gemini API** for AI processing
+- **Extracted data**: The AI returns only structured print data (print time, filament weight, job name, printer name) — no other image analysis is performed by PrintPricePro
+
+This feature is **entirely opt-in**. It is only triggered when you explicitly tap the import button and select an image. PrintPricePro does not retain the image after extraction. Google may process the image per their [Gemini API Terms of Service](https://ai.google.dev/gemini-api/terms).
+
 ### Data Stored Locally
 
 The following data is stored locally on your device only:
@@ -77,7 +86,9 @@ Your data is used solely to:
 
 Your personal 3D printing data (materials, printers, calculations) is **never** shared with anyone. It stays on your device.
 
-Anonymous analytics data collected by Firebase Analytics is shared with **Google** solely for app analytics purposes. We do not:
+Anonymous analytics data collected by Firebase Analytics is shared with **Google** solely for app analytics purposes.
+
+When you use the optional **Bambu Screenshot Import** feature, the screenshot you select is transmitted to **Google's Gemini API** for AI processing. This is the only instance where user-supplied content leaves your device, and it is strictly opt-in. We do not:
 
 - Sell or rent your information
 - Share data with advertisers
@@ -88,7 +99,9 @@ For details on Google's data practices, see [Google's Privacy Policy](https://po
 
 ## Third-Party Services
 
-PrintPricePro uses **Firebase Analytics** (Google LLC) to collect anonymous usage statistics across both the Android app and the website.
+### Firebase Analytics (Google LLC)
+
+Used to collect anonymous usage statistics across both the Android app and the website.
 
 - **Provider**: Google LLC
 - **Purpose**: Analytics and improvement of the app and website
@@ -97,6 +110,17 @@ PrintPricePro uses **Firebase Analytics** (Google LLC) to collect anonymous usag
 **Opt-out on Android:** Enable "Opt out of Ads Personalization" in your device settings, or reset your advertising ID.
 
 **Opt-out on the website:** You can disable analytics by using a browser extension that blocks Google Analytics (such as the [Google Analytics Opt-out Add-on](https://tools.google.com/dlpage/gaoptout)), or by enabling your browser's "Do Not Track" setting.
+
+### Google Gemini API (Google LLC) — Android App Only
+
+Used by the optional **Bambu Screenshot Import** feature to extract print data from screenshots via AI.
+
+- **Provider**: Google LLC
+- **Purpose**: AI-powered extraction of print time, filament weight, job name, and printer name from Bambu Handy screenshots
+- **Data**: The screenshot image you explicitly select; no other data is transmitted
+- **Opt-in only**: This service is only contacted when you actively use the import feature — it is never triggered automatically
+
+For more information, see [Google's Privacy Policy](https://policies.google.com/privacy) and the [Gemini API Terms of Service](https://ai.google.dev/gemini-api/terms).
 
 ## Your Rights and Control
 
@@ -146,6 +170,7 @@ By using PrintPricePro (the app or the website), you consent to this Privacy Pol
 - ✅ No personal information collected
 - ✅ No advertising or ad tracking
 - ✅ Anonymous analytics only (Firebase), used solely to improve the app
+- ✅ Bambu screenshot import is opt-in only; image is processed by Google Gemini and not retained by us
 - ✅ Complete user control over your data
 
 Your privacy is our priority.
