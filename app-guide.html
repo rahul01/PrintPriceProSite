@@ -77,33 +77,6 @@
                         <h2>Getting Started with PrintPricePro</h2>
                         <p>PrintPricePro is a powerful 3D printing cost calculator designed to help makers, hobbyists, and professionals calculate accurate prices for their prints. This guide explains the key features and concepts used in the app.</p>
                         
-                        <div class="info-card" id="labor-rate">
-                            <h3>Labor Rate Per Hour</h3>
-                            <div class="info-content">
-                                <p>The amount charged per hour for the time spent on a job. <strong>This rate should be included even if you are the owner performing the work</strong>, as your time is valuable. This covers:</p>
-                                <ul>
-                                    <li><strong>Pre-Print Setup:</strong> e.g., slicing, starting the print, <strong>loading/unloading spools - 1 to 5 min</strong></li>
-                                    <li><strong>Post-Processing Tasks:</strong> e.g., <strong>support material removal - 2 to 15 min per part</strong>, cleaning, sanding, and packaging</li>
-                                </ul>
-                            </div>
-                        </div>
-                        
-                        <div class="info-card" id="overhead">
-                            <h3>Overhead Percentage</h3>
-                            <div class="info-content">
-                                <p>This percentage is applied to <strong>all Direct Costs</strong> (Material + Electricity + Labor + Machine + Hardware). It covers non-direct expenses such as: <strong>failed prints/reprints</strong>, consumables (glue, cleaning agents), and facility costs.</p>
-                                <p><em>Settings &gt; Overhead</em></p>
-                            </div>
-                        </div>
-
-                        <div class="info-card" id="markup">
-                            <h3>Percentage Markup (Profit Margin)</h3>
-                            <div class="info-content">
-                                <p>This percentage is the final markup applied to the <strong>Subtotal (Direct Costs + Overhead)</strong> to determine the final selling price. It represents the <strong>net profit</strong> generated per job.</p>
-                                <p><em>Settings &gt; Profit Margin</em></p>
-                            </div>
-                        </div>
-                        
                         <div class="info-card" id="power-consumption">
                             <h3>Power Consumption</h3>
                             <div class="info-content">
@@ -124,7 +97,7 @@
                                 <p><em>Note:</em> Power consumption is highly variable. It increases significantly with <strong>higher print/bed temperatures</strong> (e.g., ABS/PC) and during the <strong>initial heat-up phase</strong> of the print.</p>
                             </div>
                         </div>
-                        
+
                         <div class="info-card" id="machine-cost-per-hour">
                             <h3>Machine Cost Per Hour</h3>
                             <div class="info-content">
@@ -136,6 +109,17 @@
                                 </ul>
                                 <p>Pre-populated printers come with estimated values based on their retail price over a 3-year lifespan at 4 hours/day. These are editable. Set them to 0 if you prefer to account for depreciation through the Overhead percentage instead.</p>
                                 <p><em>Settings &gt; Printers &gt; Add/Edit Printer &gt; Machine Cost Per Hour</em></p>
+                            </div>
+                        </div>
+
+                        <div class="info-card" id="labor-rate">
+                            <h3>Labor Rate Per Hour</h3>
+                            <div class="info-content">
+                                <p>The amount charged per hour for the time spent on a job. <strong>This rate should be included even if you are the owner performing the work</strong>, as your time is valuable. This covers:</p>
+                                <ul>
+                                    <li><strong>Pre-Print Setup:</strong> e.g., slicing, starting the print, <strong>loading/unloading spools - 1 to 5 min</strong></li>
+                                    <li><strong>Post-Processing Tasks:</strong> e.g., <strong>support material removal - 2 to 15 min per part</strong>, cleaning, sanding, and packaging</li>
+                                </ul>
                             </div>
                         </div>
 
@@ -153,13 +137,19 @@
                             </div>
                         </div>
 
-                        <div class="info-card" id="consistent-pricing">
-                            <h3>Consistent Pricing Across Printers</h3>
+                        <div class="info-card" id="overhead">
+                            <h3>Overhead Percentage</h3>
                             <div class="info-content">
-                                <p>If you own more than one printer, running costs vary by machine (power draw, depreciation, cost per hour). This can cause the same job to produce different quotes depending on which printer you pick, making your pricing inconsistent.</p>
-                                <p><strong>Recommended approach:</strong> Always calculate using your <strong>most expensive printer</strong> as the standard. Jobs actually run on a cheaper printer will yield a higher margin, but you will <strong>never underprice</strong>. Use the Overhead % to absorb the remaining variance across your fleet.</p>
-                                <p>This keeps your quotes stable and predictable for repeat customers.</p>
-                                <p><em>Calculator &gt; Printer</em></p>
+                                <p>This percentage is applied to <strong>all Direct Costs</strong> (Material + Electricity + Labor + Machine + Hardware). It covers non-direct expenses such as: <strong>failed prints/reprints</strong>, consumables (glue, cleaning agents), and facility costs.</p>
+                                <p><em>Settings &gt; Overhead</em></p>
+                            </div>
+                        </div>
+
+                        <div class="info-card" id="markup">
+                            <h3>Percentage Markup (Profit Margin)</h3>
+                            <div class="info-content">
+                                <p>This percentage is the final markup applied to the <strong>Subtotal (Direct Costs + Overhead)</strong> to determine the final selling price. It represents the <strong>net profit</strong> generated per job.</p>
+                                <p><em>Settings &gt; Profit Margin</em></p>
                             </div>
                         </div>
 
@@ -187,7 +177,7 @@
                                 </ul>
                             </div>
                         </div>
-                        
+
                         <div class="info-card" id="bambu-import">
                             <h3>Bambu Handy Import <span style="font-size: 0.75em; color: #e53935; font-weight: 600;">Experimental</span></h3>
                             <div class="info-content">
@@ -215,6 +205,16 @@
                                 </ul>
                                 <p>On first use, a one-time disclaimer is shown. Subsequent uses go directly to the image picker.</p>
                                 <p><em>Calculator &gt; Photo icon (top bar)</em></p>
+                            </div>
+                        </div>
+
+                        <div class="info-card" id="consistent-pricing">
+                            <h3>Consistent Pricing Across Printers</h3>
+                            <div class="info-content">
+                                <p>If you own more than one printer, running costs vary by machine (power draw, depreciation, cost per hour). This can cause the same job to produce different quotes depending on which printer you pick, making your pricing inconsistent.</p>
+                                <p><strong>Recommended approach:</strong> Always calculate using your <strong>most expensive printer</strong> as the standard. Jobs actually run on a cheaper printer will yield a higher margin, but you will <strong>never underprice</strong>. Use the Overhead % to absorb the remaining variance across your fleet.</p>
+                                <p>This keeps your quotes stable and predictable for repeat customers.</p>
+                                <p><em>Calculator &gt; Printer</em></p>
                             </div>
                         </div>
 
