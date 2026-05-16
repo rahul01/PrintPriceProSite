@@ -191,6 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultSubtotal = document.getElementById('result-subtotal');
     const resultMarkup = document.getElementById('result-markup');
     const resultFinal = document.getElementById('result-final');
+    const stickyPriceValue = document.getElementById('sticky-price-value');
     
     // Default printer power values (W)
     const printerPower = {
@@ -456,6 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resultSubtotal.textContent = formatCurrency(subtotalValue, selectedCurrency);
             resultMarkup.textContent = formatCurrency(markupValue, selectedCurrency);
             resultFinal.textContent = formatCurrency(finalValue, selectedCurrency);
+            if (stickyPriceValue) stickyPriceValue.textContent = formatCurrency(finalValue, selectedCurrency);
 
             // Update calculation details
             document.getElementById('calc-material').textContent =

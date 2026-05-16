@@ -11,7 +11,7 @@ html {
 }
 
 body {
-    width: 100vw;
+    width: 100%;
     overflow-x: hidden;
     margin: 0 !important;
     padding: 0 !important;
@@ -261,7 +261,7 @@ main {
 }
 
 .main-content {
-    padding: 3rem 0;
+    padding: 2rem 0;
     margin: 0;
 }
 
@@ -607,13 +607,17 @@ main {
 
 @media (max-width: 768px) {
     .container {
-        padding: 0 1rem;
-        margin: 0 auto;
-        width: 95%;
+        padding: 0 0.5rem;
+        margin: 0;
+        width: 100%;
     }
-    
+
     main {
-        padding: 1rem;
+        padding: 0.25rem;
+    }
+
+    .main-content {
+        padding: 0.5rem 0;
     }
 
     .nav-links {
@@ -797,6 +801,7 @@ main {
 }
 
 .calculator-input input, .calculator-input select {
+    width: 100%;
     padding: 0.75rem 0.75rem 0.75rem 10px;
     border: 1px solid #e2e8f0;
     border-radius: 6px;
@@ -1158,8 +1163,57 @@ main {
     padding: 0;
 }
 
+@media (max-width: 768px) {
+    .main-content-container {
+        padding: 0;
+    }
+
+    .calculator-container {
+        width: calc(100% - 1rem);
+        margin: 0 0.5rem;
+    }
+}
+
 .results-display {
     display: block !important;
+}
+
+/* Sticky final price bar (mobile only) */
+.sticky-price-bar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .sticky-price-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 0.75rem 1rem;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .sticky-price-label {
+        font-size: 0.95rem;
+        font-weight: 500;
+        opacity: 0.9;
+    }
+
+    .sticky-price-value {
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+
+    /* Prevent footer from being hidden behind sticky bar */
+    .footer {
+        padding-bottom: calc(3rem + env(safe-area-inset-bottom));
+    }
 }
 
 .app-promotion-group {
