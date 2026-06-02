@@ -1506,6 +1506,20 @@ main {
     overflow: hidden;
 }
 
+.tag-sla {
+    display: inline-block;
+    background: var(--accent-color);
+    color: #1a1a1a;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.06em;
+    vertical-align: middle;
+    margin-left: 8px;
+    text-transform: uppercase;
+}
+
 .info-card h3::after {
     content: '';
     position: absolute;

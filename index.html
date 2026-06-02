@@ -50,39 +50,39 @@
                         <label for="printer">Printer <span class="info-icon" data-info="power-consumption">i</span></label>
                         <select id="printer">
                             <option value="other">Other (~120W avg)</option>
-                            
+
                             <!-- Bambu Lab Printers -->
                             <optgroup label="Bambu Lab">
-                                <option value="bambu-a1" selected>Bambu Lab A1 (~120W avg)</option>
-                                <option value="bambu-a1-mini">Bambu Lab A1 Mini (~100W avg)</option>
-                                <option value="bambu-a1-combo">Bambu Lab A1 Combo (~120W avg)</option>
-                                <option value="bambu-p1s">Bambu Lab P1S (~140W avg)</option>
-                                <option value="bambu-p2s">Bambu Lab P2S (~200W avg)</option>
-                                <option value="bambu-x1-carbon">Bambu Lab X1 Carbon (~150W avg)</option>
-                                <option value="bambu-x1e">Bambu Lab X1E (~350W avg)</option>
-                                <option value="bambu-h2c">Bambu Lab H2C (~350W avg)</option>
-                                <option value="bambu-h2d">Bambu Lab H2D (~500W avg)</option>
+                                <option value="bambu-lab-a1" selected>Bambu Lab A1 (~120W avg)</option>
+                                <option value="bambu-lab-a1-combo">Bambu Lab A1 Combo (~120W avg)</option>
+                                <option value="bambu-lab-a1-mini">Bambu Lab A1 Mini (~100W avg)</option>
+                                <option value="bambu-lab-h2c">Bambu Lab H2C (~350W avg)</option>
+                                <option value="bambu-lab-h2d">Bambu Lab H2D (~500W avg)</option>
+                                <option value="bambu-lab-p1s">Bambu Lab P1S (~140W avg)</option>
+                                <option value="bambu-lab-p2s">Bambu Lab P2S (~200W avg)</option>
+                                <option value="bambu-lab-x1-carbon">Bambu Lab X1 Carbon (~150W avg)</option>
+                                <option value="bambu-lab-x1e">Bambu Lab X1E (~350W avg)</option>
                             </optgroup>
 
                             <!-- Prusa Printers -->
                             <optgroup label="Prusa">
+                                <option value="prusa-core-one">Prusa Core One (~100W avg)</option>
                                 <option value="prusa-mk4">Prusa MK4 (~120W avg)</option>
                                 <option value="prusa-mk4s">Prusa MK4S (~95W avg)</option>
-                                <option value="prusa-mini-plus">Prusa Mini+ (~80W avg)</option>
+                                <option value="prusa-mini">Prusa Mini+ (~80W avg)</option>
                                 <option value="prusa-xl">Prusa XL (~200W avg)</option>
-                                <option value="prusa-core-one">Prusa Core One (~100W avg)</option>
                             </optgroup>
 
                             <!-- Creality Printers -->
                             <optgroup label="Creality">
-                                <option value="creality-ender-3-v2">Creality Ender 3 V2 (~120W avg)</option>
-                                <option value="creality-ender-3-s1">Creality Ender 3 S1 (~130W avg)</option>
-                                <option value="creality-ender-3-v3-se">Creality Ender-3 V3 SE (~150W avg)</option>
-                                <option value="creality-ender-3-v3-ke">Creality Ender-3 V3 KE (~180W avg)</option>
                                 <option value="creality-cr-10">Creality CR-10 (~150W avg)</option>
+                                <option value="creality-ender-3-s1">Creality Ender 3 S1 (~130W avg)</option>
+                                <option value="creality-ender-3-v2">Creality Ender 3 V2 (~120W avg)</option>
+                                <option value="creality-ender-3-v3-ke">Creality Ender-3 V3 KE (~180W avg)</option>
+                                <option value="creality-ender-3-v3-se">Creality Ender-3 V3 SE (~150W avg)</option>
                                 <option value="creality-k1">Creality K1 (~160W avg)</option>
-                                <option value="creality-k1c">Creality K1C (~200W avg)</option>
                                 <option value="creality-k1-max">Creality K1 Max (~250W avg)</option>
+                                <option value="creality-k1c">Creality K1C (~200W avg)</option>
                                 <option value="creality-k2-plus">Creality K2 Plus (~350W avg)</option>
                             </optgroup>
 
@@ -99,9 +99,9 @@
                             <optgroup label="Elegoo">
                                 <option value="elegoo-neptune-3">Elegoo Neptune 3 (~125W avg)</option>
                                 <option value="elegoo-neptune-4">Elegoo Neptune 4 (~160W avg)</option>
-                                <option value="elegoo-neptune-4-pro">Elegoo Neptune 4 Pro (~200W avg)</option>
-                                <option value="elegoo-neptune-4-plus">Elegoo Neptune 4 Plus (~280W avg)</option>
                                 <option value="elegoo-neptune-4-max">Elegoo Neptune 4 Max (~400W avg)</option>
+                                <option value="elegoo-neptune-4-plus">Elegoo Neptune 4 Plus (~280W avg)</option>
+                                <option value="elegoo-neptune-4-pro">Elegoo Neptune 4 Pro (~200W avg)</option>
                             </optgroup>
 
                             <!-- Artillery Printers -->
@@ -112,13 +112,13 @@
                             <!-- Qidi Printers -->
                             <optgroup label="Qidi">
                                 <option value="qidi-q1-pro">Qidi Q1 Pro (~350W avg)</option>
-                                <option value="qidi-x-plus-3">Qidi X-Plus 3 (~400W avg)</option>
                                 <option value="qidi-x-max-3">Qidi X-Max 3 (~400W avg)</option>
+                                <option value="qidi-x-plus-3">Qidi X-Plus 3 (~400W avg)</option>
                             </optgroup>
 
                             <!-- Voron Printers -->
                             <optgroup label="Voron">
-                                <option value="voron-2.4">Voron 2.4 (~180W avg)</option>
+                                <option value="voron-2-4">Voron 2.4 (~180W avg)</option>
                             </optgroup>
 
                             <!-- Sovol Printers -->
@@ -146,12 +146,33 @@
 
                             <!-- Snapmaker Printers -->
                             <optgroup label="Snapmaker">
+                                <option value="snapmaker-2-0-a250t">Snapmaker 2.0 A250T (~100W avg)</option>
+                                <option value="snapmaker-2-0-a350t">Snapmaker 2.0 A350T (~120W avg)</option>
                                 <option value="snapmaker-artisan">Snapmaker Artisan (~150W avg)</option>
-                                <option value="snapmaker-2-a350t">Snapmaker 2.0 A350T (~120W avg)</option>
-                                <option value="snapmaker-2-a250t">Snapmaker 2.0 A250T (~100W avg)</option>
                                 <option value="snapmaker-j1s">Snapmaker J1s (~200W avg)</option>
                                 <option value="snapmaker-u1">Snapmaker U1 (~220W avg)</option>
                             </optgroup>
+
+                            <!-- SLA / Resin Printers -->
+                            <optgroup label="Elegoo (SLA)">
+                                <option value="elegoo-mars-4-ultra">Elegoo Mars 4 Ultra (~45W avg)</option>
+                                <option value="elegoo-saturn-3-ultra">Elegoo Saturn 3 Ultra (~75W avg)</option>
+                                <option value="elegoo-saturn-4-ultra-16k">Elegoo Saturn 4 Ultra 16K (~85W avg)</option>
+                            </optgroup>
+
+                            <optgroup label="Anycubic (SLA)">
+                                <option value="anycubic-photon-mono-m5s">Anycubic Photon Mono M5s (~50W avg)</option>
+                                <option value="anycubic-photon-mono-x2">Anycubic Photon Mono X2 (~60W avg)</option>
+                            </optgroup>
+
+                            <optgroup label="Phrozen (SLA)">
+                                <option value="phrozen-sonic-mini-8k">Phrozen Sonic Mini 8K (~45W avg)</option>
+                            </optgroup>
+
+                            <optgroup label="Creality (SLA)">
+                                <option value="creality-halot-mage-s">Creality Halot-Mage S (~65W avg)</option>
+                            </optgroup>
+
                         </select>
                     </div>
                     <div class="calculator-input">

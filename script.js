@@ -197,34 +197,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const printerPower = {
         // Other
         'other': 120,
-        
+
         // Bambu Lab Printers
-        'bambu-a1': 120,
-        'bambu-a1-mini': 100,
-        'bambu-a1-combo': 120,
-        'bambu-p1s': 140,
-        'bambu-p2s': 200,
-        'bambu-x1-carbon': 150,
-        'bambu-x1e': 350,
-        'bambu-h2c': 350,
-        'bambu-h2d': 500,
+        'bambu-lab-a1': 120,
+        'bambu-lab-a1-combo': 120,
+        'bambu-lab-a1-mini': 100,
+        'bambu-lab-h2c': 350,
+        'bambu-lab-h2d': 500,
+        'bambu-lab-p1s': 140,
+        'bambu-lab-p2s': 200,
+        'bambu-lab-x1-carbon': 150,
+        'bambu-lab-x1e': 350,
 
         // Prusa Printers
+        'prusa-core-one': 100,
         'prusa-mk4': 120,
         'prusa-mk4s': 95,
-        'prusa-mini-plus': 80,
+        'prusa-mini': 80,
         'prusa-xl': 200,
-        'prusa-core-one': 100,
 
         // Creality Printers
-        'creality-ender-3-v2': 120,
-        'creality-ender-3-s1': 130,
-        'creality-ender-3-v3-se': 150,
-        'creality-ender-3-v3-ke': 180,
         'creality-cr-10': 150,
+        'creality-ender-3-s1': 130,
+        'creality-ender-3-v2': 120,
+        'creality-ender-3-v3-ke': 180,
+        'creality-ender-3-v3-se': 150,
         'creality-k1': 160,
-        'creality-k1c': 200,
         'creality-k1-max': 250,
+        'creality-k1c': 200,
         'creality-k2-plus': 350,
 
         // Anycubic Printers
@@ -237,20 +237,20 @@ document.addEventListener('DOMContentLoaded', () => {
         // Elegoo Printers
         'elegoo-neptune-3': 125,
         'elegoo-neptune-4': 160,
-        'elegoo-neptune-4-pro': 200,
-        'elegoo-neptune-4-plus': 280,
         'elegoo-neptune-4-max': 400,
+        'elegoo-neptune-4-plus': 280,
+        'elegoo-neptune-4-pro': 200,
 
         // Artillery Printers
         'artillery-sidewinder-x2': 155,
 
         // Qidi Printers
         'qidi-q1-pro': 350,
-        'qidi-x-plus-3': 400,
         'qidi-x-max-3': 400,
+        'qidi-x-plus-3': 400,
 
         // Voron Printers
-        'voron-2.4': 180,
+        'voron-2-4': 180,
 
         // Sovol Printers
         'sovol-sv06': 130,
@@ -268,11 +268,27 @@ document.addEventListener('DOMContentLoaded', () => {
         'kingroon-kp3s-pro-v2': 150,
 
         // Snapmaker Printers
+        'snapmaker-2-0-a250t': 100,
+        'snapmaker-2-0-a350t': 120,
         'snapmaker-artisan': 150,
-        'snapmaker-2-a350t': 120,
-        'snapmaker-2-a250t': 100,
         'snapmaker-j1s': 200,
-        'snapmaker-u1': 220
+        'snapmaker-u1': 220,
+
+        // Elegoo (SLA/Resin)
+        'elegoo-mars-4-ultra': 45,
+        'elegoo-saturn-3-ultra': 75,
+        'elegoo-saturn-4-ultra-16k': 85,
+
+        // Anycubic (SLA/Resin)
+        'anycubic-photon-mono-m5s': 50,
+        'anycubic-photon-mono-x2': 60,
+
+        // Phrozen (SLA/Resin)
+        'phrozen-sonic-mini-8k': 45,
+
+        // Creality (SLA/Resin)
+        'creality-halot-mage-s': 65,
+
     };
 
     // Machine cost per hour (INR), amortised depreciation from the app's pre-populated values
@@ -280,32 +296,32 @@ document.addEventListener('DOMContentLoaded', () => {
         'other': 0,
 
         // Bambu Lab
-        'bambu-a1': 6.8,
-        'bambu-a1-mini': 5.7,
-        'bambu-a1-combo': 10.7,
-        'bambu-p1s': 12.5,
-        'bambu-p2s': 16.4,
-        'bambu-x1-carbon': 16.0,
-        'bambu-x1e': 70.5,
-        'bambu-h2c': 46.6,
-        'bambu-h2d': 51.4,
+        'bambu-lab-a1': 6.8,
+        'bambu-lab-a1-combo': 10.7,
+        'bambu-lab-a1-mini': 5.7,
+        'bambu-lab-h2c': 46.6,
+        'bambu-lab-h2d': 51.4,
+        'bambu-lab-p1s': 12.5,
+        'bambu-lab-p2s': 16.4,
+        'bambu-lab-x1-carbon': 16.0,
+        'bambu-lab-x1e': 70.5,
 
         // Prusa
+        'prusa-core-one': 47.9,
         'prusa-mk4': 11.4,
         'prusa-mk4s': 24.9,
-        'prusa-mini-plus': 5.7,
+        'prusa-mini': 5.7,
         'prusa-xl': 22.8,
-        'prusa-core-one': 47.9,
 
         // Creality
-        'creality-ender-3-v2': 3.4,
-        'creality-ender-3-s1': 4.6,
-        'creality-ender-3-v3-se': 4.3,
-        'creality-ender-3-v3-ke': 6.3,
         'creality-cr-10': 5.7,
+        'creality-ender-3-s1': 4.6,
+        'creality-ender-3-v2': 3.4,
+        'creality-ender-3-v3-ke': 6.3,
+        'creality-ender-3-v3-se': 4.3,
         'creality-k1': 6.8,
-        'creality-k1c': 12.8,
         'creality-k1-max': 19.6,
+        'creality-k1c': 12.8,
         'creality-k2-plus': 36.5,
 
         // Anycubic
@@ -318,20 +334,20 @@ document.addEventListener('DOMContentLoaded', () => {
         // Elegoo
         'elegoo-neptune-3': 4.1,
         'elegoo-neptune-4': 4.8,
-        'elegoo-neptune-4-pro': 7.3,
-        'elegoo-neptune-4-plus': 8.7,
         'elegoo-neptune-4-max': 9.1,
+        'elegoo-neptune-4-plus': 8.7,
+        'elegoo-neptune-4-pro': 7.3,
 
         // Artillery
         'artillery-sidewinder-x2': 5.0,
 
         // Qidi
         'qidi-q1-pro': 10.5,
-        'qidi-x-plus-3': 15.9,
         'qidi-x-max-3': 19.2,
+        'qidi-x-plus-3': 15.9,
 
         // Voron
-        'voron-2.4': 13.7,
+        'voron-2-4': 13.7,
 
         // Sovol
         'sovol-sv06': 3.9,
@@ -349,11 +365,27 @@ document.addEventListener('DOMContentLoaded', () => {
         'kingroon-kp3s-pro-v2': 5.3,
 
         // Snapmaker
+        'snapmaker-2-0-a250t': 12.1,
+        'snapmaker-2-0-a350t': 16.0,
         'snapmaker-artisan': 27.4,
-        'snapmaker-2-a350t': 16.0,
-        'snapmaker-2-a250t': 12.1,
         'snapmaker-j1s': 18.0,
-        'snapmaker-u1': 19.5
+        'snapmaker-u1': 19.5,
+
+        // Elegoo (SLA/Resin)
+        'elegoo-mars-4-ultra': 3.4,
+        'elegoo-saturn-3-ultra': 8.0,
+        'elegoo-saturn-4-ultra-16k': 11.4,
+
+        // Anycubic (SLA/Resin)
+        'anycubic-photon-mono-m5s': 4.6,
+        'anycubic-photon-mono-x2': 6.8,
+
+        // Phrozen (SLA/Resin)
+        'phrozen-sonic-mini-8k': 4.1,
+
+        // Creality (SLA/Resin)
+        'creality-halot-mage-s': 5.0,
+
     };
 
     // Currency symbols

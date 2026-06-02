@@ -65,8 +65,12 @@
                             <li><a href="#overhead">Overhead Percentage</a></li>
                             <li><a href="#markup">Percentage Markup</a></li>
                             <li><a href="#in-field-calculator">In-Field Calculator</a></li>
+                            <li><a href="#printer-library">Your Printer Library</a></li>
                             <li><a href="#consistent-pricing">Consistent Pricing Across Printers</a></li>
                             <li><a href="#import-export">Import & Export Data</a></li>
+                            <li><a href="#print-cure-time">Print + Cure Time <span class="tag-sla">SLA</span></a></li>
+                            <li><a href="#resin-bottle">Resin Bottle <span class="tag-sla">SLA</span></a></li>
+                            <li><a href="#resin-consumables">Resin Consumables <span class="tag-sla">SLA</span></a></li>
                         </ul>
                     </div>
                 </aside>
@@ -94,20 +98,24 @@
                                     <li>Check Manufacturer Specs or reputable forum discussions.</li>
                                 </ol>
                                 <p><em>Note:</em> Power consumption is highly variable. It increases significantly with <strong>higher print/bed temperatures</strong> (e.g., ABS/PC) and during the <strong>initial heat-up phase</strong> of the print.</p>
+                                <p><em>Resin MSLA printers draw significantly less power than FDM — no heated bed, no hotend. Examples: Elegoo Mars 4 Ultra ~45W avg, Elegoo Saturn 3 Ultra ~75W avg, Anycubic Photon Mono M5s ~50W avg.</em></p>
                             </div>
                         </div>
 
                         <div class="info-card" id="machine-cost-per-hour">
                             <h3>Machine Cost Per Hour</h3>
                             <div class="info-content">
-                                <p>The amortised depreciation and maintenance cost of the printer, expressed per hour of printing. This is set <strong>per printer</strong> in the Printers screen and is automatically applied when that printer is selected in the Calculator.</p>
-                                <p><strong>How to calculate it:</strong> Divide the total purchase price by the expected lifetime print hours.</p>
+                                <p>The amortised cost of owning and operating a printer per hour. It covers:</p>
                                 <ul>
-                                    <li><em>Example:</em> Printer cost ₹25,000, expected 1,000 hours of use → <strong>₹25/hour</strong></li>
-                                    <li><em>Example:</em> Printer cost $300, expected 1,000 hours → <strong>$0.30/hour</strong></li>
+                                    <li><strong>Depreciation:</strong> Printer purchase price spread over its usable lifespan</li>
+                                    <li><strong>Maintenance:</strong> Nozzles, beds, belts, lubrication, and other consumables</li>
                                 </ul>
-                                <p>Pre-populated printers come with estimated values based on their retail price over a 3-year lifespan at 4 hours/day. These are editable. Set them to 0 if you prefer to account for depreciation through the Overhead percentage instead.</p>
-                                <p><em>Settings &gt; Printers &gt; Add/Edit Printer &gt; Machine Cost Per Hour</em></p>
+                                <p><strong>Example:</strong> A printer that cost ₹30,000, lasts ~3 years and runs ~4 hours/day:<br>
+                                30,000 ÷ (3 × 365 × 4) ≈ <strong>₹6.85/hour</strong></p>
+                                <p>This cost is multiplied by print time and added as a direct job cost before overhead and profit are applied.</p>
+                                <p>Leave at <strong>0</strong> if you prefer to cover machine costs through the Overhead % instead.</p>
+                                <p><em>Resin example: A printer that cost ₹20,000, lasts ~3 years at ~4 hr/day: 20,000 ÷ (3 × 365 × 4) ≈ ₹4.57/hour. Also consider FEP film (~₹500–800 per sheet, replaced every 20–50 prints) as an additional machine cost component.</em></p>
+                                <p><em>Printers &gt; Add/Edit Printer &gt; Machine Cost per Hour</em></p>
                             </div>
                         </div>
 
@@ -119,19 +127,21 @@
                                     <li><strong>Pre-Print Setup:</strong> e.g., slicing, starting the print, <strong>loading/unloading spools - 1 to 5 min</strong></li>
                                     <li><strong>Post-Processing Tasks:</strong> e.g., <strong>support material removal - 2 to 15 min per part</strong>, cleaning, sanding, and packaging</li>
                                 </ul>
+                                <p><em>For resin: includes PPE setup (gloves, ventilation check), build plate levelling check — 2–5 min. Post-processing is heavier: support removal, IPA washing (15–30 min), UV curing (5–15 min), sanding and painting if required.</em></p>
                             </div>
                         </div>
 
                         <div class="info-card" id="hardware-cost">
                             <h3>Hardware Cost</h3>
                             <div class="info-content">
-                                <p>The total cost of any physical hardware components consumed in a specific job. For example: <strong>heat-set inserts, screws, magnets, springs, or other embedded parts</strong>.</p>
-                                <p>This is a <strong>per-job value</strong> entered directly in the Calculator, not a reusable preset. Leave it at 0 if no hardware is used.</p>
-                                <p><strong>Tip:</strong> Use the In-Field Calculator to quickly add up item costs without a separate calculation:</p>
+                                <p><strong>Per-job cost of physical hardware added to a print.</strong></p>
+                                <p>Use this field to include the cost of consumable hardware items that go into a specific job — for example, nuts, bolts, inserts, magnets, or springs embedded in the print.</p>
+                                <p><strong>Supports in-field expressions:</strong> You can type a calculation directly into the field, for example:</p>
                                 <ul>
-                                    <li>4 inserts × ₹2 + 2 screws × ₹1 → type <code>4*2+2*1</code> → ₹10</li>
+                                    <li><code>4*0.10 + 2*0.60</code> → ₹1.60 (4 nuts at ₹0.10 + 2 inserts at ₹0.60)</li>
                                 </ul>
-                                <p>Hardware Cost is treated as a Direct Cost, so Overhead and Profit Margin are correctly applied on top of it.</p>
+                                <p>Hardware cost is a direct job cost — overhead and profit margin are applied on top of it.</p>
+                                <p>Leave blank or at <strong>0</strong> if the job has no embedded hardware.</p>
                                 <p><em>Calculator &gt; Hardware Cost</em></p>
                             </div>
                         </div>
@@ -139,7 +149,8 @@
                         <div class="info-card" id="overhead">
                             <h3>Overhead Percentage</h3>
                             <div class="info-content">
-                                <p>This percentage is applied to <strong>all Direct Costs</strong> (Material + Electricity + Labor + Machine + Hardware). It covers non-direct expenses such as: <strong>failed prints/reprints</strong>, consumables (glue, cleaning agents), and facility costs.</p>
+                                <p>This percentage is applied to <strong>all Direct Costs (Material + Electricity + Labor + Machine + Hardware)</strong>. It covers non-direct expenses such as: <strong>failed prints/reprints</strong>, consumables (glue, cleaning agents), and facility costs.</p>
+                                <p><em>For resin printing, overhead is typically higher (25–35%) due to FEP/nFEP film replacement, IPA wash solution, nitrile gloves, and a higher rate of print failures. When you select a resin printer in the app calculator, a suggested default is shown.</em></p>
                                 <p><em>Settings &gt; Overhead</em></p>
                             </div>
                         </div>
@@ -174,6 +185,19 @@
                                     <li>Material Price and Weight fields</li>
                                     <li>Other numeric settings</li>
                                 </ul>
+                            </div>
+                        </div>
+
+                        <div class="info-card" id="printer-library">
+                            <h3>Your Printer Library</h3>
+                            <div class="info-content">
+                                <p>The app calculator only shows printers you've marked as <strong>owned (★)</strong> — keeping the dropdown manageable when you have a large preset library.</p>
+                                <p><strong>How to mark a printer as owned:</strong><br>
+                                Open the Printers screen and tap the ☆ next to any pre-populated printer. The star fills (★) to confirm it's in your set. Tap again to remove it.</p>
+                                <p><strong>Shortcut:</strong> Tap the <strong>⚙ icon</strong> next to the printer dropdown in the calculator to jump straight to the Printers screen.</p>
+                                <p><strong>Printers you add yourself</strong> are always owned automatically — no need to star them.</p>
+                                <p><em>If you haven't starred any printer yet, the calculator shows the full library so you're never locked out.</em></p>
+                                <p><em>Calculator &gt; Printer</em></p>
                             </div>
                         </div>
 
@@ -220,6 +244,42 @@
                             </div>
                         </div>
                         
+                        <div class="info-card" id="print-cure-time">
+                            <h3>Print + Cure Time <span class="tag-sla">SLA</span></h3>
+                            <div class="info-content">
+                                <p>For resin printing, this field captures the total elapsed time for the job: LCD screen exposure time + UV curing station time.</p>
+                                <p>Both phases consume electricity and count toward machine depreciation.</p>
+                                <p>Wash time is manual labour — include it in <strong>Labor Time</strong>, not here.</p>
+                                <p><strong>Example:</strong> 3h print + 15min cure = enter 3h 15min (or 195 minutes).</p>
+                                <p><em>Calculator &gt; Print Time</em></p>
+                            </div>
+                        </div>
+
+                        <div class="info-card" id="resin-bottle">
+                            <h3>Resin Bottle <span class="tag-sla">SLA</span></h3>
+                            <div class="info-content">
+                                <p>Resin materials work exactly like filament in this app — enter what you paid for the bottle and its weight in grams. Cost per gram is calculated automatically.</p>
+                                <p><strong>Typical bottle sizes:</strong> 500g (~420ml) and 1kg (~840ml). Most resins have a density of ~1.1–1.2 g/ml, so a "500ml bottle" weighs ~550–600g — use the actual weight on the label.</p>
+                                <p><strong>Standard resins:</strong> ₹800–1,500 per 500g. Specialty (ABS-like, flexible): ₹1,200–2,500.</p>
+                                <p><em>Materials &gt; Add/Edit Material</em></p>
+                            </div>
+                        </div>
+
+                        <div class="info-card" id="resin-consumables">
+                            <h3>Resin Consumables <span class="tag-sla">SLA</span></h3>
+                            <div class="info-content">
+                                <p>Use <strong>Hardware Cost</strong> to capture per-print resin consumables that aren't covered by overhead:</p>
+                                <ul>
+                                    <li>IPA wash: ₹15–40 per print (50–100ml @ ₹300–400/litre)</li>
+                                    <li>FEP film amortised: ₹10–25 per print (₹500 sheet ÷ 20–50 prints)</li>
+                                    <li>Nitrile gloves: ₹3–5 per pair</li>
+                                </ul>
+                                <p><strong>Example expression:</strong> <code>30 + 15 + 4</code> → ₹49 total consumable cost</p>
+                                <p>Hardware cost is a direct job cost — overhead and profit margin apply on top.</p>
+                                <p><em>Calculator &gt; Hardware Cost</em></p>
+                            </div>
+                        </div>
+
                         <div class="summary-section">
                             <h3 style="text-align: center; margin-bottom: 1.5rem;">Ready to calculate your 3D printing costs?</h3>
                             <div style="text-align: center;">
