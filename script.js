@@ -403,6 +403,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const symbol = currencySymbols[currencyType] || '₹';
         return symbol + amount.toFixed(2);
     };
+
+    const slaPrinters = new Set([
+        'elegoo-mars-4-ultra',
+        'elegoo-saturn-3-ultra',
+        'elegoo-saturn-4-ultra-16k',
+        'anycubic-photon-mono-m5s',
+        'anycubic-photon-mono-x2',
+        'phrozen-sonic-mini-8k',
+        'creality-halot-mage-s',
+    ]);
+
+    function updateMaterialCostLabel() {
+        const selectedPrinter = printer ? printer.value : 'other';
+        const selectedCurrency = currency ? currency.value : 'INR';
+        const symbol = currencySymbols[selectedCurrency] || '₹';
+        const unit = slaPrinters.has(selectedPrinter) ? 'liter' : 'kg';
+        document.querySelector('label[for="material-cost"]').textContent = `Material Cost per ${unit} (${symbol})`;
+    }
     
     // Toggle formulas button
     if (toggleFormulasBtn && resultsSection) {
@@ -557,6 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (machineCostPerHour) {
                 machineCostPerHour.value = printerMachineCost[this.value] ?? 0;
             }
+            updateMaterialCostLabel();
             if (window.trackEvent) window.trackEvent('printer_selected', { printer: this.value });
         });
     }
@@ -586,6 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // If data was loaded, calculate prices immediately
         calculatePrices();
     }
+    updateMaterialCostLabel();
     
     // Update currency symbols in labels when currency changes
     if (currency) {
@@ -602,7 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
             laborRateLabel.innerHTML = `Labor Rate (${symbol}/hour) `;
             if (laborInfoIcon) laborRateLabel.appendChild(laborInfoIcon);
 
-            document.querySelector('label[for="material-cost"]').textContent = `Material Cost per kg (${symbol})`;
+            updateMaterialCostLabel();
 
             // Preserve the info icon when updating the machine cost label
             const machineCostLabel = document.querySelector('label[for="machine-cost-per-hour"]');
@@ -684,7 +704,7 @@ document.addEventListener('DOMContentLoaded', () => {
         laborRateLabel.innerHTML = `Labor Rate (₹/hour) `;
         if (infoIcon) laborRateLabel.appendChild(infoIcon);
 
-        document.querySelector('label[for="material-cost"]').textContent = `Material Cost per kg (₹)`;
+        updateMaterialCostLabel();
 
         // Preserve info icons for machine/hardware labels
         const machineCostLabel = document.querySelector('label[for="machine-cost-per-hour"]');
