@@ -246,7 +246,25 @@
                         <input type="number" id="markup-percentage" placeholder="e.g., 30" min="0" max="100" value="30">
                     </div>
                 </div>
-                
+
+                <div class="calculator-input-group">
+                    <div class="calculator-input">
+                        <label for="shipping-cost">Shipping Cost (₹) <span class="info-icon" data-info="shipping-cost">i</span></label>
+                        <input type="number" id="shipping-cost" placeholder="e.g., 0" min="0" step="0.01" value="0">
+                    </div>
+                    <div class="calculator-input">
+                        <label for="packaging-cost">Packaging Cost (₹) <span class="info-icon" data-info="packaging-cost">i</span></label>
+                        <input type="number" id="packaging-cost" placeholder="e.g., 0" min="0" step="0.01" value="0">
+                    </div>
+                </div>
+
+                <div class="calculator-input-group">
+                    <div class="calculator-input">
+                        <label for="gst-percentage">GST (%) <span class="info-icon" data-info="gst">i</span></label>
+                        <input type="number" id="gst-percentage" placeholder="e.g., 12" min="0" max="100" value="12">
+                    </div>
+                </div>
+
                 <div class="calculator-input-group" style="margin-bottom: 0; text-align: center;">
                     <p class="persistence-info">We remember your last input for your convenience. <a href="javascript:void(0)" id="reset-calculator" class="reset-link">Reset calculator?</a></p>
                 </div>
@@ -346,13 +364,57 @@
                             <div class="calculation" id="calc-markup"></div>
                         </div>
                     </div>
-                    
+
+                    <div class="result-item" id="result-shipping-row" style="display:none">
+                        <span class="result-label">Shipping Cost:</span>
+                        <span class="result-value" id="result-shipping">₹0.00</span>
+                        <div class="formula-explanation" id="formula-shipping">
+                            <div class="formula">
+                                Shipping Cost = User-entered per-job cost (added after Overhead and Markup, not marked up)
+                            </div>
+                            <div class="calculation" id="calc-shipping"></div>
+                        </div>
+                    </div>
+
+                    <div class="result-item" id="result-packaging-row" style="display:none">
+                        <span class="result-label">Packaging Cost:</span>
+                        <span class="result-value" id="result-packaging">₹0.00</span>
+                        <div class="formula-explanation" id="formula-packaging">
+                            <div class="formula">
+                                Packaging Cost = User-entered per-job cost (added after Overhead and Markup, not marked up)
+                            </div>
+                            <div class="calculation" id="calc-packaging"></div>
+                        </div>
+                    </div>
+
+                    <div class="result-item" id="result-before-gst-row" style="display:none">
+                        <span class="result-label">Price Before GST:</span>
+                        <span class="result-value" id="result-before-gst">₹0.00</span>
+                        <div class="formula-explanation" id="formula-before-gst">
+                            <div class="formula">
+                                Price Before GST = Subtotal + Markup + Shipping + Packaging
+                            </div>
+                            <div class="calculation" id="calc-before-gst"></div>
+                        </div>
+                    </div>
+
+                    <div class="result-item" id="result-gst-row" style="display:none">
+                        <span class="result-label">GST:</span>
+                        <span class="result-value" id="result-gst">₹0.00</span>
+                        <div class="formula-explanation" id="formula-gst">
+                            <div class="formula">
+                                GST = Price Before GST × (GST % / 100)
+                            </div>
+                            <div class="calculation" id="calc-gst"></div>
+                        </div>
+                    </div>
+
                     <div class="result-item total">
                         <span class="result-label">Final Price:</span>
                         <span class="result-value" id="result-final">₹0.00</span>
                         <div class="formula-explanation" id="formula-final">
                             <div class="formula">
-                                Final Price = Subtotal + Markup
+                                Final Price = Price Before GST + GST
                             </div>
                             <div class="calculation" id="calc-final"></div>
                         </div>

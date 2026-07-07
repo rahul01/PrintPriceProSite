@@ -19,7 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
             machineCostPerHour: machineCostPerHour.value,
             hardwareCost: hardwareCost.value,
             overheadPercentage: overheadPercentage.value,
-            markupPercentage: markupPercentage.value
+            markupPercentage: markupPercentage.value,
+            shippingCost: shippingCost.value,
+            packagingCost: packagingCost.value,
+            gstPercentage: gstPercentage.value
         };
         
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -50,7 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.hardwareCost !== undefined && hardwareCost) hardwareCost.value = data.hardwareCost;
                 if (data.overheadPercentage && overheadPercentage) overheadPercentage.value = data.overheadPercentage;
                 if (data.markupPercentage && markupPercentage) markupPercentage.value = data.markupPercentage;
-                
+                if (data.shippingCost !== undefined && shippingCost) shippingCost.value = data.shippingCost;
+                if (data.packagingCost !== undefined && packagingCost) packagingCost.value = data.packagingCost;
+                if (data.gstPercentage !== undefined && gstPercentage) gstPercentage.value = data.gstPercentage;
+
 
                 return true;
             }
@@ -102,6 +108,30 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Percentage Markup',
             content: `
                 <p>This percentage is the final markup applied to the <strong>Total Cost (Material + Labor + Overhead)</strong> to determine the final selling price. It represents the <strong>net profit</strong> generated per job.</p>
+            `
+        },
+        'shipping-cost': {
+            title: 'Shipping Cost',
+            content: `
+                <p><strong>Per-job cost of getting the finished print to the customer.</strong></p>
+                <p>What you pay a courier to deliver the job. Optional - leave at 0 if not applicable.</p>
+                <p><strong>Unlike Hardware Cost, this is not marked up:</strong> Overhead % and Markup % apply only to Material + Labor + Electricity + Machine + Hardware. Shipping Cost is added <strong>after</strong> that markup, at near cost.</p>
+            `
+        },
+        'packaging-cost': {
+            title: 'Packaging Cost',
+            content: `
+                <p><strong>Per-job cost of packaging materials for the finished print.</strong></p>
+                <p>Covers materials like a box, bubble wrap, or tape used to ship the job safely. Optional - leave at 0 if not applicable.</p>
+                <p><strong>Unlike Hardware Cost, this is not marked up:</strong> Overhead % and Markup % apply only to Material + Labor + Electricity + Machine + Hardware. Packaging Cost is added <strong>after</strong> that markup, at near cost.</p>
+            `
+        },
+        'gst': {
+            title: 'GST Percentage',
+            content: `
+                <p>Applied <strong>last</strong>, on top of the complete price - Subtotal (Direct Costs + Overhead) + Markup + Shipping + Packaging. It is <strong>not</strong> applied to the pre-markup Subtotal alone, so your Markup % is never itself taxed.</p>
+                <p>When GST is greater than 0, the results show both a <strong>Price Before GST</strong> line and a GST-inclusive <strong>Final Price</strong> line. Set it to 0 to hide GST entirely and quote tax-free.</p>
+                <p>The full app defaults GST to <strong>12%</strong>, its baseline rate - change it to match your actual rate.</p>
             `
         },
         'power-consumption': {
@@ -180,6 +210,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const hardwareCost = document.getElementById('hardware-cost');
     const overheadPercentage = document.getElementById('overhead-percentage');
     const markupPercentage = document.getElementById('markup-percentage');
+    const shippingCost = document.getElementById('shipping-cost');
+    const packagingCost = document.getElementById('packaging-cost');
+    const gstPercentage = document.getElementById('gst-percentage');
 
     // Get result elements
     const resultMaterial = document.getElementById('result-material');
@@ -190,6 +223,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultOverhead = document.getElementById('result-overhead');
     const resultSubtotal = document.getElementById('result-subtotal');
     const resultMarkup = document.getElementById('result-markup');
+    const resultShipping = document.getElementById('result-shipping');
+    const resultPackaging = document.getElementById('result-packaging');
+    const resultBeforeGst = document.getElementById('result-before-gst');
+    const resultGst = document.getElementById('result-gst');
     const resultFinal = document.getElementById('result-final');
     const stickyPriceValue = document.getElementById('sticky-price-value');
     
@@ -457,6 +494,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const hwCost = parseFloat(hardwareCost.value) || 0;
             const overhead = parseFloat(overheadPercentage.value) || 0;
             const markup = parseFloat(markupPercentage.value) || 0;
+            const shipCost = parseFloat(shippingCost.value) || 0;
+            const packCost = parseFloat(packagingCost.value) || 0;
+            const gst = parseFloat(gstPercentage.value) || 0;
             // When electricity rate field is empty, use 0 instead of a default value
             const elecRate = electricityRate.value.trim() === '' ? 0 : parseFloat(electricityRate.value) || 0;
             const selectedCurrency = currency.value || 'INR';
@@ -490,12 +530,27 @@ document.addEventListener('DOMContentLoaded', () => {
             // Markup / profit margin
             const markupValue = subtotalValue * (markup / 100);
 
-            // Final price
-            const finalValue = subtotalValue + markupValue;
+            // Shipping and Packaging are pass-through costs added after Overhead/Markup,
+            // not marked up by either percentage
+            const shippingCostValue = shipCost;
+            const packagingCostValue = packCost;
+
+            // Price before GST includes the pass-through Shipping/Packaging costs
+            const finalBeforeGstValue = subtotalValue + markupValue + shippingCostValue + packagingCostValue;
+
+            // GST is the outermost markup, applied to the complete pre-tax total
+            const gstValue = finalBeforeGstValue * (gst / 100);
+
+            // Final price (GST-inclusive)
+            const finalValue = finalBeforeGstValue + gstValue;
 
             // Show/hide machine and hardware rows (only when non-zero)
             document.getElementById('result-machine-row').style.display = machineCostValue > 0 ? '' : 'none';
             document.getElementById('result-hardware-row').style.display = hardwareCostValue > 0 ? '' : 'none';
+            document.getElementById('result-shipping-row').style.display = shippingCostValue > 0 ? '' : 'none';
+            document.getElementById('result-packaging-row').style.display = packagingCostValue > 0 ? '' : 'none';
+            document.getElementById('result-before-gst-row').style.display = gstValue > 0 ? '' : 'none';
+            document.getElementById('result-gst-row').style.display = gstValue > 0 ? '' : 'none';
 
             // Update result elements
             resultMaterial.textContent = formatCurrency(materialCostValue, selectedCurrency);
@@ -506,6 +561,10 @@ document.addEventListener('DOMContentLoaded', () => {
             resultOverhead.textContent = formatCurrency(overheadValue, selectedCurrency);
             resultSubtotal.textContent = formatCurrency(subtotalValue, selectedCurrency);
             resultMarkup.textContent = formatCurrency(markupValue, selectedCurrency);
+            resultShipping.textContent = formatCurrency(shippingCostValue, selectedCurrency);
+            resultPackaging.textContent = formatCurrency(packagingCostValue, selectedCurrency);
+            resultBeforeGst.textContent = formatCurrency(finalBeforeGstValue, selectedCurrency);
+            resultGst.textContent = formatCurrency(gstValue, selectedCurrency);
             resultFinal.textContent = formatCurrency(finalValue, selectedCurrency);
             if (stickyPriceValue) stickyPriceValue.textContent = formatCurrency(finalValue, selectedCurrency);
 
@@ -542,8 +601,33 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('calc-markup').textContent =
                 `${symbol}${subtotalValue.toFixed(2)} × (${markup}% / 100) = ${symbol}${markupValue.toFixed(2)}`;
 
+            document.getElementById('calc-shipping').textContent =
+                `${symbol}${shippingCostValue.toFixed(2)}`;
+
+            document.getElementById('calc-packaging').textContent =
+                `${symbol}${packagingCostValue.toFixed(2)}`;
+
+            const beforeGstParts = [
+                `${symbol}${subtotalValue.toFixed(2)}`,
+                `${symbol}${markupValue.toFixed(2)}`
+            ];
+            if (shippingCostValue > 0) beforeGstParts.push(`${symbol}${shippingCostValue.toFixed(2)}`);
+            if (packagingCostValue > 0) beforeGstParts.push(`${symbol}${packagingCostValue.toFixed(2)}`);
+            document.getElementById('calc-before-gst').textContent =
+                `${beforeGstParts.join(' + ')} = ${symbol}${finalBeforeGstValue.toFixed(2)}`;
+
+            document.getElementById('calc-gst').textContent =
+                `${symbol}${finalBeforeGstValue.toFixed(2)} × (${gst}% / 100) = ${symbol}${gstValue.toFixed(2)}`;
+
+            const finalParts = [
+                `${symbol}${subtotalValue.toFixed(2)}`,
+                `${symbol}${markupValue.toFixed(2)}`
+            ];
+            if (shippingCostValue > 0) finalParts.push(`${symbol}${shippingCostValue.toFixed(2)}`);
+            if (packagingCostValue > 0) finalParts.push(`${symbol}${packagingCostValue.toFixed(2)}`);
+            if (gstValue > 0) finalParts.push(`${symbol}${gstValue.toFixed(2)}`);
             document.getElementById('calc-final').textContent =
-                `${symbol}${subtotalValue.toFixed(2)} + ${symbol}${markupValue.toFixed(2)} = ${symbol}${finalValue.toFixed(2)}`;
+                `${finalParts.join(' + ')} = ${symbol}${finalValue.toFixed(2)}`;
 
             if (window.trackEvent && (matWeight > 0 || pTime > 0)) {
                 clearTimeout(calcDebounceTimer);
@@ -566,7 +650,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const allInputs = [
         printer, materialWeight, printTimeHours, printTimeMinutes,
         laborTime, currency, electricityRate, materialCost,
-        laborRate, machineCostPerHour, hardwareCost, overheadPercentage, markupPercentage
+        laborRate, machineCostPerHour, hardwareCost, overheadPercentage, markupPercentage,
+        shippingCost, packagingCost, gstPercentage
     ];
     
     // When printer changes, pre-fill machine cost from lookup (fires before the general listeners below)
@@ -635,7 +720,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const hardwareInfoIcon = hardwareCostLabel.querySelector('.info-icon');
             hardwareCostLabel.innerHTML = `Hardware Cost (${symbol}) `;
             if (hardwareInfoIcon) hardwareCostLabel.appendChild(hardwareInfoIcon);
-            
+
+            // Preserve the info icon when updating the shipping cost label
+            const shippingCostLabel = document.querySelector('label[for="shipping-cost"]');
+            const shippingInfoIcon = shippingCostLabel.querySelector('.info-icon');
+            shippingCostLabel.innerHTML = `Shipping Cost (${symbol}) `;
+            if (shippingInfoIcon) shippingCostLabel.appendChild(shippingInfoIcon);
+
+            // Preserve the info icon when updating the packaging cost label
+            const packagingCostLabel = document.querySelector('label[for="packaging-cost"]');
+            const packagingInfoIcon = packagingCostLabel.querySelector('.info-icon');
+            packagingCostLabel.innerHTML = `Packaging Cost (${symbol}) `;
+            if (packagingInfoIcon) packagingCostLabel.appendChild(packagingInfoIcon);
+
             // Update default values based on currency
             if (selectedCurrency === 'INR') {
                 // Only update electricity rate if it's not empty and has a specific value
@@ -694,7 +791,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (hardwareCost) hardwareCost.value = '0';
         if (overheadPercentage) overheadPercentage.value = '15';
         if (markupPercentage) markupPercentage.value = '30';
-        
+        if (shippingCost) shippingCost.value = '0';
+        if (packagingCost) packagingCost.value = '0';
+        if (gstPercentage) gstPercentage.value = '12';
+
         // Update labels for currency
         document.querySelector('label[for="electricity-rate"]').textContent = `Electricity Rate (₹/kWh)`;
 
@@ -716,7 +816,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const hardwareInfoIcon = hardwareCostLabel.querySelector('.info-icon');
         hardwareCostLabel.innerHTML = `Hardware Cost (₹) `;
         if (hardwareInfoIcon) hardwareCostLabel.appendChild(hardwareInfoIcon);
-        
+
+        const shippingCostLabel = document.querySelector('label[for="shipping-cost"]');
+        const shippingInfoIcon = shippingCostLabel.querySelector('.info-icon');
+        shippingCostLabel.innerHTML = `Shipping Cost (₹) `;
+        if (shippingInfoIcon) shippingCostLabel.appendChild(shippingInfoIcon);
+
+        const packagingCostLabel = document.querySelector('label[for="packaging-cost"]');
+        const packagingInfoIcon = packagingCostLabel.querySelector('.info-icon');
+        packagingCostLabel.innerHTML = `Packaging Cost (₹) `;
+        if (packagingInfoIcon) packagingCostLabel.appendChild(packagingInfoIcon);
+
         // Recalculate with default values
         calculatePrices();
         
