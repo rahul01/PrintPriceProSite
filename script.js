@@ -22,7 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
             markupPercentage: markupPercentage.value,
             shippingCost: shippingCost.value,
             packagingCost: packagingCost.value,
-            gstPercentage: gstPercentage.value
+            gstPercentage: gstPercentage.value,
+            gatewayPercentage: gatewayPercentage.value,
+            sellingPrice: sellingPrice.value
         };
         
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -56,7 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.shippingCost !== undefined && shippingCost) shippingCost.value = data.shippingCost;
                 if (data.packagingCost !== undefined && packagingCost) packagingCost.value = data.packagingCost;
                 if (data.gstPercentage !== undefined && gstPercentage) gstPercentage.value = data.gstPercentage;
-
+                if (data.gatewayPercentage !== undefined && gatewayPercentage) gatewayPercentage.value = data.gatewayPercentage;
+                if (data.sellingPrice !== undefined && sellingPrice) sellingPrice.value = data.sellingPrice;
 
                 return true;
             }
@@ -132,6 +135,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>Applied <strong>last</strong>, on top of the complete price - Subtotal (Direct Costs + Overhead) + Markup + Shipping + Packaging. It is <strong>not</strong> applied to the pre-markup Subtotal alone, so your Markup % is never itself taxed.</p>
                 <p>When GST is greater than 0, the results show both a <strong>Price Before GST</strong> line and a GST-inclusive <strong>Final Price</strong> line. Set it to 0 to hide GST entirely and quote tax-free.</p>
                 <p>The full app defaults GST to <strong>12%</strong>, its baseline rate - change it to match your actual rate.</p>
+            `
+        },
+        'gateway-charge': {
+            title: 'Payment Gateway Charge',
+            content: `
+                <p>The fee your payment processor (Razorpay, Stripe, PayPal, etc.) takes out of a real sale. Set to <strong>0</strong> if you don't take payments through a gateway that charges a fee.</p>
+                <p>Calculated on your <strong>full Selling Price</strong>, GST included - not the pre-tax amount - since that's what actually moves through your payment processor. Defaults to <strong>2%</strong>.</p>
+                <p>This charge is not shown as its own line - it's folded into the <strong>Expenses</strong> total in the Selling Price &amp; Profit section below.</p>
+            `
+        },
+        'selling-price': {
+            title: 'Selling Price & Profit',
+            content: `
+                <p><strong>The real-world price you actually charged (or plan to charge) for this job.</strong></p>
+                <p>Optional - leave blank if you only care about the calculated price above. Enter what the customer actually pays, <strong>including GST</strong> if you charge it.</p>
+                <p>Once set, this splits into exactly <strong>three parts</strong> that always add up to the full amount: <strong>Expenses</strong>, <strong>Taxes</strong>, and <strong>Profit</strong>.</p>
+                <p><strong>Expenses</strong> = every real cost of doing the job: Direct Costs + Overhead + Shipping + Packaging + Payment Gateway Charge.</p>
+                <p><strong>Profit</strong> = what's left over after Taxes and Expenses - this is what you actually made on this specific sale, different from the Markup % above which is only a target.</p>
+                <p>Each of the three also shows as a <strong>%</strong> of your Selling Price, and all three percentages always add up to <strong>100%</strong>.</p>
+                <p><strong>Profit turns red when negative:</strong> that means the job lost money at that selling price.</p>
+            `
+        },
+        'selling-price-taxes': {
+            title: 'Why Taxes % looks lower than your GST rate',
+            content: `
+                <p>Say the pre-tax price of a job is <strong>₹100</strong>. At <strong>18% GST</strong>, the tax is <strong>₹18</strong>, so the customer pays <strong>₹118</strong> total - that ₹118 is the Selling Price.</p>
+                <p>That same ₹18 of tax can be described two ways: <strong>18%</strong> of the ₹100 pre-tax price (your configured GST rate), or <strong>15.25%</strong> of the full ₹118 the customer paid.</p>
+                <p>Taxes % here always shows the second version, because Expenses %, Taxes %, and Profit % are designed to add up to exactly <strong>100%</strong> of what the customer paid. The <strong>amount</strong> is identical either way - only the percentage's denominator differs from your configured GST %.</p>
             `
         },
         'power-consumption': {
@@ -213,6 +244,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const shippingCost = document.getElementById('shipping-cost');
     const packagingCost = document.getElementById('packaging-cost');
     const gstPercentage = document.getElementById('gst-percentage');
+    const gatewayPercentage = document.getElementById('gateway-percentage');
+    const sellingPrice = document.getElementById('selling-price');
 
     // Get result elements
     const resultMaterial = document.getElementById('result-material');
@@ -229,6 +262,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultGst = document.getElementById('result-gst');
     const resultFinal = document.getElementById('result-final');
     const stickyPriceValue = document.getElementById('sticky-price-value');
+    const sellingPriceResults = document.getElementById('selling-price-results');
+    const resultSellingPrice = document.getElementById('result-selling-price');
+    const resultExpenses = document.getElementById('result-expenses');
+    const resultTaxes = document.getElementById('result-taxes');
+    const resultProfit = document.getElementById('result-profit');
     
     // Default printer power values (W)
     const printerPower = {
@@ -431,8 +469,18 @@ document.addEventListener('DOMContentLoaded', () => {
         'USD': '$',
         'EUR': '€',
         'GBP': '£',
-        'CAD': '$',
-        'AUD': '$'
+        'JPY': '¥',
+        'AUD': 'A$',
+        'CAD': 'CA$',
+        'NZD': 'NZ$',
+        'ZAR': 'ZAR',
+        'BRL': 'R$',
+        'DKK': 'DKK',
+        'PHP': '₱',
+        'MXN': 'MX$',
+        'IDR': 'IDR',
+        'RON': 'RON',
+        'SGD': 'SGD'
     };
     
     // Function to format currency
@@ -544,6 +592,23 @@ document.addEventListener('DOMContentLoaded', () => {
             // Final price (GST-inclusive)
             const finalValue = finalBeforeGstValue + gstValue;
 
+            // Selling Price / Expenses / Taxes / Profit three-way split (optional, only when
+            // a Selling Price is entered) — mirrors CalculatePriceUseCase.kt in the app exactly.
+            const gatewayPct = parseFloat(gatewayPercentage.value) || 0;
+            const sellingPriceValue = parseFloat(sellingPrice.value) || 0;
+            let preTaxSellingPriceValue = 0;
+            let gatewayChargeValue = 0;
+            let expensesValue = 0;
+            let taxesValue = 0;
+            let profitValue = 0;
+            if (sellingPriceValue > 0) {
+                preTaxSellingPriceValue = sellingPriceValue / (1 + gst / 100);
+                gatewayChargeValue = sellingPriceValue * (gatewayPct / 100);
+                taxesValue = sellingPriceValue - preTaxSellingPriceValue;
+                expensesValue = directCosts + overheadValue + shippingCostValue + packagingCostValue + gatewayChargeValue;
+                profitValue = sellingPriceValue - taxesValue - expensesValue;
+            }
+
             // Show/hide machine and hardware rows (only when non-zero)
             document.getElementById('result-machine-row').style.display = machineCostValue > 0 ? '' : 'none';
             document.getElementById('result-hardware-row').style.display = hardwareCostValue > 0 ? '' : 'none';
@@ -567,6 +632,30 @@ document.addEventListener('DOMContentLoaded', () => {
             resultGst.textContent = formatCurrency(gstValue, selectedCurrency);
             resultFinal.textContent = formatCurrency(finalValue, selectedCurrency);
             if (stickyPriceValue) stickyPriceValue.textContent = formatCurrency(finalValue, selectedCurrency);
+
+            // Selling Price & Profit section (only shown when a Selling Price is entered)
+            if (sellingPriceValue > 0) {
+                sellingPriceResults.style.display = '';
+                resultSellingPrice.textContent = formatCurrency(sellingPriceValue, selectedCurrency);
+                resultExpenses.textContent = formatCurrency(expensesValue, selectedCurrency) +
+                    ` (${(sellingPriceValue !== 0 ? expensesValue / sellingPriceValue * 100 : 0).toFixed(1)}%)`;
+                resultTaxes.textContent = formatCurrency(taxesValue, selectedCurrency) +
+                    ` (${(sellingPriceValue !== 0 ? taxesValue / sellingPriceValue * 100 : 0).toFixed(1)}%)`;
+                resultProfit.textContent = formatCurrency(profitValue, selectedCurrency) +
+                    ` (${(sellingPriceValue !== 0 ? profitValue / sellingPriceValue * 100 : 0).toFixed(1)}%)`;
+                resultProfit.classList.toggle('negative', profitValue < 0);
+
+                document.getElementById('calc-expenses').textContent =
+                    `${symbol}${directCosts.toFixed(2)} + ${symbol}${overheadValue.toFixed(2)} + ${symbol}${shippingCostValue.toFixed(2)} + ${symbol}${packagingCostValue.toFixed(2)} + ${symbol}${gatewayChargeValue.toFixed(2)} (gateway charge) = ${symbol}${expensesValue.toFixed(2)}`;
+
+                document.getElementById('calc-taxes').textContent =
+                    `${symbol}${sellingPriceValue.toFixed(2)} − ${symbol}${preTaxSellingPriceValue.toFixed(2)} (pre-tax) = ${symbol}${taxesValue.toFixed(2)}`;
+
+                document.getElementById('calc-profit').textContent =
+                    `${symbol}${sellingPriceValue.toFixed(2)} − ${symbol}${taxesValue.toFixed(2)} − ${symbol}${expensesValue.toFixed(2)} = ${symbol}${profitValue.toFixed(2)}`;
+            } else {
+                sellingPriceResults.style.display = 'none';
+            }
 
             // Update calculation details
             document.getElementById('calc-material').textContent =
@@ -651,7 +740,7 @@ document.addEventListener('DOMContentLoaded', () => {
         printer, materialWeight, printTimeHours, printTimeMinutes,
         laborTime, currency, electricityRate, materialCost,
         laborRate, machineCostPerHour, hardwareCost, overheadPercentage, markupPercentage,
-        shippingCost, packagingCost, gstPercentage
+        shippingCost, packagingCost, gstPercentage, gatewayPercentage, sellingPrice
     ];
     
     // When printer changes, pre-fill machine cost from lookup (fires before the general listeners below)
@@ -794,6 +883,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (shippingCost) shippingCost.value = '0';
         if (packagingCost) packagingCost.value = '0';
         if (gstPercentage) gstPercentage.value = '12';
+        if (gatewayPercentage) gatewayPercentage.value = '2';
+        if (sellingPrice) sellingPrice.value = '';
 
         // Update labels for currency
         document.querySelector('label[for="electricity-rate"]').textContent = `Electricity Rate (₹/kWh)`;
@@ -838,7 +929,32 @@ document.addEventListener('DOMContentLoaded', () => {
     if (resetButton) {
         resetButton.addEventListener('click', resetCalculator);
     }
-    
+
+    // Track feedback link clicks (mailto link in the nav, present on every page)
+    document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.trackEvent) window.trackEvent('feedback_link_clicked');
+        });
+    });
+
+    // Mobile hamburger menu toggle
+    const navToggle = document.getElementById('nav-toggle');
+    const navLinksMenu = document.querySelector('.nav-links');
+    if (navToggle && navLinksMenu) {
+        navToggle.addEventListener('click', function() {
+            const isOpen = navLinksMenu.classList.toggle('open');
+            navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+
+        // Close the menu after tapping a link
+        navLinksMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                navLinksMenu.classList.remove('open');
+                navToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
+
     // Run initial calculation if needed
     setTimeout(calculatePrices, 500);
 });

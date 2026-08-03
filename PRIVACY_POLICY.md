@@ -153,8 +153,8 @@ backup).
 If you have any questions or concerns about this Privacy Policy or how PrintPricePro handles your
 data, please contact us at:
 
-**Email:** [Your contact email]
-**Website:** [Your website URL]
+**Email:** raaaaahul@gmail.com
+**Website:** https://www.printpricepro.com
 
 ## Consent
 
