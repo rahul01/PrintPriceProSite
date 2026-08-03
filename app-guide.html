@@ -3,17 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PrintPricePro - 3D Printing Cost Calculator App Guide">
+    <meta name="description" content="Step-by-step guide to the PrintPricePro Android app: set up printers, materials, and pricing rules to quote your 3D prints accurately.">
     <meta name="theme-color" content="#6650A4">
-    <title>PrintPricePro - App Guide</title>
-    
+    <title>App Guide | PrintPricePro</title>
+    <link rel="canonical" href="https://www.printpricepro.com/app-guide.html">
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="App Guide | PrintPricePro">
+    <meta property="og:description" content="Step-by-step guide to the PrintPricePro Android app: set up printers, materials, and pricing rules to quote your 3D prints accurately.">
+    <meta property="og:url" content="https://www.printpricepro.com/app-guide.html">
+    <meta property="og:image" content="https://www.printpricepro.com/icon-512.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="App Guide | PrintPricePro">
+    <meta name="twitter:description" content="Step-by-step guide to the PrintPricePro Android app: set up printers, materials, and pricing rules to quote your 3D prints accurately.">
+    <meta name="twitter:image" content="https://www.printpricepro.com/icon-512.png">
+
     <!-- Favicons -->
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="manifest" href="manifest.json">
-    
+
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,7 +49,13 @@
                     <a href="index.html" class="nav-link">Calculator</a>
                     <a href="app-guide.html" class="nav-link active">App Guide</a>
                     <a href="privacy.html" class="nav-link">Privacy Policy</a>
+                    <a href="mailto:raaaaahul@gmail.com?subject=PrintPricePro%20Feedback%20%26%20Feature%20Request" class="nav-link nav-link-feedback">Feedback & Feature Request</a>
                 </div>
+                <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+                    <span class="nav-toggle-bar"></span>
+                    <span class="nav-toggle-bar"></span>
+                    <span class="nav-toggle-bar"></span>
+                </button>
             </div>
         </div>
     </nav>
@@ -67,6 +85,8 @@
                             <li><a href="#overhead">Overhead Percentage</a></li>
                             <li><a href="#markup">Percentage Markup</a></li>
                             <li><a href="#gst">GST Percentage</a></li>
+                            <li><a href="#payment-gateway-charge">Payment Gateway Charge</a></li>
+                            <li><a href="#selling-price">Selling Price</a></li>
                             <li><a href="#in-field-calculator">In-Field Calculator</a></li>
                             <li><a href="#printer-library">Your Printer Library</a></li>
                             <li><a href="#consistent-pricing">Consistent Pricing Across Printers</a></li>
@@ -198,6 +218,33 @@
                                 <p><strong>Defaults to 12%:</strong> new installs and existing installs updating to this version both start with GST % set to 12, this app's baseline rate - change it in Settings if your rate differs.</p>
                                 <p><strong>Read live, not locked in per job:</strong> changing GST % in Settings immediately updates the displayed price of every calculation in your Catalogue, past and future - it is never frozen at the moment a job was saved, unlike Shipping/Packaging cost which are saved per job.</p>
                                 <p><em>Settings &gt; GST</em></p>
+                            </div>
+                        </div>
+
+                        <div class="info-card" id="payment-gateway-charge">
+                            <h3>Payment Gateway Charge</h3>
+                            <div class="info-content">
+                                <p>The fee your payment processor (Razorpay, Stripe, PayPal, etc.) takes out of a real sale, so Profit reflects money actually kept, not money before processor fees.</p>
+                                <p>Calculated on your <strong>full Selling Price</strong>, GST included - not the pre-tax amount - since that's what actually moves through your payment processor. <strong>Defaults to 2%.</strong> Set it to <strong>0</strong> if you don't take payments through a gateway that charges a fee.</p>
+                                <p>Not shown as its own line anywhere - it's folded into the <strong>Expenses</strong> total in the Selling Price &amp; Profit section below.</p>
+                                <p><em>Settings &gt; Payment Gateway Charge</em></p>
+                            </div>
+                        </div>
+
+                        <div class="info-card" id="selling-price">
+                            <h3>Selling Price</h3>
+                            <div class="info-content">
+                                <p><strong>The real-world price you actually charged (or plan to charge) for this job.</strong></p>
+                                <p>Optional - leave blank or at <strong>0</strong> if you only care about the calculated price above. Enter what the customer actually pays, <strong>including GST</strong> if you charge it.</p>
+                                <p>Once set, this Selling Price splits into exactly <strong>three parts</strong> that always add up to the full amount - <strong>Expenses</strong>, <strong>Taxes</strong>, and <strong>Profit</strong> - shown on the Calculator screen and on the job's Catalogue detail screen.</p>
+                                <p><strong>Taxes</strong> = the GST portion already included in your Selling Price. GST you collect is owed to the tax authority, not kept as profit, so it's backed out first: Pre-Tax Selling Price = Selling Price ÷ (1 + GST%), and Taxes = Selling Price − Pre-Tax Selling Price.</p>
+                                <p><strong>Expenses</strong> = every real cost of doing the job: Material + Labor + Electricity + Machine + Hardware + Overhead + Shipping + Packaging + Payment Gateway Charge.</p>
+                                <p><strong>Profit</strong> = what's left over after Taxes and Expenses. This is a different number from the Profit Margin line further up, which is only a <strong>target</strong> for what you plan to charge - Profit here is what you actually made on this specific sale.</p>
+                                <p>Each of the three also shows as a <strong>%</strong> of your Selling Price, and all three percentages always add up to <strong>100%</strong>.</p>
+                                <p>Worked example: a job with ₹322.30 in total costs, sold for ₹5,000 at 12% GST and the default 2% gateway charge → Taxes ₹535.71 (10.7%), Expenses ₹422.30 (8.4%), Profit ₹4,041.99 (80.8%).</p>
+                                <p><strong>Profit turns red when negative:</strong> that means the job lost money at that selling price - shown in red so it's impossible to miss.</p>
+                                <p><strong>Also shown on the Catalogue list</strong> (in a shorter form): once a saved job has a Selling Price, its list row shows the Selling Price in green under the calculated price, followed by just Profit (amount and %) on the line below.</p>
+                                <p><em>Calculator &gt; Selling Price</em></p>
                             </div>
                         </div>
 
@@ -334,6 +381,7 @@
             <div class="links">
                 <a href="index.html">Calculator</a>
                 <a href="privacy.html">Privacy Policy</a>
+                <a href="mailto:raaaaahul@gmail.com?subject=PrintPricePro%20Feedback%20%26%20Feature%20Request">Feedback & Feature Request</a>
                 <a href="https://play.google.com/store/apps/details?id=tech.anubias.printpricepro" target="_blank" rel="noopener noreferrer">Get it on Google Play</a>
             </div>
         </div>
@@ -405,6 +453,38 @@
 
         window.addEventListener('scroll', highlightActiveSection);
         window.addEventListener('load', highlightActiveSection);
+
+        // Track feedback link clicks (mailto link in the nav)
+        document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.trackEvent) window.trackEvent('feedback_link_clicked');
+            });
+        });
+
+        // Mobile hamburger menu toggle
+        const navToggle = document.getElementById('nav-toggle');
+        const navLinksMenu = document.querySelector('.nav-links');
+        if (navToggle && navLinksMenu) {
+            navToggle.addEventListener('click', function() {
+                const isOpen = navLinksMenu.classList.toggle('open');
+                navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            });
+
+            navLinksMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinksMenu.classList.remove('open');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
+        }
     </script>
 </body>
 </html>

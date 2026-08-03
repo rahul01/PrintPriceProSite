@@ -4,9 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-          content="Privacy Policy for PrintPricePro - 3D Printing Cost Calculator">
+          content="Privacy Policy for PrintPricePro, the 3D printing cost calculator. Learn what data is collected and how it's used.">
     <meta name="theme-color" content="#6650A4">
-    <title>PrintPricePro - Privacy Policy</title>
+    <title>Privacy Policy | PrintPricePro</title>
+    <link rel="canonical" href="https://www.printpricepro.com/privacy.html">
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Privacy Policy | PrintPricePro">
+    <meta property="og:description" content="Privacy Policy for PrintPricePro, the 3D printing cost calculator. Learn what data is collected and how it's used.">
+    <meta property="og:url" content="https://www.printpricepro.com/privacy.html">
+    <meta property="og:image" content="https://www.printpricepro.com/icon-512.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Privacy Policy | PrintPricePro">
+    <meta name="twitter:description" content="Privacy Policy for PrintPricePro, the 3D printing cost calculator. Learn what data is collected and how it's used.">
+    <meta name="twitter:image" content="https://www.printpricepro.com/icon-512.png">
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -39,7 +51,13 @@
                 <a href="index.html" class="nav-link">Calculator</a>
                 <a href="app-guide.html" class="nav-link">App Guide</a>
                 <a href="privacy.html" class="nav-link active">Privacy Policy</a>
+                <a href="mailto:raaaaahul@gmail.com?subject=PrintPricePro%20Feedback%20%26%20Feature%20Request" class="nav-link nav-link-feedback">Feedback & Feature Request</a>
             </div>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+                <span class="nav-toggle-bar"></span>
+                <span class="nav-toggle-bar"></span>
+                <span class="nav-toggle-bar"></span>
+            </button>
         </div>
     </div>
 </nav>
@@ -94,6 +112,7 @@
                         <li><a href="#children">Children's Privacy</a></li>
                         <li><a href="#changes">Changes to Policy</a></li>
                         <li><a href="#retention">Data Retention</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
                         <li><a href="#consent">Consent</a></li>
                     </ul>
                 </div>
@@ -328,6 +347,14 @@
                         data (unless backed up through your device's system backup).</p>
                 </section>
 
+                <section id="contact" class="section">
+                    <h2>Contact Us</h2>
+                    <p>If you have any questions or concerns about this Privacy Policy or how
+                        PrintPricePro handles your data, please contact us at:</p>
+                    <p><strong>Email:</strong> <a href="mailto:raaaaahul@gmail.com?subject=PrintPricePro%20Privacy%20Question">raaaaahul@gmail.com</a><br>
+                        <strong>Website:</strong> <a href="https://www.printpricepro.com">https://www.printpricepro.com</a></p>
+                </section>
+
                 <section id="consent" class="section">
                     <h2>Consent</h2>
                     <p>By using PrintPricePro (the app or the website), you consent to this Privacy
@@ -383,6 +410,7 @@
                 <section class="links">
                     <a href="index.html">Calculator</a>
                     <a href="app-guide.html">App Guide</a>
+                    <a href="mailto:raaaaahul@gmail.com?subject=PrintPricePro%20Feedback%20%26%20Feature%20Request">Feedback & Feature Request</a>
                 </section>
             </article>
         </div>
@@ -400,6 +428,7 @@
                 <p class="footer-description">Privacy-first 3D printing cost calculator</p>
                     <div class="footer-links">
                         <a href="index.html">Return to Calculator</a>
+                        <a href="mailto:raaaaahul@gmail.com?subject=PrintPricePro%20Feedback%20%26%20Feature%20Request">Feedback & Feature Request</a>
                     </div>
             </div>
             <div class="footer-right">
@@ -411,5 +440,13 @@
 
 <script type="module" src="analytics.js"></script>
 <script src="script.js"></script>
+
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js');
+        });
+    }
+</script>
 </body>
 </html>

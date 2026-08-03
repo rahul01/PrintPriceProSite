@@ -3,17 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PrintPricePro - 3D Printing Cost Calculator">
+    <meta name="description" content="Free 3D printing cost calculator. Estimate material, electricity, labor, and machine costs, then set a price with markup, shipping, packaging, and GST/tax built in.">
     <meta name="theme-color" content="#6650A4">
-    <title>PrintPricePro - 3D Printing Cost Calculator</title>
-    
+    <title>3D Printing Cost & Price Calculator | PrintPricePro</title>
+    <link rel="canonical" href="https://www.printpricepro.com/">
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="3D Printing Cost & Price Calculator | PrintPricePro">
+    <meta property="og:description" content="Free 3D printing cost calculator. Estimate material, electricity, labor, and machine costs, then set a price with markup, shipping, packaging, and GST/tax built in.">
+    <meta property="og:url" content="https://www.printpricepro.com/">
+    <meta property="og:image" content="https://www.printpricepro.com/icon-512.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="3D Printing Cost & Price Calculator | PrintPricePro">
+    <meta name="twitter:description" content="Free 3D printing cost calculator. Estimate material, electricity, labor, and machine costs, then set a price with markup, shipping, packaging, and GST/tax built in.">
+    <meta name="twitter:image" content="https://www.printpricepro.com/icon-512.png">
+
     <!-- Favicons -->
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="manifest" href="manifest.json">
-    
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "PrintPricePro",
+      "url": "https://www.printpricepro.com/",
+      "description": "Free 3D printing cost calculator. Estimate material, electricity, labor, and machine costs, then set a price with markup, shipping, packaging, and GST/tax built in.",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web, Android",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
     <link rel="stylesheet" href="styles.css?v=3">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,12 +66,19 @@
                     <a href="index.html" class="nav-link active">Calculator</a>
                     <a href="app-guide.html" class="nav-link">App Guide</a>
                     <a href="privacy.html" class="nav-link">Privacy Policy</a>
+                    <a href="mailto:raaaaahul@gmail.com?subject=PrintPricePro%20Feedback%20%26%20Feature%20Request" class="nav-link nav-link-feedback">Feedback & Feature Request</a>
                 </div>
+                <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+                    <span class="nav-toggle-bar"></span>
+                    <span class="nav-toggle-bar"></span>
+                    <span class="nav-toggle-bar"></span>
+                </button>
             </div>
         </div>
     </nav>
 
     <main class="main-content-container">
+        <h1 class="sr-only">3D Printing Cost &amp; Price Calculator</h1>
         <div class="calculator-sections-container calculator-container">
             <div class="calculator-section calculator-section-main">
                 <div class="calculator-input-group">
@@ -204,8 +240,18 @@
                             <option value="USD">USD ($)</option>
                             <option value="EUR">EUR (€)</option>
                             <option value="GBP">GBP (£)</option>
-                            <option value="CAD">CAD ($)</option>
-                            <option value="AUD">AUD ($)</option>
+                            <option value="JPY">JPY (¥)</option>
+                            <option value="AUD">AUD (A$)</option>
+                            <option value="CAD">CAD (CA$)</option>
+                            <option value="NZD">NZD (NZ$)</option>
+                            <option value="ZAR">ZAR</option>
+                            <option value="BRL">BRL (R$)</option>
+                            <option value="DKK">DKK</option>
+                            <option value="PHP">PHP (₱)</option>
+                            <option value="MXN">MXN (MX$)</option>
+                            <option value="IDR">IDR</option>
+                            <option value="RON">RON</option>
+                            <option value="SGD">SGD</option>
                         </select>
                     </div>
                     <div class="calculator-input">
@@ -262,6 +308,17 @@
                     <div class="calculator-input">
                         <label for="gst-percentage">GST (%) <span class="info-icon" data-info="gst">i</span></label>
                         <input type="number" id="gst-percentage" placeholder="e.g., 12" min="0" max="100" value="12">
+                    </div>
+                    <div class="calculator-input">
+                        <label for="gateway-percentage">Payment Gateway Charge (%) <span class="info-icon" data-info="gateway-charge">i</span></label>
+                        <input type="number" id="gateway-percentage" placeholder="e.g., 2" min="0" max="100" step="0.01" value="2">
+                    </div>
+                </div>
+
+                <div class="calculator-input-group">
+                    <div class="calculator-input">
+                        <label for="selling-price">Selling Price (optional) <span class="info-icon" data-info="selling-price">i</span></label>
+                        <input type="number" id="selling-price" placeholder="e.g., 5000" min="0" step="0.01">
                     </div>
                 </div>
 
@@ -420,7 +477,51 @@
                         </div>
                     </div>
                 </div>
-                
+
+                <div class="calculator-results results-display" id="selling-price-results" style="display:none; margin-top: 1.5rem;">
+                    <div class="results-header">
+                        <h3>Selling Price &amp; Profit <span class="info-icon" data-info="selling-price">i</span></h3>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-label">Selling Price:</span>
+                        <span class="result-value profit-green" id="result-selling-price">₹0.00</span>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-label">Expenses:</span>
+                        <span class="result-value" id="result-expenses">₹0.00</span>
+                        <div class="formula-explanation" id="formula-expenses">
+                            <div class="formula">
+                                Expenses = Direct Costs + Overhead + Shipping + Packaging + Payment Gateway Charge
+                            </div>
+                            <div class="calculation" id="calc-expenses"></div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-label">Taxes: <span class="info-icon" data-info="selling-price-taxes">i</span></span>
+                        <span class="result-value" id="result-taxes">₹0.00</span>
+                        <div class="formula-explanation" id="formula-taxes">
+                            <div class="formula">
+                                Pre-Tax Selling Price = Selling Price / (1 + GST% / 100); Taxes = Selling Price − Pre-Tax Selling Price
+                            </div>
+                            <div class="calculation" id="calc-taxes"></div>
+                        </div>
+                    </div>
+
+                    <div class="result-item total">
+                        <span class="result-label">Profit:</span>
+                        <span class="result-value" id="result-profit">₹0.00</span>
+                        <div class="formula-explanation" id="formula-profit">
+                            <div class="formula">
+                                Profit = Selling Price − Taxes − Expenses
+                            </div>
+                            <div class="calculation" id="calc-profit"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Standard Get the Full App button at the bottom of second section -->
                 <div class="calculator-input-group app-promotion-group">
                     <div class="app-promotion-center">
@@ -438,6 +539,7 @@
             <section class="links">
                 <a href="app-guide.html">App Guide</a>
                 <a href="privacy.html">Privacy Policy</a>
+                <a href="mailto:raaaaahul@gmail.com?subject=PrintPricePro%20Feedback%20%26%20Feature%20Request">Feedback & Feature Request</a>
             </section>
         </div>
     </main>
@@ -485,6 +587,14 @@
     <script>
         // Google Play button now links directly to the Play Store
         // No JavaScript needed for this functionality
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
+        }
     </script>
 </body>
 </html>
