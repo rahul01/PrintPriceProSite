@@ -1,4 +1,4 @@
-const CACHE_NAME = 'printpricepro-v9';
+const CACHE_NAME = 'printpricepro-v10';
 const PRECACHE_URLS = [
     '/',
     '/index.html',
@@ -32,6 +32,25 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
     if (event.request.method !== 'GET') return;
+
+    // Pages: network first, cache only when offline. A cache-first page kept pointing at the
+    // previous deploy's ?v= asset URLs, so returning visitors saw the old site once after
+    // every deploy. Assets below stay cache-first; their URLs change with each version.
+    if (event.request.mode === 'navigate') {
+        event.respondWith(
+            fetch(event.request)
+                .then((response) => {
+                    if (response.ok) {
+                        const responseClone = response.clone();
+                        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+                    }
+                    return response;
+                })
+                .catch(() => caches.match(event.request)
+                    .then((cached) => cached || caches.match('/index.html')))
+        );
+        return;
+    }
 
     event.respondWith(
         caches.match(event.request).then((cached) => {
