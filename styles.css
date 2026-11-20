@@ -905,6 +905,13 @@ main {
     text-align: left;
 }
 
+.calculator-input .input-hint {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-align: left;
+    margin-top: -0.25rem;
+}
+
 .calculator-input input, .calculator-input select {
     width: 100%;
     padding: 0.75rem 0.75rem 0.75rem 10px;

@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             laborRate: laborRate.value,
             machineCostPerHour: machineCostPerHour.value,
             hardwareCost: hardwareCost.value,
+            hardwareMarkupPercentage: hardwareMarkupPercentage ? hardwareMarkupPercentage.value : '',
             overheadPercentage: overheadPercentage.value,
             markupPercentage: markupPercentage.value,
             shippingCost: shippingCost.value,
@@ -53,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     machineCostPerHour.value = printerMachineCost[printer.value] ?? 0;
                 }
                 if (data.hardwareCost !== undefined && hardwareCost) hardwareCost.value = data.hardwareCost;
+                if (data.hardwareMarkupPercentage !== undefined && hardwareMarkupPercentage) hardwareMarkupPercentage.value = data.hardwareMarkupPercentage;
                 if (data.overheadPercentage && overheadPercentage) overheadPercentage.value = data.overheadPercentage;
                 if (data.markupPercentage && markupPercentage) markupPercentage.value = data.markupPercentage;
                 if (data.shippingCost !== undefined && shippingCost) shippingCost.value = data.shippingCost;
@@ -99,6 +101,17 @@ document.addEventListener('DOMContentLoaded', () => {
             content: `
                 <p>The total cost of any physical hardware components used in this specific job. For example: <strong>heat-set inserts, screws, magnets, springs</strong>, or other embedded parts.</p>
                 <p>Enter the combined cost for the entire job (e.g., 4 inserts × ₹2 + 2 screws × ₹1 = ₹10). Leave at 0 if no hardware is used.</p>
+                <p>Overhead applies on top of it, and it is marked up by <strong>Hardware Markup %</strong> (blank = the main Markup %).</p>
+            `
+        },
+        'hardware-markup': {
+            title: 'Hardware Markup %',
+            content: `
+                <p><strong>A separate markup for this job's hardware only.</strong> Shown once Hardware Cost is above 0.</p>
+                <p><strong>Leave it blank</strong> to use the main Markup %. <strong>Type a number</strong> to mark up only the hardware by that amount; everything else still uses Markup %.</p>
+                <p>Overhead still applies to hardware. The hardware markup is charged on hardware plus its overhead.</p>
+                <p><strong>Why use it:</strong> an expensive bought-in part (a ₹500 bearing, a motor, electronics) usually can't carry the same markup as your own print work without making the quote uncompetitive. Set a low value, or 0 to pass the part through at cost plus overhead.</p>
+                <p>Example: Hardware ₹50, Overhead 10%, Markup 50%. Blank → hardware adds ₹27.50 profit. Hardware Markup 10% → it adds ₹5.50.</p>
             `
         },
         'overhead': {
@@ -108,9 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
             `
         },
         'markup': {
-            title: 'Percentage Markup',
+            title: 'Markup % on total cost',
             content: `
-                <p>This percentage is the final markup applied to the <strong>Total Cost (Material + Labor + Overhead)</strong> to determine the final selling price. It represents the <strong>net profit</strong> generated per job.</p>
+                <p>This percentage is added on top of the <strong>Subtotal (Material + Labor + Electricity + Machine + Hardware + Overhead)</strong> to set your price. That extra amount is your <strong>net profit</strong> per job.</p>
+                <p><strong>Markup is not margin.</strong> Markup is profit as a share of <strong>cost</strong>; margin is profit as a share of the <strong>price</strong>. The same profit is always a smaller margin than markup: 30% markup = 23.1% margin, 50% markup = 33.3% margin, 100% markup = 50% margin.</p>
+                <p>The hint under the Markup field shows the margin for the value you enter. If you think in margin terms, raise the markup until the hint shows your target. Margin here is measured on the price before Shipping, Packaging and GST.</p>
             `
         },
         'shipping-cost': {
@@ -239,6 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const laborRate = document.getElementById('labor-rate');
     const machineCostPerHour = document.getElementById('machine-cost-per-hour');
     const hardwareCost = document.getElementById('hardware-cost');
+    const hardwareMarkupPercentage = document.getElementById('hardware-markup-percentage');
     const overheadPercentage = document.getElementById('overhead-percentage');
     const markupPercentage = document.getElementById('markup-percentage');
     const shippingCost = document.getElementById('shipping-cost');
@@ -690,8 +706,33 @@ document.addEventListener('DOMContentLoaded', () => {
             // Subtotal including overhead
             const subtotalValue = directCosts + overheadValue;
 
-            // Markup / profit margin
-            const markupValue = subtotalValue * (markup / 100);
+            // Markup on cost (not margin on price)
+            // Hardware (plus the overhead on it) can carry its own markup; blank = main markup.
+            // Mirrors CalculatePriceUseCase.kt: with a blank hardware markup this equals subtotal × markup.
+            const hwMarkupRaw = hardwareMarkupPercentage ? hardwareMarkupPercentage.value.trim() : '';
+            const hwMarkupParsed = parseFloat(hwMarkupRaw);
+            const hwMarkupIsCustom = hwMarkupRaw !== '' && !isNaN(hwMarkupParsed);
+            const effectiveHwMarkup = hwMarkupIsCustom ? hwMarkupParsed : markup;
+            const hardwareShareValue = hwCost * (1 + overhead / 100);
+            const baseShareValue = subtotalValue - hardwareShareValue;
+            const markupValue = baseShareValue * (markup / 100) + hardwareShareValue * (effectiveHwMarkup / 100);
+
+            const hwMarkupRow = document.getElementById('hardware-markup-row');
+            if (hwMarkupRow) hwMarkupRow.style.display = hwCost > 0 ? '' : 'none';
+            const hwMarkupHint = document.getElementById('hardware-markup-hint');
+            if (hwMarkupHint) {
+                hwMarkupHint.textContent = hwMarkupIsCustom
+                    ? 'Only for hardware · clear to use Markup %'
+                    : `Blank = same as Markup % (${markup}%)`;
+            }
+
+            // Live hint: the profit margin (share of pre-shipping, pre-GST price) this markup gives
+            const marginHint = document.getElementById('markup-margin-hint');
+            if (marginHint) {
+                marginHint.textContent = markup >= 0
+                    ? `≈ ${(markup / (100 + markup) * 100).toFixed(1)}% margin before shipping & GST`
+                    : '';
+            }
 
             // Shipping and Packaging are pass-through costs added after Overhead/Markup,
             // not marked up by either percentage
@@ -803,7 +844,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 `${subtotalParts.join(' + ')} = ${symbol}${subtotalValue.toFixed(2)}`;
 
             document.getElementById('calc-markup').textContent =
-                `${symbol}${subtotalValue.toFixed(2)} × (${markup}% / 100) = ${symbol}${markupValue.toFixed(2)}`;
+                hwCost > 0 && hwMarkupIsCustom
+                    ? `${symbol}${baseShareValue.toFixed(2)} × (${markup}% / 100) + ${symbol}${hardwareShareValue.toFixed(2)} (hardware) × (${effectiveHwMarkup}% / 100) = ${symbol}${markupValue.toFixed(2)}`
+                    : `${symbol}${subtotalValue.toFixed(2)} × (${markup}% / 100) = ${symbol}${markupValue.toFixed(2)}`;
 
             document.getElementById('calc-shipping').textContent =
                 `${symbol}${shippingCostValue.toFixed(2)}`;
@@ -854,7 +897,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const allInputs = [
         printer, materialWeight, printTimeHours, printTimeMinutes,
         laborTime, currency, electricityRate, materialCost,
-        laborRate, machineCostPerHour, hardwareCost, overheadPercentage, markupPercentage,
+        laborRate, machineCostPerHour, hardwareCost, hardwareMarkupPercentage, overheadPercentage, markupPercentage,
         shippingCost, packagingCost, gstPercentage, gatewayPercentage, sellingPrice
     ];
     
@@ -993,6 +1036,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (laborRate) laborRate.value = '100';
         if (machineCostPerHour) machineCostPerHour.value = printerMachineCost['bambu-a1'];
         if (hardwareCost) hardwareCost.value = '0';
+        if (hardwareMarkupPercentage) hardwareMarkupPercentage.value = '';
         if (overheadPercentage) overheadPercentage.value = '15';
         if (markupPercentage) markupPercentage.value = '30';
         if (shippingCost) shippingCost.value = '0';
