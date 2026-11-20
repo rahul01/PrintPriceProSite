@@ -81,6 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Info content from app guide
     const infoContent = {
+        // Wording mirrors the Android app's help (info_items.json + *_help_text strings),
+        // adapted for the web: no Settings screen, no in-field expressions, site field names.
         'labor-rate': {
             title: 'Labor Rate Per Hour',
             content: `
@@ -89,21 +91,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     <li><strong>Pre-Print Setup:</strong> e.g., slicing, starting the print, <strong>loading/unloading spools - 1 to 5 min</strong></li>
                     <li><strong>Post-Processing Tasks:</strong> e.g., <strong>support material removal - 2 to 15 min per part</strong>, cleaning, sanding, and packaging</li>
                 </ul>
+                <p><strong>For resin:</strong> includes PPE setup (gloves, ventilation check), build plate levelling check - 2–5 min. Post-processing is heavier: support removal, IPA washing (15–30 min), UV curing (5–15 min), sanding and painting if required.</p>
             `
         },
         'machine-cost': {
-            title: 'Machine Cost Per Hour',
+            title: 'Machine Cost per Hour',
             content: `
-                <p>The amortised depreciation and maintenance cost of the printer per hour of use. <strong>This field is pre-filled based on the selected printer</strong> using the same values as the full app (calculated as approx. retail price ÷ 3 years × 365 days × 4 hours).</p>
-                <p>You can override it with your own value. For example, if your printer cost ₹25,000 and you expect 1,000 hours of use, the machine cost is <strong>₹25/hour</strong>. Set to 0 to exclude it and account for depreciation via Overhead instead.</p>
+                <p>The amortised cost of owning and operating a printer per hour. It covers:</p>
+                <ul>
+                    <li><strong>Depreciation:</strong> Printer purchase price spread over its usable lifespan</li>
+                    <li><strong>Maintenance:</strong> Nozzles, beds, belts, lubrication, and other consumables</li>
+                </ul>
+                <p><strong>Example:</strong> A printer that cost ₹30,000, lasts ~3 years and runs ~4 hours/day:<br>30,000 ÷ (3 × 365 × 4) ≈ <strong>₹6.85/hour</strong></p>
+                <p>This cost is multiplied by print time and added as a direct job cost before overhead and markup are applied.</p>
+                <p>On this calculator it is <strong>pre-filled from the selected printer</strong>, using the same values as the app. You can override it, or leave it at <strong>0</strong> if you prefer to cover machine costs through the Overhead % instead.</p>
+                <p><em>Resin example: A printer that cost ₹20,000, lasts ~3 years at ~4 hr/day: 20,000 ÷ (3 × 365 × 4) ≈ ₹4.57/hour. Also consider FEP film (~₹500–800 per sheet, replaced every 20–50 prints) as an additional machine cost component.</em></p>
             `
         },
         'hardware-cost': {
             title: 'Hardware Cost',
             content: `
-                <p>The total cost of any physical hardware components used in this specific job. For example: <strong>heat-set inserts, screws, magnets, springs</strong>, or other embedded parts.</p>
-                <p>Enter the combined cost for the entire job (e.g., 4 inserts × ₹2 + 2 screws × ₹1 = ₹10). Leave at 0 if no hardware is used.</p>
-                <p>Overhead applies on top of it, and it is marked up by <strong>Hardware Markup %</strong> (pre-filled with, and following, the main Markup %).</p>
+                <p><strong>Per-job cost of physical hardware added to a print.</strong></p>
+                <p>Use this field to include the cost of consumable hardware items that go into a specific job - for example, nuts, bolts, inserts, magnets, or springs embedded in the print.</p>
+                <p>Enter the combined cost for the job, for example 4 nuts at ₹0.10 + 2 inserts at ₹0.60 = <strong>₹1.60</strong>.</p>
+                <p>Hardware cost is a direct job cost - overhead is applied on top of it, and it is marked up by <strong>Hardware Markup %</strong> (which follows your Markup % unless you set it per job).</p>
+                <p>Leave blank or at <strong>0</strong> if the job has no embedded hardware.</p>
             `
         },
         'hardware-markup': {
@@ -112,9 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
             get content() {
                 return `
                 <p><strong>${hardwareMarkupStatus()}</strong></p>
-                <p>Marks up only the hardware in this job (plus the overhead on it). Everything else uses your Settings <b>Markup %</b>.</p>
+                <p>Marks up only the hardware in this job (plus the overhead on it). Everything else uses your <b>Markup %</b>.</p>
                 <ul>
-                    <li><b>Same as Markup %</b>: follows Markup %, even if you change it later.</li>
+                    <li><b>Same as Markup %</b> (pre-filled): follows Markup %, even if you change it later.</li>
                     <li><b>A different number</b>: used for hardware only. Use a low value, or 0, for expensive bought-in parts.</li>
                 </ul>
             `;
@@ -123,45 +135,55 @@ document.addEventListener('DOMContentLoaded', () => {
         'overhead': {
             title: 'Overhead Percentage',
             content: `
-                <p>This percentage is applied to <strong>all Direct Costs</strong> (Material + Electricity + Labor + Machine + Hardware). It covers non-direct expenses such as: <strong>failed prints/reprints</strong>, consumables (glue, cleaning agents), and facility costs.</p>
+                <p>This percentage is applied to <strong>all Direct Costs (Material + Electricity + Labor + Machine + Hardware)</strong>. It covers non-direct expenses such as: <strong>failed prints/reprints</strong>, consumables (glue, cleaning agents), and facility costs.</p>
+                <p><strong>Tip - consistent pricing across multiple printers:</strong> If you own more than one printer, costs vary by machine (power draw, depreciation). To keep your selling prices <strong>consistent across batches</strong>, always calculate using your <strong>most expensive printer</strong> as the standard. Jobs run on cheaper printers will then yield higher margin - but you will never underprice. Use Overhead % to absorb the remaining variance.</p>
+                <p><em>For resin printing, overhead is typically higher (25–35%) due to FEP/nFEP film replacement, IPA wash solution, nitrile gloves, and a higher rate of print failures.</em></p>
             `
         },
         'markup': {
             title: 'Markup % on total cost',
             content: `
                 <p>This percentage is added on top of the <strong>Subtotal (Material + Labor + Electricity + Machine + Hardware + Overhead)</strong> to set your price. That extra amount is your <strong>net profit</strong> per job.</p>
-                <p><strong>Markup is not margin.</strong> Markup is profit as a share of <strong>cost</strong>; margin is profit as a share of the <strong>price</strong>. The same profit is always a smaller margin than markup: 30% markup = 23.1% margin, 50% markup = 33.3% margin, 100% markup = 50% margin.</p>
-                <p>The hint under the Markup field shows the margin for the value you enter. If you think in margin terms, raise the markup until the hint shows your target. Margin here is measured on the price before Shipping, Packaging and GST.</p>
+                <p><strong>Markup is not margin.</strong> Markup is profit as a share of <strong>cost</strong>; margin is profit as a share of the <strong>price</strong>. The same profit is always a smaller margin than markup:</p>
+                <ul>
+                    <li>30% markup → 23.1% margin</li>
+                    <li>50% markup → 33.3% margin</li>
+                    <li>100% markup → 50% margin</li>
+                </ul>
+                <p>The hint under this field shows the margin for the value you enter. If you think in margin terms, raise the markup until the hint shows your target. Margin here is measured on the price before Shipping, Packaging and GST.</p>
+                <p><strong>Hardware can use its own markup</strong> per job, via Hardware Markup %. Left at this value, it follows it.</p>
             `
         },
         'shipping-cost': {
             title: 'Shipping Cost',
             content: `
                 <p><strong>Per-job cost of getting the finished print to the customer.</strong></p>
-                <p>What you pay a courier to deliver the job. Optional - leave at 0 if not applicable.</p>
-                <p><strong>Unlike Hardware Cost, this is not marked up:</strong> Overhead % and Markup % apply only to Material + Labor + Electricity + Machine + Hardware. Shipping Cost is added <strong>after</strong> that markup, at near cost.</p>
+                <p>What you pay a courier to deliver the job. Optional - leave blank or at <strong>0</strong> if not applicable.</p>
+                <p><strong>Unlike Hardware Cost, this is not marked up:</strong> Overhead % and Markup % apply only to Material + Labor + Electricity + Machine + Hardware. Shipping Cost is added <strong>after</strong> that markup, at near cost - so a ₹100 shipping fee adds exactly ₹100 to the price, not ₹100 plus a share of your markup.</p>
+                <p>In the price breakdown, it appears (only when non-zero) between Markup and the GST/Final Price lines, since GST - if set - is calculated on the complete total including it.</p>
             `
         },
         'packaging-cost': {
             title: 'Packaging Cost',
             content: `
                 <p><strong>Per-job cost of packaging materials for the finished print.</strong></p>
-                <p>Covers materials like a box, bubble wrap, or tape used to ship the job safely. Optional - leave at 0 if not applicable.</p>
-                <p><strong>Unlike Hardware Cost, this is not marked up:</strong> Overhead % and Markup % apply only to Material + Labor + Electricity + Machine + Hardware. Packaging Cost is added <strong>after</strong> that markup, at near cost.</p>
+                <p>Covers materials like a box, bubble wrap, or tape used to ship the job safely. Optional - leave blank or at <strong>0</strong> if not applicable.</p>
+                <p><strong>Unlike Hardware Cost, this is not marked up:</strong> Overhead % and Markup % apply only to Material + Labor + Electricity + Machine + Hardware. Packaging Cost is added <strong>after</strong> that markup, at near cost - so a ₹20 packaging cost adds exactly ₹20 to the price, not ₹20 plus a share of your markup.</p>
+                <p>In the price breakdown, it appears (only when non-zero) between Markup and the GST/Final Price lines, since GST - if set - is calculated on the complete total including it.</p>
             `
         },
         'gst': {
             title: 'GST Percentage',
             content: `
-                <p>Applied <strong>last</strong>, on top of the complete price - Subtotal (Direct Costs + Overhead) + Markup + Shipping + Packaging. It is <strong>not</strong> applied to the pre-markup Subtotal alone, so your Markup % is never itself taxed.</p>
-                <p>When GST is greater than 0, the results show both a <strong>Price Before GST</strong> line and a GST-inclusive <strong>Final Price</strong> line. Set it to 0 to hide GST entirely and quote tax-free.</p>
-                <p>The full app defaults GST to <strong>12%</strong>, its baseline rate - change it to match your actual rate.</p>
+                <p>Applied <strong>last</strong>, on top of the complete price - Subtotal (Direct Costs + Overhead) + Markup + Shipping + Packaging. It is <strong>not</strong> applied to the pre-markup Subtotal alone, so Markup % is never itself taxed.</p>
+                <p>When GST is greater than <strong>0</strong>, the breakdown shows both a "Price Before GST" line and a GST-inclusive "Final Price" line. Set it to <strong>0</strong> to hide GST entirely and quote tax-free.</p>
+                <p><strong>Defaults to 12%</strong>, the app's baseline rate - change it if your rate differs, or set it to 0 to quote tax-free.</p>
             `
         },
         'gateway-charge': {
             title: 'Payment Gateway Charge',
             content: `
-                <p>The fee your payment processor (Razorpay, Stripe, PayPal, etc.) takes out of a real sale. Set to <strong>0</strong> if you don't take payments through a gateway that charges a fee.</p>
+                <p>The fee your payment processor (Razorpay, Stripe, PayPal, etc.) takes on your Selling Price, deducted from Profit. Set it to <strong>0</strong> if you don't take payments through a gateway that charges a fee.</p>
                 <p>Calculated on your <strong>full Selling Price</strong>, GST included - not the pre-tax amount - since that's what actually moves through your payment processor. Defaults to <strong>2%</strong>.</p>
                 <p>This charge is not shown as its own line - it's folded into the <strong>Expenses</strong> total in the Selling Price &amp; Profit section below.</p>
             `
@@ -170,27 +192,34 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Selling Price & Profit',
             content: `
                 <p><strong>The real-world price you actually charged (or plan to charge) for this job.</strong></p>
-                <p>Optional - leave blank if you only care about the calculated price above. Enter what the customer actually pays, <strong>including GST</strong> if you charge it.</p>
-                <p>Once set, this splits into exactly <strong>three parts</strong> that always add up to the full amount: <strong>Expenses</strong>, <strong>Taxes</strong>, and <strong>Profit</strong>.</p>
-                <p><strong>Expenses</strong> = every real cost of doing the job: Direct Costs + Overhead + Shipping + Packaging + Payment Gateway Charge.</p>
-                <p><strong>Profit</strong> = what's left over after Taxes and Expenses - this is what you actually made on this specific sale, different from the Markup % above which is only a target.</p>
+                <p>Optional - leave blank or at <strong>0</strong> if you only care about the calculated price above. Enter what the customer actually pays, <strong>including GST</strong> if you charge it.</p>
+                <p>Once set, this Selling Price splits into exactly <strong>three parts</strong> that always add up to the full amount - <strong>Expenses</strong>, <strong>Taxes</strong>, and <strong>Profit</strong>.</p>
+                <p><strong>Taxes</strong> = the GST portion already included in your Selling Price. GST you collect is owed to the tax authority, not kept as profit, so it's backed out first: Pre-Tax Selling Price = Selling Price ÷ (1 + GST%), and Taxes = Selling Price − Pre-Tax Selling Price.</p>
+                <p><strong>Expenses</strong> = every real cost of doing the job: Material + Labor + Electricity + Machine + Hardware + Overhead + Shipping + Packaging + <strong>Payment Gateway Charge</strong>. The gateway charge (default <strong>2%</strong>) is calculated on your <strong>full</strong> Selling Price, GST included - not the pre-tax amount - since that's what actually moves through your payment processor.</p>
+                <p><strong>Profit</strong> = what's left over after Taxes and Expenses. This is a different number from the Markup line further up (set by your Markup %), which is only a <strong>target</strong> for what you plan to charge - Profit here is what you actually made on this specific sale.</p>
                 <p>Each of the three also shows as a <strong>%</strong> of your Selling Price, and all three percentages always add up to <strong>100%</strong>.</p>
+                <p>Worked example: a job with ₹322.30 in total costs, sold for ₹5,000 at 12% GST and the default 2% gateway charge → Taxes ₹535.71 (10.7%), Expenses ₹422.30 (8.4%), Profit ₹4,041.99 (80.8%).</p>
                 <p><strong>Profit turns red when negative:</strong> that means the job lost money at that selling price.</p>
             `
         },
         'selling-price-taxes': {
             title: 'Why Taxes % looks lower than your GST rate',
             content: `
-                <p>Say the pre-tax price of a job is <strong>₹100</strong>. At <strong>18% GST</strong>, the tax is <strong>₹18</strong>, so the customer pays <strong>₹118</strong> total - that ₹118 is the Selling Price.</p>
-                <p>That same ₹18 of tax can be described two ways: <strong>18%</strong> of the ₹100 pre-tax price (your configured GST rate), or <strong>15.25%</strong> of the full ₹118 the customer paid.</p>
-                <p>Taxes % here always shows the second version, because Expenses %, Taxes %, and Profit % are designed to add up to exactly <strong>100%</strong> of what the customer paid. The <strong>amount</strong> is identical either way - only the percentage's denominator differs from your configured GST %.</p>
+                <p>Say the pre-tax price of a job is <strong>₹100</strong>. At <strong>18% GST</strong>, the tax is <strong>₹18</strong>, so the customer pays <strong>₹118</strong> total - that ₹118 is what this calculator calls Selling Price.</p>
+                <p>That same ₹18 of tax can be described two different ways:</p>
+                <ul>
+                    <li><strong>18%</strong> - as a share of the <strong>₹100 pre-tax price</strong>. This is what your GST rate means: ₹18 ÷ ₹100.</li>
+                    <li><strong>15.25%</strong> - as a share of the <strong>full ₹118 the customer paid</strong>. ₹18 ÷ ₹118.</li>
+                </ul>
+                <p>Both describe the same ₹18 - only the base changes. <strong>Taxes %</strong> here always shows the second version (share of the total), because Expenses %, Taxes %, and Profit % are designed to add up to exactly <strong>100%</strong> of what the customer paid. If Taxes % showed your GST rate instead, the three percentages would add up to more than 100%.</p>
+                <p>The <strong>amount</strong> (₹18, or whatever your job's tax comes to) is identical either way - only this percentage's denominator differs from your configured GST %.</p>
             `
         },
         'power-consumption': {
             title: 'Power Consumption',
             content: `
                 <p><strong>Use ACTUAL AVERAGE Power (Watts)</strong></p>
-                <p>Your printer's power consumption is calculated from the selected printer model. The values shown are the actual average power consumption, not the rated (maximum) power.</p>
+                <p>Electricity cost uses the selected printer's <strong>ACTUAL average power consumption</strong> (shown in the dropdown), not the rated (maximum) power. Your printer does NOT consume the rated power continuously. The actual average consumption during a print is typically much lower.</p>
                 <p><strong>Examples of Rated vs. Actual Average (PLA):</strong></p>
                 <ul>
                     <li><strong>Bambu P1S:</strong> Rated 1100W, actual avg ~100–140W</li>
@@ -198,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <li><strong>Prusa MK4:</strong> Rated 240W, actual avg ~80–100W</li>
                 </ul>
                 <p><em>Note:</em> Power consumption is highly variable. It increases significantly with <strong>higher print/bed temperatures</strong> (e.g., ABS/PC) and during the <strong>initial heat-up phase</strong> of the print.</p>
+                <p><em>Resin MSLA printers draw significantly less power than FDM - no heated bed, no hotend. Examples: Elegoo Mars 4 Ultra ~45W avg, Elegoo Saturn 3 Ultra ~75W avg, Anycubic Photon Mono M5s ~50W avg.</em></p>
             `
         },
         // In-field calculator info removed as requested

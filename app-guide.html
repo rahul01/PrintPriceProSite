@@ -77,14 +77,14 @@
                         <h2 class="sidebar-title">Table of Contents</h2>
                         <ul class="sidebar-nav">
                             <li><a href="#power-consumption">Power Consumption</a></li>
-                            <li><a href="#machine-cost-per-hour">Machine Cost Per Hour</a></li>
+                            <li><a href="#machine-cost-per-hour">Machine Cost per Hour</a></li>
                             <li><a href="#labor-rate">Labor Rate Per Hour</a></li>
                             <li><a href="#hardware-cost">Hardware Cost</a></li>
                             <li><a href="#hardware-markup">Hardware Markup %</a></li>
                             <li><a href="#shipping-cost">Shipping Cost</a></li>
                             <li><a href="#packaging-cost">Packaging Cost</a></li>
                             <li><a href="#overhead">Overhead Percentage</a></li>
-                            <li><a href="#markup">Percentage Markup</a></li>
+                            <li><a href="#markup">Markup % on total cost</a></li>
                             <li><a href="#gst">GST Percentage</a></li>
                             <li><a href="#payment-gateway-charge">Payment Gateway Charge</a></li>
                             <li><a href="#selling-price">Selling Price</a></li>
@@ -127,7 +127,7 @@
                         </div>
 
                         <div class="info-card" id="machine-cost-per-hour">
-                            <h3>Machine Cost Per Hour</h3>
+                            <h3>Machine Cost per Hour</h3>
                             <div class="info-content">
                                 <p>The amortised cost of owning and operating a printer per hour. It covers:</p>
                                 <ul>
@@ -164,7 +164,7 @@
                                 <ul>
                                     <li><code>4*0.10 + 2*0.60</code> → ₹1.60 (4 nuts at ₹0.10 + 2 inserts at ₹0.60)</li>
                                 </ul>
-                                <p>Hardware cost is a direct job cost — overhead is applied on top of it, and it is marked up by <strong>Hardware Markup %</strong> (which follows your Markup % unless you set it per job).</p>
+                                <p>Hardware cost is a direct job cost — overhead is applied on top of it, and it is marked up by <strong>Hardware Markup %</strong> (which follows your Settings Markup % unless you set it per job).</p>
                                 <p>Leave blank or at <strong>0</strong> if the job has no embedded hardware.</p>
                                 <p><em>Calculator &gt; Hardware Cost</em></p>
                             </div>
@@ -173,11 +173,15 @@
                         <div class="info-card" id="hardware-markup">
                             <h3>Hardware Markup %</h3>
                             <div class="info-content">
-                                <p><strong>A separate markup for this job's hardware only.</strong> It sits next to Hardware Cost, is pre-filled with your Markup %, and follows it unless you type a different number. Tap its ⓘ for details.</p>
-                                <p><strong>Leave it at your Markup %</strong> and it keeps following your Settings <strong>Markup %</strong>, even if you change Markup % later. <strong>Type a different number</strong> to mark up only the hardware by that amount; everything else in the job still uses Markup %. Clear it to go back to following Markup %.</p>
+                                <p><strong>A separate markup for this job's hardware only.</strong></p>
+                                <p>Sits next to Hardware Cost (labelled HW Markup %), pre-filled with your Settings <strong>Markup %</strong>. Tap its ⓘ icon to see what the current value means.</p>
+                                <ul>
+                                    <li><strong>Leave it at your Markup %</strong> (or clear it) and it keeps following Settings if you change Markup % later.</li>
+                                    <li><strong>Type a different number</strong> to mark up only the hardware by that amount. Everything else in the job still uses Markup %.</li>
+                                </ul>
                                 <p><strong>Overhead still applies to hardware.</strong> The hardware markup is charged on hardware plus its overhead.</p>
                                 <p><strong>Why use it:</strong> an expensive bought-in part (a ₹500 bearing, a motor, electronics) usually can't carry the same markup as your own print work without making the quote uncompetitive. Set a low value, or 0 to pass the part through at cost plus overhead.</p>
-                                <p>Example: Hardware ₹50, Overhead 10%, Markup 50%. Same as Markup → hardware adds ₹27.50 profit. Hardware Markup 10% → it adds ₹5.50.</p>
+                                <p>Example: Hardware ₹50, Overhead 10%, Markup 50%. Left at 50 → hardware adds ₹27.50 profit. Hardware Markup 10% → it adds ₹5.50.</p>
                                 <p>Saved with each job, and kept in CSV export/import.</p>
                                 <p><em>Calculator &gt; Hardware Markup %</em></p>
                             </div>
@@ -217,10 +221,15 @@
                         </div>
 
                         <div class="info-card" id="markup">
-                            <h3>Markup % (not Profit Margin)</h3>
+                            <h3>Markup % on total cost</h3>
                             <div class="info-content">
                                 <p>This percentage is added on top of the <strong>Subtotal (Material + Labor + Electricity + Machine + Hardware + Overhead)</strong> to set your price. That extra amount is your <strong>net profit</strong> per job.</p>
-                                <p><strong>Markup is not margin.</strong> Markup is profit as a share of <strong>cost</strong>; margin is profit as a share of the <strong>price</strong>. The same profit is always a smaller margin than markup: 30% markup = 23.1% margin, 50% markup = 33.3% margin, 100% markup = 50% margin.</p>
+                                <p><strong>Markup is not margin.</strong> Markup is profit as a share of <strong>cost</strong>; margin is profit as a share of the <strong>price</strong>. The same profit is always a smaller margin than markup:</p>
+                                <ul>
+                                    <li>30% markup → 23.1% margin</li>
+                                    <li>50% markup → 33.3% margin</li>
+                                    <li>100% markup → 50% margin</li>
+                                </ul>
                                 <p>The hint under the Markup % field in Settings shows the margin for the value you enter. If you think in margin terms, raise the markup until the hint shows your target. Margin here is measured on the price before Shipping, Packaging and GST.</p>
                                 <p><em>Settings &gt; Markup %</em></p>
                             </div>
@@ -231,7 +240,7 @@
                             <div class="info-content">
                                 <p>Applied <strong>last</strong>, on top of the complete price - Subtotal (Direct Costs + Overhead) + Profit + Shipping + Packaging. It is <strong>not</strong> applied to the pre-profit Subtotal alone, so Markup % is never itself taxed.</p>
                                 <p>When GST is greater than <strong>0</strong>, the breakdown shows both a "Price Before GST" line and a GST-inclusive "Final Price" line. Set it to <strong>0</strong> to hide GST entirely and quote tax-free.</p>
-                                <p><strong>Defaults to 12%:</strong> new installs and existing installs updating to this version both start with GST % set to 12, this app's baseline rate - change it in Settings if your rate differs.</p>
+                                <p><strong>Defaults to 12%:</strong> new installs and existing installs updating to this version both start with GST % set to 12, this app's baseline rate - change it in Settings if your rate differs, or set it to 0 to quote tax-free.</p>
                                 <p><strong>Read live, not locked in per job:</strong> changing GST % in Settings immediately updates the displayed price of every calculation in your Catalogue, past and future - it is never frozen at the moment a job was saved, unlike Shipping/Packaging cost which are saved per job.</p>
                                 <p><em>Settings &gt; GST</em></p>
                             </div>
@@ -254,12 +263,12 @@
                                 <p>Optional - leave blank or at <strong>0</strong> if you only care about the calculated price above. Enter what the customer actually pays, <strong>including GST</strong> if you charge it.</p>
                                 <p>Once set, this Selling Price splits into exactly <strong>three parts</strong> that always add up to the full amount - <strong>Expenses</strong>, <strong>Taxes</strong>, and <strong>Profit</strong> - shown on the Calculator screen and on the job's Catalogue detail screen.</p>
                                 <p><strong>Taxes</strong> = the GST portion already included in your Selling Price. GST you collect is owed to the tax authority, not kept as profit, so it's backed out first: Pre-Tax Selling Price = Selling Price ÷ (1 + GST%), and Taxes = Selling Price − Pre-Tax Selling Price.</p>
-                                <p><strong>Expenses</strong> = every real cost of doing the job: Material + Labor + Electricity + Machine + Hardware + Overhead + Shipping + Packaging + Payment Gateway Charge.</p>
+                                <p><strong>Expenses</strong> = every real cost of doing the job: Material + Labor + Electricity + Machine + Hardware + Overhead + Shipping + Packaging + <strong>Payment Gateway Charge</strong>. The gateway charge (default <strong>2%</strong>, set in Settings) is calculated on your <strong>full</strong> Selling Price, GST included - not the pre-tax amount - since that's what actually moves through your payment processor. Set it to 0 if you don't take payments through a gateway that charges a fee.</p>
                                 <p><strong>Profit</strong> = what's left over after Taxes and Expenses. This is a different number from the Profit line further up (set by your Markup %), which is only a <strong>target</strong> for what you plan to charge - Profit here is what you actually made on this specific sale.</p>
                                 <p>Each of the three also shows as a <strong>%</strong> of your Selling Price, and all three percentages always add up to <strong>100%</strong>.</p>
                                 <p>Worked example: a job with ₹322.30 in total costs, sold for ₹5,000 at 12% GST and the default 2% gateway charge → Taxes ₹535.71 (10.7%), Expenses ₹422.30 (8.4%), Profit ₹4,041.99 (80.8%).</p>
                                 <p><strong>Profit turns red when negative:</strong> that means the job lost money at that selling price - shown in red so it's impossible to miss.</p>
-                                <p><strong>Also shown on the Catalogue list</strong> (in a shorter form): once a saved job has a Selling Price, its list row shows the Selling Price in green under the calculated price, followed by just Profit (amount and %) on the line below.</p>
+                                <p><strong>Also shown on the Catalogue list</strong> (in a shorter form): once a saved job has a Selling Price, its list row shows the Selling Price in green under the calculated price, followed by just Profit (amount and %) on the line below - the full Expenses/Taxes/Profit breakdown only appears on the Calculator and detail screens, where there's room to read it. Profit is still red there when the job lost money.</p>
                                 <p><em>Calculator &gt; Selling Price</em></p>
                             </div>
                         </div>
