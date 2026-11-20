@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <li>100% markup → 50% margin</li>
                 </ul>
                 <p>The hint under this field shows the margin for the value you enter. If you think in margin terms, raise the markup until the hint shows your target. Margin here is measured on the price before Shipping, Packaging and GST.</p>
-                <p><strong>Hardware can use its own markup</strong> per job, via Hardware Markup %. Left at this value, it follows it.</p>
+                <p><strong>Hardware can use its own markup</strong> per job, via Hardware Markup (%) on this calculator. It is pre-filled with this value and follows it unless you type a different number.</p>
             `
         },
         'shipping-cost': {
