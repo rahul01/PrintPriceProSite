@@ -1,0 +1,8 @@
+{
+  "name": "printpricepro-site-tests",
+  "private": true,
+  "description": "E2E tests (kept out of the root package.json so Netlify deploys don't install Playwright)",
+  "dependencies": {
+    "playwright": "1.49.1"
+  }
+}

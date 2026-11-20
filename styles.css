@@ -1337,6 +1337,12 @@ main {
     display: block !important;
 }
 
+/* .calculator-results/.results-display force display:block !important, so an inline
+   display:none can't hide this section; the id selector wins on specificity. */
+#selling-price-results.is-hidden {
+    display: none !important;
+}
+
 /* Sticky final price bar (mobile only) */
 .sticky-price-bar {
     display: none;

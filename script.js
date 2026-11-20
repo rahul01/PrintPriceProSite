@@ -791,7 +791,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Selling Price & Profit section (only shown when a Selling Price is entered)
             if (sellingPriceValue > 0) {
-                sellingPriceResults.style.display = '';
+                sellingPriceResults.classList.remove('is-hidden');
                 resultSellingPrice.textContent = formatCurrency(sellingPriceValue, selectedCurrency);
                 resultExpenses.textContent = formatCurrency(expensesValue, selectedCurrency) +
                     ` (${(sellingPriceValue !== 0 ? expensesValue / sellingPriceValue * 100 : 0).toFixed(1)}%)`;
@@ -810,7 +810,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('calc-profit').textContent =
                     `${symbol}${sellingPriceValue.toFixed(2)} − ${symbol}${taxesValue.toFixed(2)} − ${symbol}${expensesValue.toFixed(2)} = ${symbol}${profitValue.toFixed(2)}`;
             } else {
-                sellingPriceResults.style.display = 'none';
+                sellingPriceResults.classList.add('is-hidden');
             }
 
             // Update calculation details
@@ -1025,7 +1025,11 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem(STORAGE_KEY);
         
         // Reset all input fields
-        if (printer) printer.value = 'bambu-a1';
+        // Default = the option marked `selected` in index.html, so renaming printer slugs
+        // (scripts/sync-printers.py) can't leave Reset pointing at a missing option.
+        const defaultOption = printer ? [...printer.options].find(o => o.defaultSelected) : null;
+        const defaultPrinter = defaultOption ? defaultOption.value : 'other';
+        if (printer) printer.value = defaultPrinter;
         if (materialWeight) materialWeight.value = '';
         if (printTimeHours) printTimeHours.value = '';
         if (printTimeMinutes) printTimeMinutes.value = '';
@@ -1034,7 +1038,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (electricityRate) electricityRate.value = '8';
         if (materialCost) materialCost.value = '1200';
         if (laborRate) laborRate.value = '100';
-        if (machineCostPerHour) machineCostPerHour.value = printerMachineCost['bambu-a1'];
+        if (machineCostPerHour) machineCostPerHour.value = printerMachineCost[defaultPrinter] ?? 0;
         if (hardwareCost) hardwareCost.value = '0';
         if (hardwareMarkupPercentage) hardwareMarkupPercentage.value = '';
         if (overheadPercentage) overheadPercentage.value = '15';
