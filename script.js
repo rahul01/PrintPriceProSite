@@ -274,70 +274,104 @@ document.addEventListener('DOMContentLoaded', () => {
         'other': 120,
 
         // Bambu Lab Printers
-        'bambu-lab-a1': 120,
-        'bambu-lab-a1-combo': 120,
-        'bambu-lab-a1-mini': 100,
-        'bambu-lab-h2c': 350,
-        'bambu-lab-h2d': 500,
-        'bambu-lab-p1s': 140,
+        'bambu-lab-a1': 95,
+        'bambu-lab-a1-combo': 100,
+        'bambu-lab-a1-mini': 80,
+        'bambu-lab-a2l': 145,
+        'bambu-lab-h2c': 200,
+        'bambu-lab-h2d': 200,
+        'bambu-lab-h2s': 200,
+        'bambu-lab-h3c': 240,
+        'bambu-lab-p1p': 100,
+        'bambu-lab-p1s': 105,
         'bambu-lab-p2s': 200,
-        'bambu-lab-x1-carbon': 150,
-        'bambu-lab-x1e': 350,
+        'bambu-lab-x1-carbon': 105,
+        'bambu-lab-x1e': 185,
+        'bambu-lab-x2d': 250,
 
         // Prusa Printers
-        'prusa-core-one': 100,
-        'prusa-mk4': 120,
-        'prusa-mk4s': 95,
+        'prusa-core-one': 90,
+        'prusa-core-one-l': 120,
+        'prusa-mk3s': 80,
+        'prusa-mk4': 80,
+        'prusa-mk4s': 80,
         'prusa-mini': 80,
         'prusa-xl': 200,
 
         // Creality Printers
         'creality-cr-10': 150,
+        'creality-ender-3-pro': 110,
         'creality-ender-3-s1': 130,
         'creality-ender-3-v2': 120,
-        'creality-ender-3-v3-ke': 180,
+        'creality-ender-3-v2-neo': 110,
+        'creality-ender-3-v3': 110,
+        'creality-ender-3-v3-ke': 140,
+        'creality-ender-3-v3-plus': 150,
         'creality-ender-3-v3-se': 150,
-        'creality-k1': 160,
+        'creality-hi': 110,
+        'creality-k1': 100,
         'creality-k1-max': 250,
-        'creality-k1c': 200,
-        'creality-k2-plus': 350,
+        'creality-k1-se': 120,
+        'creality-k1c': 145,
+        'creality-k2': 140,
+        'creality-k2-plus': 250,
+        'creality-k2-pro': 160,
+        'creality-k2-se': 110,
+        'creality-sparkx-i7': 110,
 
         // Anycubic Printers
-        'anycubic-kobra-2': 140,
+        'anycubic-kobra-2': 160,
+        'anycubic-kobra-2-neo': 100,
         'anycubic-kobra-3': 200,
-        'anycubic-kobra-3-max': 500,
+        'anycubic-kobra-3-max': 300,
+        'anycubic-kobra-3-v2': 180,
+        'anycubic-kobra-4': 120,
+        'anycubic-kobra-s1': 180,
+        'anycubic-kobra-s1-max': 300,
         'anycubic-kobra-x': 350,
         'anycubic-vyper': 135,
 
         // Elegoo Printers
+        'elegoo-centauri-2': 90,
+        'elegoo-centauri-carbon': 100,
+        'elegoo-centauri-carbon-2': 100,
         'elegoo-neptune-3': 125,
         'elegoo-neptune-4': 160,
-        'elegoo-neptune-4-max': 400,
-        'elegoo-neptune-4-plus': 280,
-        'elegoo-neptune-4-pro': 200,
+        'elegoo-neptune-4-max': 225,
+        'elegoo-neptune-4-plus': 150,
+        'elegoo-neptune-4-pro': 160,
 
         // Artillery Printers
         'artillery-sidewinder-x2': 155,
 
         // Qidi Printers
-        'qidi-q1-pro': 350,
-        'qidi-x-max-3': 400,
-        'qidi-x-plus-3': 400,
+        'qidi-max4': 300,
+        'qidi-plus4': 245,
+        'qidi-plus5': 250,
+        'qidi-q1-pro': 180,
+        'qidi-q2': 160,
+        'qidi-x-max-3': 260,
+        'qidi-x-plus-3': 210,
 
         // Voron Printers
         'voron-2-4': 180,
 
         // Sovol Printers
         'sovol-sv06': 130,
+        'sovol-sv06-ace': 100,
+        'sovol-sv07-plus': 180,
+        'sovol-sv08': 200,
 
         // Flashforge Printers
+        'flashforge-ad5x': 115,
         'flashforge-adventurer-4': 110,
-        'flashforge-adventurer-5m': 200,
-        'flashforge-adventurer-5m-pro': 320,
+        'flashforge-adventurer-5m': 130,
+        'flashforge-adventurer-5m-pro': 140,
+        'flashforge-creator-5-pro': 200,
 
         // Ultimaker Printers
-        'ultimaker-s3': 350,
-        'ultimaker-s5': 500,
+        'ultimaker-s3': 120,
+        'ultimaker-s5': 150,
 
         // Kingroon Printers
         'kingroon-kp3s-pro-v2': 150,
@@ -347,22 +381,39 @@ document.addEventListener('DOMContentLoaded', () => {
         'snapmaker-2-0-a350t': 120,
         'snapmaker-artisan': 150,
         'snapmaker-j1s': 200,
-        'snapmaker-u1': 220,
+        'snapmaker-u1': 120,
 
         // Elegoo (SLA/Resin)
+        'elegoo-jupiter-2': 130,
         'elegoo-mars-4-ultra': 45,
+        'elegoo-mars-5': 35,
+        'elegoo-mars-5-ultra': 40,
         'elegoo-saturn-3-ultra': 75,
+        'elegoo-saturn-4': 60,
+        'elegoo-saturn-4-ultra-12k': 60,
         'elegoo-saturn-4-ultra-16k': 85,
 
         // Anycubic (SLA/Resin)
+        'anycubic-photon-mono-4': 30,
+        'anycubic-photon-mono-4-ultra': 35,
         'anycubic-photon-mono-m5s': 50,
+        'anycubic-photon-mono-m7-pro': 90,
         'anycubic-photon-mono-x2': 60,
+        'anycubic-photon-p1': 90,
+        'anycubic-photon-p1-max': 120,
 
         // Phrozen (SLA/Resin)
         'phrozen-sonic-mini-8k': 45,
+        'phrozen-sonic-mini-8k-s': 30,
 
         // Creality (SLA/Resin)
         'creality-halot-mage-s': 65,
+
+        // Formlabs (SLA/Resin)
+        'formlabs-form-studio-1': 20,
+
+        // UniFormation (SLA/Resin)
+        'uniformation-gktwo': 90,
 
     };
 
@@ -374,15 +425,22 @@ document.addEventListener('DOMContentLoaded', () => {
         'bambu-lab-a1': 6.8,
         'bambu-lab-a1-combo': 10.7,
         'bambu-lab-a1-mini': 5.7,
+        'bambu-lab-a2l': 11.2,
         'bambu-lab-h2c': 46.6,
         'bambu-lab-h2d': 51.4,
+        'bambu-lab-h2s': 34.0,
+        'bambu-lab-h3c': 50.2,
+        'bambu-lab-p1p': 8.0,
         'bambu-lab-p1s': 12.5,
         'bambu-lab-p2s': 16.4,
         'bambu-lab-x1-carbon': 16.0,
         'bambu-lab-x1e': 70.5,
+        'bambu-lab-x2d': 22.6,
 
         // Prusa
         'prusa-core-one': 47.9,
+        'prusa-core-one-l': 36.1,
+        'prusa-mk3s': 20.1,
         'prusa-mk4': 11.4,
         'prusa-mk4s': 24.9,
         'prusa-mini': 5.7,
@@ -390,23 +448,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Creality
         'creality-cr-10': 5.7,
+        'creality-ender-3-pro': 4.2,
         'creality-ender-3-s1': 4.6,
         'creality-ender-3-v2': 3.4,
+        'creality-ender-3-v2-neo': 4.6,
+        'creality-ender-3-v3': 6.0,
         'creality-ender-3-v3-ke': 6.3,
+        'creality-ender-3-v3-plus': 10.5,
         'creality-ender-3-v3-se': 4.3,
+        'creality-hi': 9.8,
         'creality-k1': 6.8,
         'creality-k1-max': 19.6,
+        'creality-k1-se': 6.0,
         'creality-k1c': 12.8,
+        'creality-k2': 16.4,
         'creality-k2-plus': 36.5,
+        'creality-k2-pro': 17.1,
+        'creality-k2-se': 10.0,
+        'creality-sparkx-i7': 7.8,
 
         // Anycubic
         'anycubic-kobra-2': 5.0,
+        'anycubic-kobra-2-neo': 4.3,
         'anycubic-kobra-3': 6.7,
         'anycubic-kobra-3-max': 19.2,
+        'anycubic-kobra-3-v2': 11.2,
+        'anycubic-kobra-4': 5.6,
+        'anycubic-kobra-s1': 14.4,
+        'anycubic-kobra-s1-max': 27.4,
         'anycubic-kobra-x': 5.8,
         'anycubic-vyper': 4.6,
 
         // Elegoo
+        'elegoo-centauri-2': 6.0,
+        'elegoo-centauri-carbon': 8.7,
+        'elegoo-centauri-carbon-2': 7.0,
         'elegoo-neptune-3': 4.1,
         'elegoo-neptune-4': 4.8,
         'elegoo-neptune-4-max': 9.1,
@@ -417,7 +493,11 @@ document.addEventListener('DOMContentLoaded', () => {
         'artillery-sidewinder-x2': 5.0,
 
         // Qidi
+        'qidi-max4': 21.1,
+        'qidi-plus4': 14.0,
+        'qidi-plus5': 15.0,
         'qidi-q1-pro': 10.5,
+        'qidi-q2': 10.0,
         'qidi-x-max-3': 19.2,
         'qidi-x-plus-3': 15.9,
 
@@ -426,11 +506,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Sovol
         'sovol-sv06': 3.9,
+        'sovol-sv06-ace': 5.6,
+        'sovol-sv07-plus': 7.6,
+        'sovol-sv08': 11.4,
 
         // Flashforge
+        'flashforge-ad5x': 8.0,
         'flashforge-adventurer-4': 8.0,
         'flashforge-adventurer-5m': 7.7,
         'flashforge-adventurer-5m-pro': 18.3,
+        'flashforge-creator-5-pro': 19.1,
 
         // Ultimaker
         'ultimaker-s3': 51.4,
@@ -447,19 +532,36 @@ document.addEventListener('DOMContentLoaded', () => {
         'snapmaker-u1': 19.5,
 
         // Elegoo (SLA/Resin)
+        'elegoo-jupiter-2': 19.1,
         'elegoo-mars-4-ultra': 3.4,
+        'elegoo-mars-5': 3.6,
+        'elegoo-mars-5-ultra': 7.2,
         'elegoo-saturn-3-ultra': 8.0,
+        'elegoo-saturn-4': 6.4,
+        'elegoo-saturn-4-ultra-12k': 12.6,
         'elegoo-saturn-4-ultra-16k': 11.4,
 
         // Anycubic (SLA/Resin)
+        'anycubic-photon-mono-4': 4.8,
+        'anycubic-photon-mono-4-ultra': 7.3,
         'anycubic-photon-mono-m5s': 4.6,
+        'anycubic-photon-mono-m7-pro': 12.6,
         'anycubic-photon-mono-x2': 6.8,
+        'anycubic-photon-p1': 17.7,
+        'anycubic-photon-p1-max': 27.4,
 
         // Phrozen (SLA/Resin)
         'phrozen-sonic-mini-8k': 4.1,
+        'phrozen-sonic-mini-8k-s': 8.0,
 
         // Creality (SLA/Resin)
         'creality-halot-mage-s': 5.0,
+
+        // Formlabs (SLA/Resin)
+        'formlabs-form-studio-1': 14.0,
+
+        // UniFormation (SLA/Resin)
+        'uniformation-gktwo': 15.1,
 
     };
 
@@ -490,13 +592,26 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const slaPrinters = new Set([
+        'elegoo-jupiter-2',
         'elegoo-mars-4-ultra',
+        'elegoo-mars-5',
+        'elegoo-mars-5-ultra',
         'elegoo-saturn-3-ultra',
+        'elegoo-saturn-4',
+        'elegoo-saturn-4-ultra-12k',
         'elegoo-saturn-4-ultra-16k',
+        'anycubic-photon-mono-4',
+        'anycubic-photon-mono-4-ultra',
         'anycubic-photon-mono-m5s',
+        'anycubic-photon-mono-m7-pro',
         'anycubic-photon-mono-x2',
+        'anycubic-photon-p1',
+        'anycubic-photon-p1-max',
         'phrozen-sonic-mini-8k',
+        'phrozen-sonic-mini-8k-s',
         'creality-halot-mage-s',
+        'formlabs-form-studio-1',
+        'uniformation-gktwo',
     ]);
 
     function updateMaterialCostLabel() {
