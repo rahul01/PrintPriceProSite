@@ -974,10 +974,11 @@ main {
     padding-left: 5px; /* Add some space between main text and Default text */
 }
 
-/* Hardware Cost + HW Markup %: always one row, half width each (mirrors the app) */
-.calculator-input-pair > .calculator-input {
-    min-width: 0;
-    justify-content: flex-end; /* inputs line up even if one label wraps */
+/* Desktop: a field alone on its row is half width, so every input matches its neighbours */
+@media (min-width: 769px) {
+    .calculator-section-main .calculator-input-group > .calculator-input:only-child {
+        flex: 0 0 calc((100% - 1.5rem) / 2);
+    }
 }
 
 .calculator-input input:focus, .calculator-input select:focus {
@@ -1298,28 +1299,6 @@ main {
     .calculator-input > .input-hint {
         flex: 0 0 100%;
         margin-top: -0.25rem;
-    }
-
-    /* Keep the hardware pair side by side on phones; label stacks above its input */
-    .calculator-input-group.calculator-input-pair {
-        flex-direction: row;
-        gap: 0.75rem;
-    }
-
-    .calculator-input-pair > .calculator-input {
-        flex: 1 1 0;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.25rem;
-    }
-
-    .calculator-input-pair > .calculator-input label {
-        width: auto;
-    }
-
-    .calculator-input-pair > .calculator-input input {
-        flex: none;
-        width: 100%;
     }
 
     .calculator-body {
