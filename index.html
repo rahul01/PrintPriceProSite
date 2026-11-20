@@ -43,7 +43,7 @@
     }
     </script>
 
-    <link rel="stylesheet" href="styles.css?v=5">
+    <link rel="stylesheet" href="styles.css?v=6">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -329,17 +329,16 @@
                         <label for="machine-cost-per-hour">Machine Cost (₹/hour) <span class="info-icon" data-info="machine-cost">i</span></label>
                         <input type="number" id="machine-cost-per-hour" placeholder="e.g., 0" min="0" step="0.01" value="0">
                     </div>
+                </div>
+
+                <div class="calculator-input-group calculator-input-pair" id="hardware-row">
                     <div class="calculator-input">
                         <label for="hardware-cost">Hardware Cost (₹) <span class="info-icon" data-info="hardware-cost">i</span></label>
                         <input type="number" id="hardware-cost" placeholder="e.g., 0" min="0" step="0.01" value="0">
                     </div>
-                </div>
-
-                <div class="calculator-input-group" id="hardware-markup-row" style="display:none">
                     <div class="calculator-input">
-                        <label for="hardware-markup-percentage">Hardware Markup (%) <span class="info-icon" data-info="hardware-markup">i</span></label>
-                        <input type="number" id="hardware-markup-percentage" placeholder="Same as Markup" min="0" step="0.1" aria-describedby="hardware-markup-hint">
-                        <small class="input-hint" id="hardware-markup-hint" aria-live="polite"></small>
+                        <label for="hardware-markup-percentage">HW Markup % <span class="info-icon" data-info="hardware-markup">i</span></label>
+                        <input type="number" id="hardware-markup-percentage" placeholder="Same as Markup" min="0" step="0.1" disabled>
                     </div>
                 </div>
 
@@ -645,7 +644,7 @@
     </div>
 
     <script type="module" src="analytics.js"></script>
-    <script src="script.js?v=5"></script>
+    <script src="script.js?v=6"></script>
 
     <script>
         // Google Play button now links directly to the Play Store

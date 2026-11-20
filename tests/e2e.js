@@ -43,6 +43,15 @@ async function fill(page, vals) {
   await page.waitForTimeout(50);
 }
 const txt = (page, sel) => page.textContent(sel);
+// Opens the HW Markup % info popup, returns its bold status line, closes it
+async function hwStatus(page) {
+  await page.click('.info-icon[data-info="hardware-markup"]', { force: true }); // icon sits in the label of a possibly-disabled input
+  await page.waitForSelector('#infoModal.active');
+  const t = await page.textContent('#modalContent strong');
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(400);
+  return t;
+}
 
 (async () => {
   const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -102,19 +111,19 @@ const txt = (page, sel) => page.textContent(sel);
   check('INR calc (SparkX i7, 150g, 3h30, GST 12) all rows correct', !bad.length, bad.join(' | ') || `final ₹${e.final.toFixed(2)}`);
   check('selling-price section hidden when no selling price entered', !(await page.isVisible('#selling-price-results')));
   check('sticky price bar == final', near(money(await txt(page, '#sticky-price-value')), e.final));
-  check('hardware markup row hidden when hardware = 0', !(await page.isVisible('#hardware-markup-row')));
+  check('HW Markup % visible but disabled when hardware = 0', await page.isVisible('#hardware-markup-percentage') && await page.isDisabled('#hardware-markup-percentage'));
   check('markup→margin hint (30% → 23.1%)', /23\.1% margin/.test(await txt(page, '#markup-margin-hint')), await txt(page, '#markup-margin-hint'));
 
   // 5. Hardware markup
   await fill(page, { 'hardware-cost': 500 });
-  check('hardware markup row shows when hardware > 0', await page.isVisible('#hardware-markup-row'));
-  check('hint says blank = Markup % (30%)', /Blank = same as Markup % \(30%\)/.test(await txt(page, '#hardware-markup-hint')), await txt(page, '#hardware-markup-hint'));
+  check('HW Markup % enabled when hardware > 0', await page.isEnabled('#hardware-markup-percentage'));
+  check('popup status: blank = Markup % (30%)', /Blank = same as Markup % \(30%\)/.test(await hwStatus(page)), await hwStatus(page));
   e = expected({ ...c1, hw: 500 });
   check('blank HW markup == main markup on whole subtotal', near(money(await txt(page, '#result-markup')), e.mk), `${await txt(page, '#result-markup')} vs ${e.mk.toFixed(2)}`);
   await fill(page, { 'hardware-markup-percentage': 10 });
   e = expected({ ...c1, hw: 500, hwMarkup: 10 });
   check('HW markup 10% applied to hardware share only', near(money(await txt(page, '#result-markup')), e.mk) && near(money(await txt(page, '#result-final')), e.final), `${await txt(page, '#result-markup')} vs ${e.mk.toFixed(2)}`);
-  check('hint switches to custom text', /Only for hardware/.test(await txt(page, '#hardware-markup-hint')));
+  check('popup status switches to custom text', /Only for hardware/.test(await hwStatus(page)), await hwStatus(page));
   await fill(page, { 'hardware-markup-percentage': '' });
   e = expected({ ...c1, hw: 500 });
   check('clearing HW markup reverts', near(money(await txt(page, '#result-markup')), e.mk));

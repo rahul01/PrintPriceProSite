@@ -106,13 +106,17 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         'hardware-markup': {
             title: 'Hardware Markup %',
-            content: `
-                <p><strong>A separate markup for this job's hardware only.</strong> Shown once Hardware Cost is above 0.</p>
-                <p><strong>Leave it blank</strong> to use the main Markup %. <strong>Type a number</strong> to mark up only the hardware by that amount; everything else still uses Markup %.</p>
-                <p>Overhead still applies to hardware. The hardware markup is charged on hardware plus its overhead.</p>
-                <p><strong>Why use it:</strong> an expensive bought-in part (a ₹500 bearing, a motor, electronics) usually can't carry the same markup as your own print work without making the quote uncompetitive. Set a low value, or 0 to pass the part through at cost plus overhead.</p>
-                <p>Example: Hardware ₹50, Overhead 10%, Markup 50%. Blank → hardware adds ₹27.50 profit. Hardware Markup 10% → it adds ₹5.50.</p>
-            `
+            // Getter so the status line reflects the fields at the moment the popup opens
+            get content() {
+                return `
+                <p><strong>${hardwareMarkupStatus()}</strong></p>
+                <p>Marks up only the hardware in this job (plus the overhead on it). Everything else uses your Settings <b>Markup %</b>.</p>
+                <ul>
+                    <li><b>Blank</b>: follows Markup %, even if you change it later.</li>
+                    <li><b>A number</b>: used for hardware only. Use a low value, or 0, for expensive bought-in parts.</li>
+                </ul>
+            `;
+            }
         },
         'overhead': {
             title: 'Overhead Percentage',
@@ -197,6 +201,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // In-field calculator info removed as requested
     };
     
+    // Status line for the HW Markup % info popup (same three states as the app)
+    function hardwareMarkupStatus() {
+        const hw = parseFloat(document.getElementById('hardware-cost')?.value) || 0;
+        if (!(hw > 0)) return 'Set Hardware Cost first';
+        const raw = (document.getElementById('hardware-markup-percentage')?.value || '').trim();
+        if (raw !== '' && !isNaN(parseFloat(raw))) return 'Only for hardware · clear to use Markup %';
+        const markup = parseFloat(document.getElementById('markup-percentage')?.value) || 0;
+        return `Blank = same as Markup % (${markup}%)`;
+    }
+
     // Add click event listeners to all info icons
     document.querySelectorAll('.info-icon').forEach(icon => {
         icon.addEventListener('click', function(e) {
@@ -717,14 +731,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const baseShareValue = subtotalValue - hardwareShareValue;
             const markupValue = baseShareValue * (markup / 100) + hardwareShareValue * (effectiveHwMarkup / 100);
 
-            const hwMarkupRow = document.getElementById('hardware-markup-row');
-            if (hwMarkupRow) hwMarkupRow.style.display = hwCost > 0 ? '' : 'none';
-            const hwMarkupHint = document.getElementById('hardware-markup-hint');
-            if (hwMarkupHint) {
-                hwMarkupHint.textContent = hwMarkupIsCustom
-                    ? 'Only for hardware · clear to use Markup %'
-                    : `Blank = same as Markup % (${markup}%)`;
-            }
+            // Mirrors the app: HW Markup % is disabled (not hidden) until Hardware Cost > 0
+            if (hardwareMarkupPercentage) hardwareMarkupPercentage.disabled = !(hwCost > 0);
 
             // Live hint: the profit margin (share of pre-shipping, pre-GST price) this markup gives
             const marginHint = document.getElementById('markup-margin-hint');
