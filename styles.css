@@ -980,18 +980,6 @@ main {
     justify-content: flex-end; /* inputs line up even if one label wraps */
 }
 
-.calculator-input input:disabled {
-    background-color: #f1f5f9;
-    color: #94a3b8;
-    border-color: #e2e8f0;
-    box-shadow: none;
-    cursor: not-allowed;
-}
-
-.calculator-input input:disabled::placeholder {
-    color: #cbd5e1;
-}
-
 .calculator-input input:focus, .calculator-input select:focus {
     outline: none;
     border-color: var(--primary-color);

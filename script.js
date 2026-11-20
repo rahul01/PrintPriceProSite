@@ -18,7 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
             laborRate: laborRate.value,
             machineCostPerHour: machineCostPerHour.value,
             hardwareCost: hardwareCost.value,
-            hardwareMarkupPercentage: hardwareMarkupPercentage ? hardwareMarkupPercentage.value : '',
+            // Following Markup % (blank or equal to it) is saved as blank so the job keeps following
+            hardwareMarkupPercentage: hardwareMarkupPercentage && !hwMarkupFollowing ? hardwareMarkupPercentage.value : '',
             overheadPercentage: overheadPercentage.value,
             markupPercentage: markupPercentage.value,
             shippingCost: shippingCost.value,
@@ -57,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.hardwareMarkupPercentage !== undefined && hardwareMarkupPercentage) hardwareMarkupPercentage.value = data.hardwareMarkupPercentage;
                 if (data.overheadPercentage && overheadPercentage) overheadPercentage.value = data.overheadPercentage;
                 if (data.markupPercentage && markupPercentage) markupPercentage.value = data.markupPercentage;
+                updateHwMarkupFollowing();
                 if (data.shippingCost !== undefined && shippingCost) shippingCost.value = data.shippingCost;
                 if (data.packagingCost !== undefined && packagingCost) packagingCost.value = data.packagingCost;
                 if (data.gstPercentage !== undefined && gstPercentage) gstPercentage.value = data.gstPercentage;
@@ -101,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             content: `
                 <p>The total cost of any physical hardware components used in this specific job. For example: <strong>heat-set inserts, screws, magnets, springs</strong>, or other embedded parts.</p>
                 <p>Enter the combined cost for the entire job (e.g., 4 inserts × ₹2 + 2 screws × ₹1 = ₹10). Leave at 0 if no hardware is used.</p>
-                <p>Overhead applies on top of it, and it is marked up by <strong>Hardware Markup %</strong> (blank = the main Markup %).</p>
+                <p>Overhead applies on top of it, and it is marked up by <strong>Hardware Markup %</strong> (pre-filled with, and following, the main Markup %).</p>
             `
         },
         'hardware-markup': {
@@ -112,8 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p><strong>${hardwareMarkupStatus()}</strong></p>
                 <p>Marks up only the hardware in this job (plus the overhead on it). Everything else uses your Settings <b>Markup %</b>.</p>
                 <ul>
-                    <li><b>Blank</b>: follows Markup %, even if you change it later.</li>
-                    <li><b>A number</b>: used for hardware only. Use a low value, or 0, for expensive bought-in parts.</li>
+                    <li><b>Same as Markup %</b>: follows Markup %, even if you change it later.</li>
+                    <li><b>A different number</b>: used for hardware only. Use a low value, or 0, for expensive bought-in parts.</li>
                 </ul>
             `;
             }
@@ -201,14 +203,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // In-field calculator info removed as requested
     };
     
-    // Status line for the HW Markup % info popup (same three states as the app)
+    // Status line for the HW Markup % info popup (mirrors the app)
     function hardwareMarkupStatus() {
-        const hw = parseFloat(document.getElementById('hardware-cost')?.value) || 0;
-        if (!(hw > 0)) return 'Set Hardware Cost first';
-        const raw = (document.getElementById('hardware-markup-percentage')?.value || '').trim();
-        if (raw !== '' && !isNaN(parseFloat(raw))) return 'Only for hardware · clear to use Markup %';
         const markup = parseFloat(document.getElementById('markup-percentage')?.value) || 0;
-        return `Blank = same as Markup % (${markup}%)`;
+        return hwMarkupFollowing
+            ? `Same as Markup % (${markup}%) · follows Markup`
+            : `Only for hardware · Markup % is ${markup}%`;
     }
 
     // Add click event listeners to all info icons
@@ -269,6 +269,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const machineCostPerHour = document.getElementById('machine-cost-per-hour');
     const hardwareCost = document.getElementById('hardware-cost');
     const hardwareMarkupPercentage = document.getElementById('hardware-markup-percentage');
+
+    // HW Markup % "follows" the main Markup % when it is blank or equal to it (mirrors the app).
+    // While following, it is priced with Markup %, shows Markup %'s value, and is saved as blank.
+    let hwMarkupFollowing = true;
+    function updateHwMarkupFollowing() {
+        if (!hardwareMarkupPercentage) return;
+        const raw = hardwareMarkupPercentage.value.trim();
+        const v = parseFloat(raw);
+        hwMarkupFollowing = raw === '' || isNaN(v) || v === (parseFloat(markupPercentage.value) || 0);
+    }
+    // Show Markup %'s value in a following field (not while the user is editing it)
+    function syncHwMarkupDisplay() {
+        if (hardwareMarkupPercentage && hwMarkupFollowing && document.activeElement !== hardwareMarkupPercentage) {
+            hardwareMarkupPercentage.value = markupPercentage.value;
+        }
+    }
     const overheadPercentage = document.getElementById('overhead-percentage');
     const markupPercentage = document.getElementById('markup-percentage');
     const shippingCost = document.getElementById('shipping-cost');
@@ -723,16 +739,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // Markup on cost (not margin on price)
             // Hardware (plus the overhead on it) can carry its own markup; blank = main markup.
             // Mirrors CalculatePriceUseCase.kt: with a blank hardware markup this equals subtotal × markup.
-            const hwMarkupRaw = hardwareMarkupPercentage ? hardwareMarkupPercentage.value.trim() : '';
-            const hwMarkupParsed = parseFloat(hwMarkupRaw);
-            const hwMarkupIsCustom = hwMarkupRaw !== '' && !isNaN(hwMarkupParsed);
-            const effectiveHwMarkup = hwMarkupIsCustom ? hwMarkupParsed : markup;
+            // A custom value that now equals Markup % (e.g. Markup changed to match) becomes following
+            if (!hwMarkupFollowing) updateHwMarkupFollowing();
+            syncHwMarkupDisplay();
+            const hwMarkupIsCustom = !hwMarkupFollowing;
+            const effectiveHwMarkup = hwMarkupIsCustom ? parseFloat(hardwareMarkupPercentage.value) : markup;
             const hardwareShareValue = hwCost * (1 + overhead / 100);
             const baseShareValue = subtotalValue - hardwareShareValue;
             const markupValue = baseShareValue * (markup / 100) + hardwareShareValue * (effectiveHwMarkup / 100);
-
-            // Mirrors the app: HW Markup % is disabled (not hidden) until Hardware Cost > 0
-            if (hardwareMarkupPercentage) hardwareMarkupPercentage.disabled = !(hwCost > 0);
 
             // Live hint: the profit margin (share of pre-shipping, pre-GST price) this markup gives
             const marginHint = document.getElementById('markup-margin-hint');
@@ -920,6 +934,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Must run before the generic recalc/save listeners below
+    if (hardwareMarkupPercentage) {
+        hardwareMarkupPercentage.addEventListener('input', updateHwMarkupFollowing);
+        // Cleared (or set equal to Markup) and left: show Markup %'s value again
+        hardwareMarkupPercentage.addEventListener('blur', () => {
+            if (hwMarkupFollowing) hardwareMarkupPercentage.value = markupPercentage.value;
+        });
+    }
+
     allInputs.forEach(input => {
         if (input) {
             // Add event listener for calculation
@@ -946,6 +969,7 @@ document.addEventListener('DOMContentLoaded', () => {
         calculatePrices();
     }
     updateMaterialCostLabel();
+    syncHwMarkupDisplay(); // prefill HW Markup % with Markup % on first visit
     
     // Update currency symbols in labels when currency changes
     if (currency) {
@@ -1049,6 +1073,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (machineCostPerHour) machineCostPerHour.value = printerMachineCost[defaultPrinter] ?? 0;
         if (hardwareCost) hardwareCost.value = '0';
         if (hardwareMarkupPercentage) hardwareMarkupPercentage.value = '';
+        hwMarkupFollowing = true;
         if (overheadPercentage) overheadPercentage.value = '15';
         if (markupPercentage) markupPercentage.value = '30';
         if (shippingCost) shippingCost.value = '0';

@@ -173,11 +173,11 @@
                         <div class="info-card" id="hardware-markup">
                             <h3>Hardware Markup %</h3>
                             <div class="info-content">
-                                <p><strong>A separate markup for this job's hardware only.</strong> It sits next to Hardware Cost (labelled <em>HW Markup %</em>) and becomes editable once Hardware Cost is above 0. Tap its ⓘ for details.</p>
-                                <p><strong>Leave it blank</strong> to use your Settings <strong>Markup %</strong>. It keeps following Settings if you change Markup % later. <strong>Type a number</strong> to mark up only the hardware by that amount; everything else in the job still uses Markup %.</p>
+                                <p><strong>A separate markup for this job's hardware only.</strong> It sits next to Hardware Cost (labelled <em>HW Markup %</em>), is pre-filled with your Markup %, and follows it unless you type a different number. Tap its ⓘ for details.</p>
+                                <p><strong>Leave it at your Markup %</strong> and it keeps following your Settings <strong>Markup %</strong>, even if you change Markup % later. <strong>Type a different number</strong> to mark up only the hardware by that amount; everything else in the job still uses Markup %. Clear it to go back to following Markup %.</p>
                                 <p><strong>Overhead still applies to hardware.</strong> The hardware markup is charged on hardware plus its overhead.</p>
                                 <p><strong>Why use it:</strong> an expensive bought-in part (a ₹500 bearing, a motor, electronics) usually can't carry the same markup as your own print work without making the quote uncompetitive. Set a low value, or 0 to pass the part through at cost plus overhead.</p>
-                                <p>Example: Hardware ₹50, Overhead 10%, Markup 50%. Blank → hardware adds ₹27.50 profit. Hardware Markup 10% → it adds ₹5.50.</p>
+                                <p>Example: Hardware ₹50, Overhead 10%, Markup 50%. Same as Markup → hardware adds ₹27.50 profit. Hardware Markup 10% → it adds ₹5.50.</p>
                                 <p>Saved with each job, and kept in CSV export/import.</p>
                                 <p><em>Calculator &gt; Hardware Markup %</em></p>
                             </div>
@@ -376,7 +376,7 @@
                                     <li>Nitrile gloves: ₹3–5 per pair</li>
                                 </ul>
                                 <p><strong>Example expression:</strong> <code>30 + 15 + 4</code> → ₹49 total consumable cost</p>
-                                <p>Hardware cost is a direct job cost — overhead applies on top, and Hardware Markup % (blank = your Markup %) sets how much profit it carries.</p>
+                                <p>Hardware cost is a direct job cost — overhead applies on top, and Hardware Markup % (pre-filled with, and following, your Markup %) sets how much profit it carries.</p>
                                 <p><em>Calculator &gt; Hardware Cost</em></p>
                             </div>
                         </div>
