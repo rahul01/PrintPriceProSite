@@ -1,5 +1,38 @@
 // 3D Printing Price Calculator
+
+// Page-wide handlers (nav menu, feedback link) run in their own listener, so an error in the
+// calculator code below - script.js is also loaded by privacy.html, which has no calculator -
+// can never leave the mobile menu dead.
 document.addEventListener('DOMContentLoaded', () => {
+    // Track feedback link clicks (mailto link in the nav, present on every page)
+    document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.trackEvent) window.trackEvent('feedback_link_clicked');
+        });
+    });
+
+    // Mobile hamburger menu toggle
+    const navToggle = document.getElementById('nav-toggle');
+    const navLinksMenu = document.querySelector('.nav-links');
+    if (navToggle && navLinksMenu) {
+        navToggle.addEventListener('click', function() {
+            const isOpen = navLinksMenu.classList.toggle('open');
+            navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+
+        // Close the menu after tapping a link
+        navLinksMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                navLinksMenu.classList.remove('open');
+                navToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Calculator page only (privacy.html loads this script too, without a calculator).
+    if (!document.getElementById('markup-percentage')) return;
     let calcDebounceTimer;
     // Initialize localStorage for data persistence
     const STORAGE_KEY = 'printPriceProData';
@@ -726,7 +759,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ? `≈ ${(markup / (100 + markup) * 100).toFixed(1)}% margin before shipping & GST`
             : '';
     }
-    markupPercentage.addEventListener('input', updateMarkupMarginHint);
+    if (markupPercentage) markupPercentage.addEventListener('input', updateMarkupMarginHint);
     updateMarkupMarginHint();
 
     function calculatePrices() {
@@ -1169,31 +1202,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetButton = document.getElementById('reset-calculator');
     if (resetButton) {
         resetButton.addEventListener('click', resetCalculator);
-    }
-
-    // Track feedback link clicks (mailto link in the nav, present on every page)
-    document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
-        link.addEventListener('click', function() {
-            if (window.trackEvent) window.trackEvent('feedback_link_clicked');
-        });
-    });
-
-    // Mobile hamburger menu toggle
-    const navToggle = document.getElementById('nav-toggle');
-    const navLinksMenu = document.querySelector('.nav-links');
-    if (navToggle && navLinksMenu) {
-        navToggle.addEventListener('click', function() {
-            const isOpen = navLinksMenu.classList.toggle('open');
-            navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        });
-
-        // Close the menu after tapping a link
-        navLinksMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', function() {
-                navLinksMenu.classList.remove('open');
-                navToggle.setAttribute('aria-expanded', 'false');
-            });
-        });
     }
 
     // Run initial calculation if needed

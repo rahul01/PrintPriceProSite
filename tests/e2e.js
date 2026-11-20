@@ -221,6 +221,16 @@ async function hwStatus(page) {
     await mp.click('#nav-toggle');
     check('mobile hamburger opens menu', (await mp.getAttribute('#nav-toggle', 'aria-expanded')) === 'true');
   } else check('mobile hamburger visible', false);
+  // Other pages load script.js too: no JS errors, and the menu must work there as well.
+  for (const pg of ['privacy.html', 'app-guide.html']) {
+    const op = await mctx.newPage();
+    const errs = []; op.on('pageerror', e => errs.push(e.message));
+    await op.goto(BASE + '/' + pg, { waitUntil: 'networkidle' });
+    await op.click('#nav-toggle');
+    check(`${pg}: no JS errors, mobile menu opens`,
+      !errs.length && (await op.getAttribute('#nav-toggle', 'aria-expanded')) === 'true', errs.join(' | '));
+    await op.close();
+  }
   await mp.fill('#material-weight', '100'); await mp.fill('#print-time-hours', '2');
   await mp.waitForTimeout(100);
   check('mobile: sticky price updates', money(await mp.textContent('#sticky-price-value')) > 0, await mp.textContent('#sticky-price-value'));
