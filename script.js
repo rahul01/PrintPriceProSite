@@ -713,7 +713,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Function to calculate prices
+    // Live hint under Markup (%): the profit margin (share of pre-shipping, pre-GST price) this
+    // markup gives. Updated on its own, not only inside calculatePrices(), which bails out until
+    // the job inputs are filled - otherwise the hint is blank on a fresh page.
+    function updateMarkupMarginHint() {
+        const marginHint = document.getElementById('markup-margin-hint');
+        if (!marginHint) return;
+        const markup = parseFloat(markupPercentage.value);
+        marginHint.textContent = !isNaN(markup) && markup >= 0
+            ? `≈ ${(markup / (100 + markup) * 100).toFixed(1)}% margin before shipping & GST`
+            : '';
+    }
+    markupPercentage.addEventListener('input', updateMarkupMarginHint);
+    updateMarkupMarginHint();
+
     function calculatePrices() {
+        updateMarkupMarginHint();
 
         
         try {
@@ -778,13 +793,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const baseShareValue = subtotalValue - hardwareShareValue;
             const markupValue = baseShareValue * (markup / 100) + hardwareShareValue * (effectiveHwMarkup / 100);
 
-            // Live hint: the profit margin (share of pre-shipping, pre-GST price) this markup gives
-            const marginHint = document.getElementById('markup-margin-hint');
-            if (marginHint) {
-                marginHint.textContent = markup >= 0
-                    ? `≈ ${(markup / (100 + markup) * 100).toFixed(1)}% margin before shipping & GST`
-                    : '';
-            }
 
             // Shipping and Packaging are pass-through costs added after Overhead/Markup,
             // not marked up by either percentage
