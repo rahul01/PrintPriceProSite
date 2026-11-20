@@ -45,11 +45,13 @@ async function fill(page, vals) {
 const txt = (page, sel) => page.textContent(sel);
 // Opens the HW Markup % info popup, returns its bold status line, closes it
 async function hwStatus(page) {
-  await page.click('.info-icon[data-info="hardware-markup"]', { force: true }); // icon sits in the label of a possibly-disabled input
+  // Normal (not forced) click: Playwright then waits for the icon to be stable, so the page's
+  // smooth scrolling can't move it between scroll-into-view and the click (that was the flake).
+  await page.click('.info-icon[data-info="hardware-markup"]');
   await page.waitForSelector('#infoModal.active');
   const t = await page.textContent('#modalContent strong');
   await page.keyboard.press('Escape');
-  await page.waitForTimeout(400);
+  await page.waitForFunction(() => !document.querySelector('#infoModal.active'));
   return t;
 }
 
