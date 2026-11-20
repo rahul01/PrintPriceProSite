@@ -1,4 +1,4 @@
-const CACHE_NAME = 'printpricepro-v10';
+const CACHE_NAME = 'printpricepro-v11';
 const PRECACHE_URLS = [
     '/',
     '/index.html',
@@ -62,7 +62,9 @@ self.addEventListener('fetch', (event) => {
                     }
                     return response;
                 })
-                .catch(() => cached);
+                // Offline: the page asks for styles.css?v=N but the precache (and the first
+                // visit, which runs before this worker controls the page) stored other URLs.
+                .catch(() => cached || caches.match(event.request, { ignoreSearch: true }));
 
             return cached || network;
         })
