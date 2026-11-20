@@ -1,4 +1,4 @@
-const CACHE_NAME = 'printpricepro-v5';
+const CACHE_NAME = 'printpricepro-v6';
 const PRECACHE_URLS = [
     '/',
     '/index.html',

@@ -1296,6 +1296,22 @@ main {
         height: 2.25rem;
     }
 
+    /* A hint (e.g. markup → margin) wraps to its own full-width line under the
+       label + input row, so the input keeps the same width as hint-less rows */
+    .calculator-input {
+        flex-wrap: wrap;
+    }
+
+    .calculator-input > input,
+    .calculator-input > select {
+        flex: 1 1 0%;
+    }
+
+    .calculator-input > .input-hint {
+        flex: 0 0 100%;
+        margin-top: -0.25rem;
+    }
+
     /* Keep the hardware pair side by side on phones; label stacks above its input */
     .calculator-input-group.calculator-input-pair {
         flex-direction: row;
