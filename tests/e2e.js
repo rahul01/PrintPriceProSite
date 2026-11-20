@@ -129,6 +129,19 @@ async function hwStatus(page) {
   e = expected({ ...c1, hw: 500 });
   check('clearing HW markup reverts', near(money(await txt(page, '#result-markup')), e.mk));
 
+  // Retyping Markup must not swallow a custom HW markup whose value matches a mid-typing state
+  // (custom 0 vs blank Markup; custom 5 vs the "5" in "50").
+  for (const custom of ['0', '5']) {
+    await fill(page, { 'hardware-markup-percentage': custom });
+    await page.fill('#markup-percentage', '');
+    await page.type('#markup-percentage', '50');
+    await page.press('#markup-percentage', 'Tab');
+    check(`custom HW markup ${custom} survives retyping Markup as 50`,
+      (await page.inputValue('#hardware-markup-percentage')) === custom,
+      await page.inputValue('#hardware-markup-percentage'));
+  }
+  await fill(page, { 'markup-percentage': c1.markup, 'hardware-markup-percentage': '' });
+
   // 6. Shipping/packaging pass-through, GST 0 hides rows
   await fill(page, { 'hardware-cost': 0, 'shipping-cost': 60, 'packaging-cost': 15, 'gst-percentage': 0 });
   e = expected({ ...c1, ship: 60, pack: 15, gst: 0 });

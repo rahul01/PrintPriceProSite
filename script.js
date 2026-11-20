@@ -307,7 +307,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!hardwareMarkupPercentage) return;
         const raw = hardwareMarkupPercentage.value.trim();
         const v = parseFloat(raw);
-        hwMarkupFollowing = raw === '' || isNaN(v) || v === (parseFloat(markupPercentage.value) || 0);
+        // A blank Markup is "no value", not 0: otherwise a custom 0 would match it mid-retype.
+        const m = parseFloat(markupPercentage.value);
+        hwMarkupFollowing = raw === '' || isNaN(v) || (!isNaN(m) && v === m);
     }
     // Show Markup %'s value in a following field (not while the user is editing it)
     function syncHwMarkupDisplay() {
@@ -782,10 +784,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const subtotalValue = directCosts + overheadValue;
 
             // Markup on cost (not margin on price)
-            // Hardware (plus the overhead on it) can carry its own markup; blank = main markup.
+            // Hardware (plus the overhead on it) can carry its own markup; following = main markup.
             // Mirrors CalculatePriceUseCase.kt: with a blank hardware markup this equals subtotal × markup.
-            // A custom value that now equals Markup % (e.g. Markup changed to match) becomes following
-            if (!hwMarkupFollowing) updateHwMarkupFollowing();
+            // (A custom value that ends up equal to Markup % becomes following on Markup's
+            // `change`, not here: re-checking on every keystroke flipped a custom 0 or 5 to
+            // following while the user retyped Markup as "50", and it then tracked to 50.)
             syncHwMarkupDisplay();
             const hwMarkupIsCustom = !hwMarkupFollowing;
             const effectiveHwMarkup = hwMarkupIsCustom ? parseFloat(hardwareMarkupPercentage.value) : markup;
@@ -975,6 +978,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Must run before the generic recalc/save listeners below
     if (hardwareMarkupPercentage) {
         hardwareMarkupPercentage.addEventListener('input', updateHwMarkupFollowing);
+        // Markup committed (blur/enter): a custom HW value equal to it now follows it, as in the app.
+        markupPercentage.addEventListener('change', () => {
+            if (!hwMarkupFollowing) { updateHwMarkupFollowing(); calculatePrices(); }
+        });
         // Cleared (or set equal to Markup) and left: show Markup %'s value again
         hardwareMarkupPercentage.addEventListener('blur', () => {
             if (hwMarkupFollowing) hardwareMarkupPercentage.value = markupPercentage.value;
