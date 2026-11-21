@@ -255,10 +255,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>Electricity cost uses the selected printer's <strong>ACTUAL average power consumption</strong> (shown in the dropdown), not the rated (maximum) power. Your printer does NOT consume the rated power continuously. The actual average consumption during a print is typically much lower.</p>
                 <p><strong>Examples of Rated vs. Actual Average (PLA):</strong></p>
                 <ul>
-                    <li><strong>Bambu P1S:</strong> Rated 1100W, actual avg ~100–140W</li>
+                    <li><strong>Bambu P1S:</strong> Rated 1000W (220 V), actual avg ~100–140W</li>
                     <li><strong>Ender 3 Series:</strong> Rated 360W, actual avg ~80–120W</li>
                     <li><strong>Prusa MK4:</strong> Rated 240W, actual avg ~80–100W</li>
                 </ul>
+                <p>The printers listed here use their <strong>average while printing PLA</strong>, heat-up included. If you mostly print ABS/ASA with a hot bed or an enclosure, your printer uses more than the value shown.</p>
                 <p><em>Note:</em> Power consumption is highly variable. It increases significantly with <strong>higher print/bed temperatures</strong> (e.g., ABS/PC) and during the <strong>initial heat-up phase</strong> of the print.</p>
                 <p><em>Resin MSLA printers draw significantly less power than FDM - no heated bed, no hotend. Examples: Elegoo Mars 4 Ultra ~45W avg, Elegoo Saturn 3 Ultra ~75W avg, Anycubic Photon Mono M5s ~50W avg.</em></p>
             `
